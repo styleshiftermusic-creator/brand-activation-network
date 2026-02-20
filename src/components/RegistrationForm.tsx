@@ -39,10 +39,10 @@ export default function RegistrationForm() {
                 <h3 className="text-2xl font-bold text-white mb-2">Registration Confirmed</h3>
                 <p className="text-[var(--muted-foreground)]">Your spot is secured. Check your email for the Workshop Engine playbook.</p>
                 <button
-                    onClick={() => window.location.href = "/dashboard"}
-                    className="mt-8 px-6 py-3 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all"
+                    onClick={() => window.location.href = "https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"}
+                    className="mt-8 px-6 py-3 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)]"
                 >
-                    Proceed to Dashboard
+                    Unlock the AI Workshop Engine
                 </button>
             </div>
         );
