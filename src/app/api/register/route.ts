@@ -1,19 +1,31 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
 
-        // Simulate database processing delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        if (!body.email || !body.name) {
+            return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
+        }
 
-        // In a real environment, you would use Prisma or Supabase client here:
-        // await supabase.from('webinar_registrations').insert([body])
+        const { error } = await supabase.from('webinar_registrations').insert([
+            {
+                full_name: body.name,
+                email: body.email,
+                event_name: 'AI Workshop Engine Challenge'
+            }
+        ]);
 
-        console.log("MOCK BACKEND: Successfully registered new lead:", body.email);
+        if (error) {
+            console.error("Supabase Insertion Error:", error);
+            return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        }
+
+        console.log("LIVE BACKEND: Successfully registered new lead into Supabase:", body.email);
 
         return NextResponse.json({ success: true, message: "Lead captured successfully" });
     } catch (error) {
-        return NextResponse.json({ success: false, error: "Failed to parse request" }, { status: 400 });
+        return NextResponse.json({ success: false, error: "Failed to process request" }, { status: 500 });
     }
 }

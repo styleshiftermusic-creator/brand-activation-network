@@ -27,30 +27,30 @@ export default function Home() {
 
         {/* Hero Typography */}
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
-          <span className="text-gradient">Autonomy at the </span><br />
-          <span className="text-gradient-primary">Speed of Thought.</span>
+          <span className="text-gradient">Unlock Capital. </span><br />
+          <span className="text-gradient-primary">Scale Instantly.</span>
         </h1>
 
         <p className="text-lg md:text-2xl text-[var(--muted-foreground)] mb-12 max-w-2xl font-light leading-relaxed">
-          Scale your capability. Zero employees. Zero burnout. Leverage the Mission Control framework to transform how your agency builds.
+          Master the exact 7-module blueprint to secure business funding, automate high-ticket sales, and completely scale your agency.
         </p>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 w-full justify-center items-center">
           <Link href="/challenge" className="w-full sm:w-auto px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
-            Join the Challenge Funnel
+            Join the Ongoing Challenge
           </Link>
           <Link href="/dashboard" className="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 text-center">
-            Architect Dashboard Login
+            Access Course Dashboard
           </Link>
         </div>
 
         {/* Features / Value Props Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32 w-full text-left">
           {[
-            { title: "Specialist Stack", desc: "Deploy 16 autonomous specialized agents to handle your development lifecycle in parallel." },
-            { title: "UI Pro Max Design", desc: "Instantly inject 100+ high-end design reasoning rules targeting premium aesthetics." },
-            { title: "Artifact Verification", desc: "Move from logs to visual proof. Authenticate every deployment with a live Browser Recording." }
+            { title: "Credit & Capital Hacks", desc: "Learn the Pledge Loan Credit Hack and exactly how to transition into pulling immediate Business Funding." },
+            { title: "Audience & Leverage", desc: "Build unparalleled authority. Master the high-ticket sales philosophy to close massive deals organically." },
+            { title: "Scale 'One-to-Many'", desc: "Stop trading time for money. Build automated systems and environments that collapse decades into days." }
           ].map((feature, i) => (
             <div key={i} className="glass-card p-8 rounded-2xl flex flex-col transition-transform hover:-translate-y-2 duration-300">
               <div className="h-12 w-12 rounded-lg bg-[var(--primary)]/20 border border-[var(--primary)]/30 mb-6 flex items-center justify-center">
