@@ -1,0 +1,32 @@
+[debug] [2026-02-20T19:29:08.578Z] ----------------------------------------------------------------------
+[debug] [2026-02-20T19:29:08.581Z] Command:       /usr/local/bin/node /Users/styleshifter/.npm/_npx/7750544ccf494d8b/node_modules/.bin/firebase init --project brand-activation-network
+[debug] [2026-02-20T19:29:08.582Z] CLI Version:   15.7.0
+[debug] [2026-02-20T19:29:08.582Z] Platform:      darwin
+[debug] [2026-02-20T19:29:08.582Z] Node Version:  v24.13.1
+[debug] [2026-02-20T19:29:08.582Z] Time:          Fri Feb 20 2026 11:29:08 GMT-0800 (Pacific Standard Time)
+[debug] [2026-02-20T19:29:08.582Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network
+
+[debug] [2026-02-20T19:29:28.612Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (/Users/styleshifter/.npm/_npx/7750544ccf494d8b/node_modules/@inquirer/core/dist/commonjs/lib/create-prompt.js:101:37)
+    at Interface.emit (node:events:508:28)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1327:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:284:20)
+    at ReadStream.emit (node:events:520:35)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+    at ReadStream.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+[error] 
+[error] Error: An unexpected error has occurred.

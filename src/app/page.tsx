@@ -1,65 +1,73 @@
+import Link from "next/link";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Abstract Background Elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[var(--accent)]/10 rounded-full blur-[150px] pointer-events-none" />
+
+      {/* Main Container */}
+      <main className="z-10 flex flex-col items-center text-center px-6 max-w-5xl w-full mt-24">
+
+        {/* Logo Section */}
+        <div className="mb-12 animate-fade-in-up relative z-20 flex justify-center w-full mix-blend-screen">
+          <Link href="/">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/logo.png"
+              alt="Brand Activation Network Logo"
+              width={500}
+              height={250}
+              priority
+              className="w-auto h-28 md:h-40 object-contain drop-shadow-2xl hover:scale-105 transition-transform"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </Link>
         </div>
+
+        {/* Hero Typography */}
+        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
+          <span className="text-gradient">Autonomy at the </span><br />
+          <span className="text-gradient-primary">Speed of Thought.</span>
+        </h1>
+
+        <p className="text-lg md:text-2xl text-[var(--muted-foreground)] mb-12 max-w-2xl font-light leading-relaxed">
+          Scale your capability. Zero employees. Zero burnout. Leverage the Mission Control framework to transform how your agency builds.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 w-full justify-center items-center">
+          <Link href="/challenge" className="w-full sm:w-auto px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
+            Join the Challenge Funnel
+          </Link>
+          <Link href="/dashboard" className="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 text-center">
+            Architect Dashboard Login
+          </Link>
+        </div>
+
+        {/* Features / Value Props Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32 w-full text-left">
+          {[
+            { title: "Specialist Stack", desc: "Deploy 16 autonomous specialized agents to handle your development lifecycle in parallel." },
+            { title: "UI Pro Max Design", desc: "Instantly inject 100+ high-end design reasoning rules targeting premium aesthetics." },
+            { title: "Artifact Verification", desc: "Move from logs to visual proof. Authenticate every deployment with a live Browser Recording." }
+          ].map((feature, i) => (
+            <div key={i} className="glass-card p-8 rounded-2xl flex flex-col transition-transform hover:-translate-y-2 duration-300">
+              <div className="h-12 w-12 rounded-lg bg-[var(--primary)]/20 border border-[var(--primary)]/30 mb-6 flex items-center justify-center">
+                <div className="h-4 w-4 rounded-full bg-[var(--primary)] shadow-[0_0_15px_var(--primary)]" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-[var(--foreground)]">{feature.title}</h3>
+              <p className="text-[var(--muted-foreground)] leading-relaxed">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+
       </main>
+
+      {/* Footer */}
+      <footer className="mt-32 pb-8 text-[var(--muted-foreground)] text-sm">
+        © {new Date().getFullYear()} Brand Activation Network. Architecture Mode: Active.
+      </footer>
     </div>
   );
 }
