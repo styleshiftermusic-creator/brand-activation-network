@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Lock, FileText, Video, CheckCircle, LayoutDashboard, Settings, LogOut, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 const MODULES = [
     { num: 1, title: "The Pledge Loan Credit Hack", locked: false, completed: true, duration: "45m" },
@@ -17,19 +18,64 @@ const MODULES = [
 
 export default function Dashboard() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoadingSession, setIsLoadingSession] = useState(true);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [authError, setAuthError] = useState("");
+    const [authMessage, setAuthMessage] = useState("");
 
-    const handleLogin = async (e: React.FormEvent) => {
+    useEffect(() => {
+        // Fetch current session
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setIsAuthenticated(!!session);
+            setIsLoadingSession(false);
+        });
+
+        // Listen for login/logout events securely
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setIsAuthenticated(!!session);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
+
+    const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoggingIn(true);
-        // Simulate auth API delay verifying against Database logic
-        setTimeout(() => {
-            setIsAuthenticated(true);
+        setAuthError("");
+        setAuthMessage("");
+
+        try {
+            if (isSignUp) {
+                const { error, data } = await supabase.auth.signUp({ email, password });
+                if (error) throw error;
+                if (data.user?.identities?.length === 0) {
+                    setAuthError("An account with this email already exists.");
+                } else {
+                    setAuthMessage("Registration successful! You may now log in.");
+                    setIsSignUp(false); // flip back to login
+                }
+            } else {
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                // successful login is handled automatically by onAuthStateChange event
+            }
+        } catch (error: any) {
+            setAuthError(error.message);
+        } finally {
             setIsLoggingIn(false);
-        }, 1200);
+        }
     };
+
+    if (isLoadingSession) {
+        return (
+            <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+                <Loader2 className="h-10 w-10 animate-spin text-[var(--primary)]" />
+            </div>
+        );
+    }
 
     if (!isAuthenticated) {
         return (
@@ -46,10 +92,25 @@ export default function Dashboard() {
                     </div>
 
                     <div className="glass-card rounded-2xl p-8 relative flex flex-col">
-                        <h1 className="text-2xl font-bold text-white mb-2 text-center">Architect Login</h1>
-                        <p className="text-[var(--muted-foreground)] mb-8 text-sm text-center">Enter your credentials to access the AI Workshop Engine.</p>
+                        <h1 className="text-2xl font-bold text-white mb-2 text-center">
+                            {isSignUp ? "Create Architect Account" : "Architect Login"}
+                        </h1>
+                        <p className="text-[var(--muted-foreground)] mb-8 text-sm text-center">
+                            {isSignUp ? "Register an account to store your progress." : "Enter your credentials to access the AI Workshop Engine."}
+                        </p>
 
-                        <form onSubmit={handleLogin} className="flex flex-col gap-5">
+                        {authError && (
+                            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-500 text-sm text-center">
+                                {authError}
+                            </div>
+                        )}
+                        {authMessage && (
+                            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/50 rounded-lg text-green-500 text-sm text-center">
+                                {authMessage}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleAuth} className="flex flex-col gap-5">
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium text-zinc-300 ml-1">Email Address</label>
                                 <input
@@ -86,12 +147,26 @@ export default function Dashboard() {
                                     </>
                                 ) : (
                                     <>
-                                        Enter Dashboard
+                                        {isSignUp ? "Sign Up" : "Enter Dashboard"}
                                         <Lock className="h-5 w-5 ml-1" />
                                     </>
                                 )}
                             </button>
                         </form>
+
+                        <div className="mt-6 text-center">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsSignUp(!isSignUp);
+                                    setAuthError("");
+                                    setAuthMessage("");
+                                }}
+                                className="text-sm text-[var(--muted-foreground)] hover:text-white transition-colors"
+                            >
+                                {isSignUp ? "Already have an account? Log in." : "Need an account? Sign up."}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,7 +195,10 @@ export default function Dashboard() {
                     </a>
                 </nav>
 
-                <button onClick={() => setIsAuthenticated(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-400 mt-auto transition-colors w-full text-left">
+                <button
+                    onClick={() => supabase.auth.signOut()}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-400 mt-auto transition-colors w-full text-left"
+                >
                     <LogOut className="h-5 w-5" /> Log Out
                 </button>
             </aside>
