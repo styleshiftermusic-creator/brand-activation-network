@@ -22,6 +22,7 @@ export default function Dashboard() {
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isResetMode, setIsResetMode] = useState(false);
     const [authError, setAuthError] = useState("");
     const [authMessage, setAuthMessage] = useState("");
 
@@ -47,9 +48,18 @@ export default function Dashboard() {
         setAuthMessage("");
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-            // successful login is handled automatically by onAuthStateChange event
+            if (isResetMode) {
+                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: `${window.location.origin}/dashboard`,
+                });
+                if (error) throw error;
+                setAuthMessage("Magic link sent! Check your email to securely log in.");
+                setIsResetMode(false);
+            } else {
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                // successful login is handled automatically by onAuthStateChange event
+            }
         } catch (error: any) {
             setAuthError(error.message);
         } finally {
@@ -81,10 +91,10 @@ export default function Dashboard() {
 
                     <div className="glass-card rounded-2xl p-8 relative flex flex-col">
                         <h1 className="text-2xl font-bold text-white mb-2 text-center">
-                            Architect Login
+                            {isResetMode ? "Secure Access Recovery" : "Architect Login"}
                         </h1>
                         <p className="text-[var(--muted-foreground)] mb-8 text-sm text-center">
-                            Enter your credentials to access the AI Workshop Engine.
+                            {isResetMode ? "Enter your email to receive a secure login link." : "Enter your credentials to access the AI Workshop Engine."}
                         </p>
 
                         {authError && (
@@ -111,21 +121,23 @@ export default function Dashboard() {
                                 />
                             </div>
 
-                            <div className="space-y-1.5">
-                                <label className="text-sm font-medium text-zinc-300 ml-1">Password</label>
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
-                                />
-                            </div>
+                            {!isResetMode && (
+                                <div className="space-y-1.5">
+                                    <label className="text-sm font-medium text-zinc-300 ml-1">Password</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="••••••••"
+                                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
+                                    />
+                                </div>
+                            )}
 
                             <button
                                 type="submit"
-                                disabled={isLoggingIn || !email || !password}
+                                disabled={isLoggingIn || !email || (!isResetMode && !password)}
                                 className="w-full py-4 mt-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isLoggingIn ? (
@@ -135,12 +147,26 @@ export default function Dashboard() {
                                     </>
                                 ) : (
                                     <>
-                                        Enter Dashboard
+                                        {isResetMode ? "Send Magic Link" : "Enter Dashboard"}
                                         <Lock className="h-5 w-5 ml-1" />
                                     </>
                                 )}
                             </button>
                         </form>
+
+                        <div className="mt-4 text-center">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsResetMode(!isResetMode);
+                                    setAuthError("");
+                                    setAuthMessage("");
+                                }}
+                                className="text-sm text-[var(--muted-foreground)] hover:text-white transition-colors"
+                            >
+                                {isResetMode ? "Back to Login" : "Forgot Password? Send Magic Link"}
+                            </button>
+                        </div>
 
                         {/* Removed the Sign Up toggle to enforce the Paywall */}
                         <div className="mt-6 text-center">
