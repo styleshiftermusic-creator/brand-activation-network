@@ -22,7 +22,6 @@ export default function Dashboard() {
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isSignUp, setIsSignUp] = useState(false);
     const [authError, setAuthError] = useState("");
     const [authMessage, setAuthMessage] = useState("");
 
@@ -48,20 +47,9 @@ export default function Dashboard() {
         setAuthMessage("");
 
         try {
-            if (isSignUp) {
-                const { error, data } = await supabase.auth.signUp({ email, password });
-                if (error) throw error;
-                if (data.user?.identities?.length === 0) {
-                    setAuthError("An account with this email already exists.");
-                } else {
-                    setAuthMessage("Registration successful! You may now log in.");
-                    setIsSignUp(false); // flip back to login
-                }
-            } else {
-                const { error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) throw error;
-                // successful login is handled automatically by onAuthStateChange event
-            }
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+            // successful login is handled automatically by onAuthStateChange event
         } catch (error: any) {
             setAuthError(error.message);
         } finally {
@@ -93,10 +81,10 @@ export default function Dashboard() {
 
                     <div className="glass-card rounded-2xl p-8 relative flex flex-col">
                         <h1 className="text-2xl font-bold text-white mb-2 text-center">
-                            {isSignUp ? "Create Architect Account" : "Architect Login"}
+                            Architect Login
                         </h1>
                         <p className="text-[var(--muted-foreground)] mb-8 text-sm text-center">
-                            {isSignUp ? "Register an account to store your progress." : "Enter your credentials to access the AI Workshop Engine."}
+                            Enter your credentials to access the AI Workshop Engine.
                         </p>
 
                         {authError && (
@@ -147,25 +135,21 @@ export default function Dashboard() {
                                     </>
                                 ) : (
                                     <>
-                                        {isSignUp ? "Sign Up" : "Enter Dashboard"}
+                                        Enter Dashboard
                                         <Lock className="h-5 w-5 ml-1" />
                                     </>
                                 )}
                             </button>
                         </form>
 
+                        {/* Removed the Sign Up toggle to enforce the Paywall */}
                         <div className="mt-6 text-center">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsSignUp(!isSignUp);
-                                    setAuthError("");
-                                    setAuthMessage("");
-                                }}
-                                className="text-sm text-[var(--muted-foreground)] hover:text-white transition-colors"
+                            <Link
+                                href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
+                                className="text-sm text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors inline-block pb-1 border-b border-transparent hover:border-[var(--primary)]"
                             >
-                                {isSignUp ? "Already have an account? Log in." : "Need an account? Sign up."}
-                            </button>
+                                Need an account? Purchase the Workshop Engine here.
+                            </Link>
                         </div>
                     </div>
                 </div>
