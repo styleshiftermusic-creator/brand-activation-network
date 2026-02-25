@@ -1,30 +1,44 @@
 "use client";
 
-import { ArrowRight, ShieldCheck, Loader2, CheckCircle } from "lucide-react";
+import { ArrowRight, ShieldCheck, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function RegistrationForm() {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [turnstileToken, setTurnstileToken] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErrorMsg("");
+
+        if (!turnstileToken && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+            setErrorMsg("Please complete the bot protection check.");
+            return;
+        }
+
         setIsSubmitting(true);
 
-        // Simulate database API call to Firebase/Supabase
         try {
             const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ ...formData, turnstileToken }),
             });
 
-            if (response.ok) {
+            const data = await response.json();
+
+            if (response.ok && data.success) {
                 setIsSuccess(true);
+            } else {
+                setErrorMsg(data.error || "Something went wrong. Please try again.");
             }
         } catch (error) {
             console.error("Registration failed", error);
+            setErrorMsg("Network error. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
@@ -54,6 +68,13 @@ export default function RegistrationForm() {
             <p className="text-[var(--muted-foreground)] mb-8 text-sm">Enter your details to register for the live event and receive the immediate playbook.</p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                {errorMsg && (
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl flex items-center gap-3 text-sm">
+                        <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                        <p>{errorMsg}</p>
+                    </div>
+                )}
+
                 <div className="space-y-1.5">
                     <label className="text-sm font-medium text-zinc-300 ml-1">Full Name</label>
                     <input
@@ -89,10 +110,20 @@ export default function RegistrationForm() {
                     />
                 </div>
 
+                {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+                    <div className="py-2">
+                        <Turnstile
+                            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                            onSuccess={(token) => setTurnstileToken(token)}
+                            options={{ theme: 'dark' }}
+                        />
+                    </div>
+                )}
+
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 mt-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 mt-2 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isSubmitting ? (
                         <>
