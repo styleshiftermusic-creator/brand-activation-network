@@ -45,6 +45,8 @@ The primary lead capture system (`/api/register`) has been hardened to resist bo
    - Configured for a sliding window limit of 5 requests per 15 minutes per IP.
 3. **Bot Protection**
    - Client interactions are verified server-side with **Cloudflare Turnstile** before processing data.
+4. **Endpoint Obscurity (Login)**
+   - There is intentionally no public "Sign In" link on the marketing pages (`/` or `/challenge`). Access to the authentication portal is restricted to users who know the direct URL (`/dashboard`) as an additional layer of security through obscurity and to reduce automated traversal of the login endpoint.
 
 ---
 
