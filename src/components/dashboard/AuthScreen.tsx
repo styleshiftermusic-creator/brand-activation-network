@@ -82,7 +82,7 @@ export function AuthScreen() {
             <div className="w-full max-w-lg z-10 animate-fade-in-up">
                 <div className="flex flex-col items-center mb-10">
                     <Terminal className="h-12 w-12 text-[var(--primary)] mb-4 animate-pulse opacity-80" />
-                    <h1 className="text-xl font-bold text-white tracking-[0.2em] uppercase text-center">Brand Activation Network</h1>
+                    <h1 className="text-xl font-bold text-white tracking-[0.2em] uppercase text-center">BAN AI WORKSHOP AG</h1>
                     <p className="text-[var(--primary)] text-xs tracking-widest mt-2 uppercase text-center">Secure Access Terminal</p>
                 </div>
 
