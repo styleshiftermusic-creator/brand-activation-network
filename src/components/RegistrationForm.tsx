@@ -3,6 +3,13 @@
 import { ArrowRight, ShieldCheck, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { z } from "zod";
+
+const registerSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters").max(100),
+    email: z.string().email("Invalid email address"),
+    phone: z.string().optional(),
+});
 
 export default function RegistrationForm() {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
@@ -17,6 +24,12 @@ export default function RegistrationForm() {
 
         if (!turnstileToken && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
             setErrorMsg("Please complete the bot protection check.");
+            return;
+        }
+
+        const parsed = registerSchema.safeParse(formData);
+        if (!parsed.success) {
+            setErrorMsg(parsed.error.issues[0].message);
             return;
         }
 

@@ -40,9 +40,9 @@ export default function Home() {
           <Link href="/challenge" className="w-full sm:w-auto px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
             Join the Ongoing Challenge
           </Link>
-          <a href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00" className="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 text-center">
-            Access Course Dashboard
-          </a>
+          <Link href="/dashboard" className="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 text-center">
+            Dashboard Login
+          </Link>
         </div>
 
         {/* Features / Value Props Section */}

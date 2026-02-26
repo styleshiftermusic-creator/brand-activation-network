@@ -20,4 +20,30 @@ ON public.webinar_registrations
 FOR INSERT TO public
 WITH CHECK (true);
 
--- 2. Optional Setup: Course Progress / Auth is automatically handled by Supabase Auth (`auth.users`)
+-- 2. Create the course_progress table for the Dashboard Tracker
+CREATE TABLE IF NOT EXISTS public.course_progress (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+    module_id text NOT NULL,
+    completed boolean DEFAULT false,
+    unlocked boolean DEFAULT false,
+    last_accessed timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
+    UNIQUE(user_id, module_id)
+);
+
+ALTER TABLE public.course_progress ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own course progress"
+ON public.course_progress
+FOR SELECT TO authenticated
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own course progress"
+ON public.course_progress
+FOR INSERT TO authenticated
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own course progress"
+ON public.course_progress
+FOR UPDATE TO authenticated
+USING (auth.uid() = user_id);

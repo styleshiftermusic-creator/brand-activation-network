@@ -1,278 +1,173 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { Lock, FileText, Video, CheckCircle, LayoutDashboard, Settings, LogOut, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
-const MODULES = [
-    { num: 1, title: "The Pledge Loan Credit Hack", locked: false, completed: true, duration: "45m" },
-    { num: 2, title: "Transitioning to Business Funding", locked: false, completed: false, duration: "1h 12m" },
-    { num: 3, title: "The Investment Blueprint", locked: true, completed: false, duration: "55m" },
-    { num: 4, title: "Marketing & Audience Leverage", locked: true, completed: false, duration: "1h 30m" },
-    { num: 5, title: "High-Ticket Sales Philosophy", locked: true, completed: false, duration: "42m" },
-    { num: 6, title: "Scaling with One-to-Many", locked: true, completed: false, duration: "1h 05m" },
-    { num: 7, title: "Mindset & Environment", locked: true, completed: false, duration: "38m" },
+import { Sidebar } from "@/components/dashboard/Sidebar";
+import { MetricChart } from "@/components/dashboard/MetricChart";
+import { MissionFeed } from "@/components/dashboard/MissionFeed";
+
+const DEFAULT_MISSIONS = [
+    { id: "M-01", status: "COMPLETED", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: false, completed: true },
+    { id: "M-02", status: "COMPLETED", title: "High-level Tax Strategies", category: "[FINANCE]", time: "01:12:00", locked: false, completed: true },
+    { id: "M-03", status: "ACTIVE", title: "Velocity Banking Principles", category: "[FINANCE]", time: "00:55:00", locked: false, completed: false },
+    { id: "M-04", status: "LOCKED", title: "Marketing & Audience Leverage", category: "[BUSINESS]", time: "01:30:00", locked: true, completed: false },
+    { id: "M-05", status: "LOCKED", title: "High-Ticket Sales Philosophy", category: "[BUSINESS]", time: "00:42:00", locked: true, completed: false },
+    { id: "M-06", status: "LOCKED", title: "Scaling with One-to-Many", category: "[SCALE]", time: "01:05:00", locked: true, completed: false },
+    { id: "M-07", status: "LOCKED", title: "Mindset & Environment", category: "[FOUNDATION]", time: "00:38:00", locked: true, completed: false },
 ];
 
-export default function Dashboard() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoadingSession, setIsLoadingSession] = useState(true);
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isResetMode, setIsResetMode] = useState(false);
-    const [authError, setAuthError] = useState("");
-    const [authMessage, setAuthMessage] = useState("");
+const FALLBACK_PERFORMANCE_DATA = [
+    { time: '00:00', load: 12, efficiency: 98 },
+    { time: '04:00', load: 18, efficiency: 95 },
+    { time: '08:00', load: 45, efficiency: 88 },
+    { time: '12:00', load: 82, efficiency: 75 },
+    { time: '16:00', load: 55, efficiency: 89 },
+    { time: '20:00', load: 28, efficiency: 96 },
+    { time: '24:00', load: 15, efficiency: 98 },
+];
 
+export default function MissionControl() {
+    const [chartData, setChartData] = useState(FALLBACK_PERFORMANCE_DATA);
+    const [chartLoading, setChartLoading] = useState(true);
+    const [missions, setMissions] = useState(DEFAULT_MISSIONS);
+
+    // Compute progress based on current mission state
+    const completedCount = missions.filter(m => m.completed).length;
+    const activeMission = missions.find(m => !m.completed && !m.locked) || missions[0];
+    const progressPercentage = Math.round((completedCount / missions.length) * 100);
+
+    // Fetch real telemetry data
     useEffect(() => {
-        // Fetch current session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setIsAuthenticated(!!session);
-            setIsLoadingSession(false);
-        });
 
-        // Listen for login/logout events securely
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setIsAuthenticated(!!session);
-        });
+        const fetchTelemetry = async () => {
+            try {
+                setChartLoading(true);
+                // Fetch recent webinar registrations backwards from 7 days
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-        return () => subscription.unsubscribe();
+                const { data, error } = await supabase
+                    .from('webinar_registrations')
+                    .select('registered_at')
+                    .gte('registered_at', sevenDaysAgo.toISOString())
+                    .order('registered_at', { ascending: true });
+
+                if (error) throw error;
+
+                if (data && data.length > 0) {
+                    const grouped = data.reduce((acc: any, curr) => {
+                        const date = new Date(curr.registered_at).toLocaleDateString(undefined, { weekday: 'short' });
+                        acc[date] = (acc[date] || 0) + 1;
+                        return acc;
+                    }, {});
+
+                    const mappedData = Object.keys(grouped).map(date => {
+                        const count = grouped[date];
+                        return {
+                            time: date,
+                            load: Math.min(count * 15, 100),
+                            efficiency: Math.max(98 - (count * 2), 60)
+                        };
+                    });
+
+                    if (mappedData.length < 3) {
+                        setChartData(FALLBACK_PERFORMANCE_DATA);
+                    } else {
+                        setChartData(mappedData);
+                    }
+                } else {
+                    setChartData(FALLBACK_PERFORMANCE_DATA);
+                }
+            } catch (err) {
+                console.error("[TELEMETRY_ERROR] Failed to fetch data:", err);
+                setChartData(FALLBACK_PERFORMANCE_DATA);
+            } finally {
+                setChartLoading(false);
+            }
+        };
+
+        fetchTelemetry();
     }, []);
 
-    const handleAuth = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoggingIn(true);
-        setAuthError("");
-        setAuthMessage("");
+    // Fetch dynamic course progress
+    useEffect(() => {
 
-        try {
-            if (isResetMode) {
-                const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: `${window.location.origin}/dashboard`,
-                });
+        const fetchProgress = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                const { data, error } = await supabase
+                    .from('course_progress')
+                    .select('module_id, completed, unlocked')
+                    .eq('user_id', user.id);
+
                 if (error) throw error;
-                setAuthMessage("Magic link sent! Check your email to securely log in.");
-                setIsResetMode(false);
-            } else {
-                const { error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) throw error;
-                // successful login is handled automatically by onAuthStateChange event
+
+                if (data && data.length > 0) {
+                    const progressMap = new Map(data.map((p: any) => [p.module_id, p]));
+                    const updatedMissions = DEFAULT_MISSIONS.map((mission) => {
+                        const progress = progressMap.get(mission.id);
+                        if (progress) {
+                            return {
+                                ...mission,
+                                locked: !progress.unlocked,
+                                completed: progress.completed,
+                                status: progress.completed ? "COMPLETED" : (progress.unlocked ? "ACTIVE" : "LOCKED")
+                            };
+                        }
+                        return mission;
+                    });
+                    setMissions(updatedMissions);
+                } else {
+                    // Default fallback for new users: unlock the first module
+                    const initialMissions = [...DEFAULT_MISSIONS];
+                    initialMissions[0].locked = false;
+                    initialMissions[0].status = "ACTIVE";
+                    setMissions(initialMissions);
+                }
+            } catch (err) {
+                console.error("[PROGRESS_ERROR] Failed to fetch course progress:", err);
             }
-        } catch (error: any) {
-            setAuthError(error.message);
-        } finally {
-            setIsLoggingIn(false);
-        }
-    };
+        };
 
-    if (isLoadingSession) {
-        return (
-            <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-                <Loader2 className="h-10 w-10 animate-spin text-[var(--primary)]" />
-            </div>
-        );
-    }
-
-    if (!isAuthenticated) {
-        return (
-            <div className="min-h-screen bg-[var(--background)] flex items-center justify-center relative overflow-hidden px-6">
-                {/* Abstract Backgrounds */}
-                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/20 rounded-full blur-[120px] pointer-events-none" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[var(--accent)]/10 rounded-full blur-[150px] pointer-events-none" />
-
-                <div className="w-full max-w-md z-10 animate-fade-in-up">
-                    <div className="flex justify-center mb-8 mix-blend-screen">
-                        <Link href="/">
-                            <Image src="/logo.png" alt="BAN Logo" width={220} height={80} className="h-16 md:h-20 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform" />
-                        </Link>
-                    </div>
-
-                    <div className="glass-card rounded-2xl p-8 relative flex flex-col">
-                        <h1 className="text-2xl font-bold text-white mb-2 text-center">
-                            {isResetMode ? "Secure Access Recovery" : "Architect Login"}
-                        </h1>
-                        <p className="text-[var(--muted-foreground)] mb-8 text-sm text-center">
-                            {isResetMode ? "Enter your email to receive a secure login link." : "Enter your credentials to access the AI Workshop Engine."}
-                        </p>
-
-                        {authError && (
-                            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-500 text-sm text-center">
-                                {authError}
-                            </div>
-                        )}
-                        {authMessage && (
-                            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/50 rounded-lg text-green-500 text-sm text-center">
-                                {authMessage}
-                            </div>
-                        )}
-
-                        <form onSubmit={handleAuth} className="flex flex-col gap-5">
-                            <div className="space-y-1.5">
-                                <label className="text-sm font-medium text-zinc-300 ml-1">Email Address</label>
-                                <input
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="architect@agency.com"
-                                    className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
-                                />
-                            </div>
-
-                            {!isResetMode && (
-                                <div className="space-y-1.5">
-                                    <label className="text-sm font-medium text-zinc-300 ml-1">Password</label>
-                                    <input
-                                        type="password"
-                                        required
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
-                                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
-                                    />
-                                </div>
-                            )}
-
-                            <button
-                                type="submit"
-                                disabled={isLoggingIn || !email || (!isResetMode && !password)}
-                                className="w-full py-4 mt-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {isLoggingIn ? (
-                                    <>
-                                        <Loader2 className="h-5 w-5 animate-spin" />
-                                        Authenticating...
-                                    </>
-                                ) : (
-                                    <>
-                                        {isResetMode ? "Send Magic Link" : "Enter Dashboard"}
-                                        <Lock className="h-5 w-5 ml-1" />
-                                    </>
-                                )}
-                            </button>
-                        </form>
-
-                        <div className="mt-4 text-center">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsResetMode(!isResetMode);
-                                    setAuthError("");
-                                    setAuthMessage("");
-                                }}
-                                className="text-sm text-[var(--muted-foreground)] hover:text-white transition-colors"
-                            >
-                                {isResetMode ? "Back to Login" : "Forgot Password? Send Magic Link"}
-                            </button>
-                        </div>
-
-                        {/* Removed the Sign Up toggle to enforce the Paywall */}
-                        <div className="mt-6 text-center">
-                            <Link
-                                href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
-                                className="text-sm text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors inline-block pb-1 border-b border-transparent hover:border-[var(--primary)]"
-                            >
-                                Need an account? Purchase the Workshop Engine here.
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+        fetchProgress();
+    }, []);
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex animate-fade-in-up">
-            {/* Sidebar Layout */}
-            <aside className="w-72 border-r border-[var(--border)] bg-[var(--secondary)]/20 p-6 flex flex-col hidden lg:flex">
-                <div className="mix-blend-screen mb-12">
-                    <Link href="/">
-                        <Image src="/logo.png" alt="BAN Logo" width={150} height={50} className="w-full object-contain drop-shadow-lg hover:scale-105 transition-transform" />
-                    </Link>
-                </div>
+        <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
+            {/* Deep Ambient Glows for Mission Control */}
+            <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-[var(--primary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
+            <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
-                <nav className="flex flex-col gap-2 flex-grow">
-                    <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--primary)] text-white font-medium">
-                        <LayoutDashboard className="h-5 w-5" /> Engine Dashboard
-                    </a>
-                    <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[var(--muted-foreground)] hover:text-white transition-colors">
-                        <FileText className="h-5 w-5" /> Resources & Templates
-                    </a>
-                    <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[var(--muted-foreground)] hover:text-white transition-colors">
-                        <Settings className="h-5 w-5" /> Account Settings
-                    </a>
-                </nav>
+            <Sidebar />
 
-                <button
-                    onClick={() => supabase.auth.signOut()}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-400 mt-auto transition-colors w-full text-left"
-                >
-                    <LogOut className="h-5 w-5" /> Log Out
-                </button>
-            </aside>
-
-            {/* Main Content Area */}
-            <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
-                <div className="max-w-4xl mx-auto">
-
-                    {/* Header */}
-                    <header className="mb-12">
-                        <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">Welcome back, Architect.</h1>
-                        <p className="text-[var(--muted-foreground)]">Resume your training. You are currently on Module 2.</p>
+            <main className="flex-1 p-6 lg:p-10 overflow-y-auto z-10 relative">
+                <div className="max-w-5xl mx-auto">
+                    {/* Dashboard Header Bar */}
+                    <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+                        <div>
+                            <h1 className="text-3xl font-medium tracking-tight text-white mb-2">Agent Execution Feed</h1>
+                            <p className="text-zinc-500 font-mono text-sm flex items-center gap-2">
+                                <span className="text-[var(--primary)]">Current Directive:</span> {activeMission.title}
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-4 bg-black/40 border border-white/10 rounded-lg p-2 px-4 backdrop-blur-md">
+                            <div className="text-right">
+                                <div className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider">System Progress</div>
+                                <div className="text-white font-medium text-sm">{completedCount} / {missions.length} Completed</div>
+                            </div>
+                            <div className="w-24 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                                <div className={`h-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary)] transition-all duration-1000`} style={{ width: `${progressPercentage}%` }} />
+                            </div>
+                        </div>
                     </header>
 
-                    {/* Core UI Card */}
-                    <div className="glass-card rounded-2xl border border-[var(--border)] p-1 overflow-hidden">
+                    <MetricChart data={chartData} loading={chartLoading} />
 
-                        {/* Progress Bar */}
-                        <div className="bg-[var(--secondary)] p-6 border-b border-[var(--border)] flex items-center justify-between">
-                            <div>
-                                <h3 className="font-semibold text-white">AI Workshop Engine</h3>
-                                <p className="text-sm text-[var(--muted-foreground)]">1 of 7 modules completed (14%)</p>
-                            </div>
-                            <div className="w-64 h-2 bg-black rounded-full overflow-hidden border border-white/10">
-                                <div className="h-full bg-[var(--primary)] w-[14%]" />
-                            </div>
-                        </div>
-
-                        {/* Module List */}
-                        <div className="p-4 space-y-2">
-                            {MODULES.map((mod) => (
-                                <div
-                                    key={mod.num}
-                                    className={`flex items-center justify-between p-4 rounded-xl transition-all ${mod.locked
-                                        ? "opacity-50 pointer-events-none"
-                                        : "hover:bg-[var(--secondary)]/80 cursor-pointer"
-                                        } ${!mod.locked && !mod.completed ? "border border-[var(--primary)]/30 bg-[var(--primary)]/5" : ""}`}
-                                >
-                                    <div className="flex items-center gap-4">
-                                        {mod.completed ? (
-                                            <div className="h-10 w-10 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center">
-                                                <CheckCircle className="h-5 w-5" />
-                                            </div>
-                                        ) : mod.locked ? (
-                                            <div className="h-10 w-10 rounded-full bg-[var(--secondary)] flex items-center justify-center text-zinc-500 border border-[var(--border)]">
-                                                <Lock className="h-4 w-4" />
-                                            </div>
-                                        ) : (
-                                            <div className="h-10 w-10 rounded-full bg-[var(--primary)] flex items-center justify-center text-white shadow-[0_0_15px_rgba(157,78,221,0.5)]">
-                                                <Video className="h-5 w-5" />
-                                            </div>
-                                        )}
-                                        <div>
-                                            <div className="text-xs text-[var(--muted-foreground)] font-mono mb-1">MODULE 0{mod.num}</div>
-                                            <h4 className="font-semibold text-white">{mod.title}</h4>
-                                        </div>
-                                    </div>
-                                    <div className="text-sm text-zinc-500 font-mono">
-                                        {mod.duration}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    <MissionFeed missions={missions} />
                 </div>
             </main>
         </div>

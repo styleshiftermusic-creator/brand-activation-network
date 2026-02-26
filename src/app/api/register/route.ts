@@ -8,15 +8,21 @@ import { Redis } from '@upstash/redis';
 export const dynamic = "force-dynamic";
 
 // Rate limiting setup (5 requests per 15 minutes per IP)
-const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL || '',
-    token: process.env.UPSTASH_REDIS_REST_TOKEN || '',
-});
-const ratelimit = new Ratelimit({
+// Rate limiting setup (5 requests per 15 minutes per IP)
+const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+// Only initialize if the environment variables are present, otherwise stay null to prevent build-time errors
+const redis = redisUrl && redisToken ? new Redis({
+    url: redisUrl,
+    token: redisToken,
+}) : null;
+
+const ratelimit = redis ? new Ratelimit({
     redis: redis,
     limiter: Ratelimit.slidingWindow(5, "15 m"),
     analytics: true,
-});
+}) : null;
 
 // Zod Schema
 const registerSchema = z.object({
@@ -30,8 +36,8 @@ export async function POST(req: Request) {
     try {
         // IP Rate Limiting
         const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
-        if (process.env.UPSTASH_REDIS_REST_URL) {
-            const { success, pending, limit, reset, remaining } = await ratelimit.limit(ip);
+        if (ratelimit) {
+            const { success, pending, limit, reset, remaining } = await ratelimit!.limit(ip);
             if (!success) {
                 console.warn(`Rate limit exceeded for IP: ${ip}`);
                 return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });

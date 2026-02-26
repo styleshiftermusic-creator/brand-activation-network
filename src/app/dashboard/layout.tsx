@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ProtectedRoute } from "@/components/dashboard/ProtectedRoute";
 
 export const metadata: Metadata = {
     title: "Course Dashboard | AI Workshop Engine",
@@ -9,5 +10,5 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return <>{children}</>;
+    return <ProtectedRoute>{children}</ProtectedRoute>;
 }
