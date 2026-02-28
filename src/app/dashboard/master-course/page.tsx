@@ -38,40 +38,41 @@ export default function MasterCoursePage() {
         setIsPlaying(false);
     }, [activeModuleId]);
 
-    useEffect(() => {
-        async function fetchProgress() {
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (!user) return;
+    const fetchProgress = async () => {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
 
-                const { data: progressData, error } = await supabase
-                    .from('course_progress')
-                    .select('module_id, status')
-                    .eq('user_id', user.id);
+            const { data: progressData, error } = await supabase
+                .from('course_progress')
+                .select('module_id, status')
+                .eq('user_id', user.id);
 
-                if (error) throw error; // If DB tables don't exist, this throws and we keep fallback ACTIVE
+            if (error) throw error; // If DB tables don't exist, this throws and we keep fallback ACTIVE
 
-                if (progressData && progressData.length > 0) {
-                    setModules(prev => prev.map(m => {
-                        const userProgress = progressData.find(p => p.module_id === m.id);
-                        if (userProgress) {
-                            return { ...m, status: userProgress.status };
-                        }
-                        return { ...m, status: "LOCKED" }; // Any module without a record is locked
-                    }));
-                } else {
-                    // First time user, initialize M-01, others locked
-                    await supabase.from('course_progress').insert({
-                        user_id: user.id,
-                        module_id: 'M-01',
-                        status: 'ACTIVE'
-                    });
-                    setModules(prev => prev.map(m => m.id === 'M-01' ? { ...m, status: 'ACTIVE' } : { ...m, status: 'LOCKED' }));
-                }
-            } catch (err) {
-                console.warn("Telemetry database not yet initialized. Falling back to Unlocked Mode.");
+            if (progressData && progressData.length > 0) {
+                setModules(prev => prev.map(m => {
+                    const userProgress = progressData.find(p => p.module_id === m.id);
+                    if (userProgress) {
+                        return { ...m, status: userProgress.status };
+                    }
+                    return { ...m, status: "LOCKED" }; // Any module without a record is locked
+                }));
+            } else {
+                // First time user, initialize M-01, others locked
+                await supabase.from('course_progress').insert({
+                    user_id: user.id,
+                    module_id: 'M-01',
+                    status: 'ACTIVE'
+                });
+                setModules(prev => prev.map(m => m.id === 'M-01' ? { ...m, status: 'ACTIVE' } : { ...m, status: 'LOCKED' }));
             }
+        } catch (err) {
+            console.warn("Telemetry database not yet initialized. Falling back to Unlocked Mode.");
         }
+    };
+
+    useEffect(() => {
         fetchProgress();
     }, []);
 
@@ -181,7 +182,12 @@ export default function MasterCoursePage() {
 
                             {activeTab === 'quiz' && (
                                 <div className="animate-fade-in-up pb-20">
-                                    <Quiz key={activeModule.id} moduleId={activeModule.id} questions={activeModule.quiz || []} />
+                                    <Quiz
+                                        key={activeModule.id}
+                                        moduleId={activeModule.id}
+                                        questions={activeModule.quiz || []}
+                                        onComplete={fetchProgress}
+                                    />
                                 </div>
                             )}
 

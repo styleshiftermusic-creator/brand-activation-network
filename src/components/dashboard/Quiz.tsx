@@ -15,9 +15,10 @@ interface Question {
 interface QuizProps {
     moduleId: string;
     questions: Question[];
+    onComplete?: () => void;
 }
 
-export default function Quiz({ moduleId, questions }: QuizProps) {
+export default function Quiz({ moduleId, questions, onComplete }: QuizProps) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [score, setScore] = useState(0);
@@ -87,6 +88,10 @@ export default function Quiz({ moduleId, questions }: QuizProps) {
                             status: 'COMPLETED',
                             completed_at: new Date().toISOString()
                         }, { onConflict: 'user_id, module_id' });
+                    }
+
+                    if (onComplete) {
+                        onComplete();
                     }
                 }
             } catch (error) {
