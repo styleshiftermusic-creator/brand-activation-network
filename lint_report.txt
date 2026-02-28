@@ -1,0 +1,48 @@
+
+> brand-activation-network@0.1.0 lint
+> eslint
+
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/api/csp-report/route.ts
+  8:14  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/api/register/route.ts
+  40:30  warning  'pending' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  40:39  warning  'limit' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  40:46  warning  'reset' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  40:53  warning  'remaining' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  54:30  warning  'phone' is assigned a value but never used      @typescript-eslint/no-unused-vars
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/api/webhooks/stripe/route.ts
+  15:37  error    Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  40:19  error    Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+  57:21  warning  'data' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/challenge/page.tsx
+  4:10  warning  'ArrowRight' is defined but never used   @typescript-eslint/no-unused-vars
+  4:44  warning  'ShieldCheck' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/dashboard/blueprints/page.tsx
+  5:72  warning  'MessageSquare' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/dashboard/data-sources/page.tsx
+  81:136  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/dashboard/master-course/page.tsx
+  5:72  warning  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/app/dashboard/page.tsx
+    4:10  warning  'Loader2' is defined but never used       @typescript-eslint/no-unused-vars
+   60:55  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:62  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/components/dashboard/AuthScreen.tsx
+  66:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/styleshifter/.gemini/antigravity/scratch/brand-activation-network/src/components/dashboard/MetricChart.tsx
+  2:10  warning  'LineChart' is defined but never used     @typescript-eslint/no-unused-vars
+  2:21  warning  'Line' is defined but never used          @typescript-eslint/no-unused-vars
+  8:11  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 21 problems (7 errors, 14 warnings)
+

@@ -5,7 +5,7 @@ export function MetricChart({
     data,
     loading
 }: {
-    data: any[];
+    data: Record<string, unknown>[];
     loading: boolean;
 }) {
     return (

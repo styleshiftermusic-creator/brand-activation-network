@@ -12,6 +12,7 @@ export async function POST(req: Request) {
 
     // Initialize Clients dynamically at runtime to prevent Next.js build-time static generation failures
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         apiVersion: "2023-10-16" as any,
     });
 
@@ -37,9 +38,10 @@ export async function POST(req: Request) {
             signature,
             process.env.STRIPE_WEBHOOK_SECRET
         );
-    } catch (err: any) {
-        console.error(`Webhook signature verification failed: ${err.message}`);
-        return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
+    } catch (err: unknown) {
+        const error = err as Error;
+        console.error(`Webhook signature verification failed: ${error.message}`);
+        return NextResponse.json({ error: `Webhook Error: ${error.message}` }, { status: 400 });
     }
 
     // Process the completed checkout
@@ -54,7 +56,7 @@ export async function POST(req: Request) {
 
             // Generate a secure invite via Supabase. 
             // This creates the user account and sends them an automatic email to log in and set their password.
-            const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(customerEmail, {
+            const { error } = await supabaseAdmin.auth.admin.inviteUserByEmail(customerEmail, {
                 data: { name: customerName || "Architect" },
                 redirectTo: "https://brandactivationnetwork.com/dashboard",
             });

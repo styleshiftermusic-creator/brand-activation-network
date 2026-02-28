@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { ProtectedRoute } from "@/components/dashboard/ProtectedRoute";
 
-export const metadata: Metadata = {
-    title: "Course Dashboard | AI Workshop Engine",
+export const metadata = {
+    title: "Course Dashboard | Brand Activation Network",
+    description: "Access your premium master course and system blueprints.",
 };
 
 export default function DashboardLayout({

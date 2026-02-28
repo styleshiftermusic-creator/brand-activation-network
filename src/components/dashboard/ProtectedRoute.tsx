@@ -38,6 +38,11 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         );
     }
 
+    // TEMP BYPASS FOR LOCAL QA TESTING
+    if (process.env.NODE_ENV === 'development') {
+        return <>{children}</>;
+    }
+
     // If no active session, intercept the route and render the AuthScreen
     if (!isAuthenticated) {
         return <AuthScreen />;

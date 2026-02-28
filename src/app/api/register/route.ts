@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         // IP Rate Limiting
         const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
         if (ratelimit) {
-            const { success, pending, limit, reset, remaining } = await ratelimit!.limit(ip);
+            const { success } = await ratelimit!.limit(ip);
             if (!success) {
                 console.warn(`Rate limit exceeded for IP: ${ip}`);
                 return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 });
         }
 
-        const { name, email, phone, turnstileToken } = parsed.data;
+        const { name, email, turnstileToken } = parsed.data;
 
         // Turnstile Token Verification
         const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;

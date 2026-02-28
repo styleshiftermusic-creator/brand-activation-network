@@ -5,7 +5,7 @@ export async function POST(req: Request) {
         const body = await req.json();
         console.log("CSP Violation Report:", JSON.stringify(body, null, 2));
         return NextResponse.json({ success: true });
-    } catch (e) {
+    } catch {
         return NextResponse.json({ success: false }, { status: 400 });
     }
 }

@@ -57,7 +57,7 @@ export default function MissionControl() {
                 if (error) throw error;
 
                 if (data && data.length > 0) {
-                    const grouped = data.reduce((acc: any, curr) => {
+                    const grouped = data.reduce((acc: Record<string, number>, curr) => {
                         const date = new Date(curr.registered_at).toLocaleDateString(undefined, { weekday: 'short' });
                         acc[date] = (acc[date] || 0) + 1;
                         return acc;
@@ -107,7 +107,7 @@ export default function MissionControl() {
                 if (error) throw error;
 
                 if (data && data.length > 0) {
-                    const progressMap = new Map(data.map((p: any) => [p.module_id, p]));
+                    const progressMap = new Map(data.map((p: { module_id: string; completed: boolean; unlocked: boolean }) => [p.module_id, p]));
                     const updatedMissions = DEFAULT_MISSIONS.map((mission) => {
                         const progress = progressMap.get(mission.id);
                         if (progress) {
@@ -145,29 +145,72 @@ export default function MissionControl() {
             <Sidebar />
 
             <main className="flex-1 p-6 lg:p-10 overflow-y-auto z-10 relative">
-                <div className="max-w-5xl mx-auto">
-                    {/* Dashboard Header Bar */}
-                    <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
+                <div className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-8 lg:gap-12">
+                    {/* Primary Execution Feed (65%) */}
+                    <div className="flex-1 xl:w-[65%] flex flex-col gap-8">
+                        {/* Dashboard Header Bar */}
+                        <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/5 pb-6">
+                            <div>
+                                <h1 className="text-3xl font-medium tracking-tight text-white mb-2">Agent Execution Feed</h1>
+                                <p className="text-zinc-500 font-mono text-sm flex items-center gap-2">
+                                    <span className="text-[var(--primary)] text-xs tracking-widest uppercase">Current Directive:</span> {activeMission.title}
+                                </p>
+                            </div>
+                        </header>
+
+                        <MetricChart data={chartData} loading={chartLoading} />
+
                         <div>
-                            <h1 className="text-3xl font-medium tracking-tight text-white mb-2">Agent Execution Feed</h1>
-                            <p className="text-zinc-500 font-mono text-sm flex items-center gap-2">
-                                <span className="text-[var(--primary)]">Current Directive:</span> {activeMission.title}
-                            </p>
+                            <h2 className="text-xs font-mono text-zinc-500 uppercase tracking-[0.2em] mb-4 pl-1">Available Directives</h2>
+                            <MissionFeed missions={missions} />
                         </div>
-                        <div className="flex items-center gap-4 bg-black/40 border border-white/10 rounded-lg p-2 px-4 backdrop-blur-md">
-                            <div className="text-right">
-                                <div className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider">System Progress</div>
-                                <div className="text-white font-medium text-sm">{completedCount} / {missions.length} Completed</div>
+                    </div>
+
+                    {/* Right Sticky Intel Column (35%) */}
+                    <div className="hidden xl:block xl:w-[35%]">
+                        <div className="sticky top-10 space-y-6">
+                            {/* System Status Panel */}
+                            <div className="bg-black/40 backdrop-blur-2xl border border-white/5 rounded-2xl p-6 relative overflow-hidden group">
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--primary)]/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-[var(--primary)]/20 transition-colors duration-700" />
+
+                                <div className="flex items-center justify-between mb-6 relative z-10">
+                                    <h3 className="text-xs font-mono text-zinc-400 uppercase tracking-widest">Network Status</h3>
+                                    <div className="flex items-center gap-2">
+                                        <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                                        <span className="text-[10px] font-mono text-green-500 uppercase tracking-widest">Optimal Node Uplink</span>
+                                    </div>
+                                </div>
+
+                                {/* Progress Bar Mini */}
+                                <div className="space-y-3 relative z-10">
+                                    <div className="flex justify-between items-end">
+                                        <span className="text-2xl font-medium tracking-tight text-white">{completedCount} <span className="text-zinc-500 text-lg">/ {missions.length}</span></span>
+                                        <span className="text-[10px] font-mono text-[var(--primary)] uppercase tracking-widest">{progressPercentage}% Complete</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-zinc-900/80 rounded-full overflow-hidden border border-white/[0.02]">
+                                        <div className="h-full bg-[var(--primary)] shadow-[0_0_15px_var(--primary)] transition-all duration-1000 ease-out" style={{ width: `${progressPercentage}%` }} />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="w-24 h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-                                <div className={`h-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary)] transition-all duration-1000`} style={{ width: `${progressPercentage}%` }} />
+
+                            {/* Active Target Panel */}
+                            <div className="bg-black/40 backdrop-blur-2xl border border-[var(--primary)]/20 rounded-2xl p-6 relative overflow-hidden group hover:border-[var(--primary)]/40 transition-colors duration-500">
+                                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 to-transparent pointer-events-none" />
+
+                                <h3 className="text-xs font-mono text-[var(--primary)] uppercase tracking-[0.2em] mb-4 relative z-10">Active Target</h3>
+                                <div className="relative z-10">
+                                    <h4 className="text-xl font-medium text-white tracking-tight mb-2">{activeMission.title}</h4>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-[10px] font-mono px-2 py-1 rounded bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] tracking-widest uppercase">
+                                            {activeMission.category.replace(/[\[\]]/g, '')}
+                                        </span>
+                                        <span className="text-xs font-mono text-zinc-500">{activeMission.time}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </header>
-
-                    <MetricChart data={chartData} loading={chartLoading} />
-
-                    <MissionFeed missions={missions} />
+                    </div>
                 </div>
             </main>
         </div>

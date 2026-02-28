@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Play, Download, Lock, CheckCircle2, FileText, LayoutTemplate, MessageSquare } from "lucide-react";
 
 // Mock Data for the 7 Modules
@@ -43,6 +43,11 @@ const MODULES = [
 
 export default function BlueprintsPage() {
     const [activeModuleId, setActiveModuleId] = useState("M-02"); // Defaulting to the active one for demo
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        setIsPlaying(false);
+    }, [activeModuleId]);
 
     const activeModule = MODULES.find(m => m.id === activeModuleId) || MODULES[0];
 
@@ -59,7 +64,7 @@ export default function BlueprintsPage() {
                 <div className="flex-1 flex flex-col animate-fade-in-up">
                     <header className="mb-6 border-b border-white/10 pb-4">
                         <div className="flex items-center gap-3 mb-2">
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] tracking-widest uppercase">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] tracking-widest uppercase shadow-[0_0_15px_-3px_var(--primary)]">
                                 Module {activeModule.id.replace('M-', '')}
                             </span>
                             <span className="text-xs font-mono text-zinc-500 tracking-wider hidden sm:block">| ARC PROTOCOL</span>
@@ -67,19 +72,36 @@ export default function BlueprintsPage() {
                         <h1 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{activeModule.title}</h1>
                     </header>
 
-                    {/* Video Player Placeholder */}
-                    <div className="w-full aspect-video bg-black border border-white/10 rounded-xl mb-6 relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center">
-                        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity duration-700 mix-blend-luminosity" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                    {/* Video Player Box with Glassmorphism */}
+                    <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl mb-8 relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center transition-transform duration-500 hover:-translate-y-1">
+                        {/* Outer Glass Border */}
+                        <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none z-20" />
+                        <div className="absolute inset-0 border border-white/[0.02] m-[1px] rounded-xl pointer-events-none z-20" />
 
-                        <button className="relative z-10 h-20 w-20 rounded-full bg-[var(--primary)]/20 border border-[var(--primary)]/50 backdrop-blur-md flex items-center justify-center text-white hover:scale-110 hover:bg-[var(--primary)] transition-all duration-300 group shadow-[0_0_30px_var(--primary)]">
-                            <Play className="h-8 w-8 ml-2 fill-current" />
-                        </button>
+                        {!isPlaying ? (
+                            <>
+                                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-1000 mix-blend-luminosity z-0" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 z-10" />
 
-                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-zinc-400">
-                            <span className="bg-black/60 px-2 py-1 rounded backdrop-blur border border-white/10">00:00 / {activeModule.duration}</span>
-                            <span className="bg-[var(--primary)]/20 text-[var(--primary)] px-2 py-1 rounded backdrop-blur border border-[var(--primary)]/30 tracking-widest uppercase">High Definition</span>
-                        </div>
+                                <button
+                                    onClick={() => setIsPlaying(true)}
+                                    className="relative z-30 h-20 w-20 rounded-full bg-[var(--primary)]/20 border border-[var(--primary)]/50 backdrop-blur-md flex items-center justify-center text-white hover:scale-110 hover:bg-[var(--primary)] transition-all duration-300 group shadow-[0_0_30px_var(--primary)]">
+                                    <Play className="h-8 w-8 ml-2 fill-current" />
+                                </button>
+
+                                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-zinc-400 z-20">
+                                    <span className="bg-black/60 px-2 py-1 rounded backdrop-blur border border-white/10">00:00 / {activeModule.duration}</span>
+                                    <span className="bg-[var(--primary)]/20 text-[var(--primary)] px-2 py-1 rounded backdrop-blur border border-[var(--primary)]/30 tracking-widest uppercase">High Definition</span>
+                                </div>
+                            </>
+                        ) : (
+                            <video
+                                src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+                                autoPlay
+                                controls
+                                className="absolute inset-0 w-full h-full object-cover z-30 rounded-xl bg-black mix-blend-luminosity opacity-90"
+                            />
+                        )}
                     </div>
 
                     {/* Resources & Description */}
@@ -98,17 +120,18 @@ export default function BlueprintsPage() {
                                 </h3>
                                 <div className="space-y-2">
                                     {activeModule.resources.map((res, idx) => (
-                                        <button key={idx} className="w-full flex items-center justify-between p-3 rounded-lg border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/10 transition-colors group text-left">
-                                            <div className="flex items-center gap-3">
-                                                <div className="text-zinc-500 group-hover:text-[var(--primary)] transition-colors">
+                                        <button key={idx} className="w-full flex items-center justify-between p-3 rounded-lg border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_5px_15px_-5px_rgba(255,255,255,0.1)] group text-left relative overflow-hidden">
+                                            <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-lg" />
+                                            <div className="flex items-center gap-3 relative z-10">
+                                                <div className="text-zinc-500 group-hover:text-[var(--primary)] group-hover:scale-110 transition-all duration-300">
                                                     {res.icon}
                                                 </div>
                                                 <div>
-                                                    <div className="text-sm text-zinc-300 group-hover:text-white transition-colors">{res.name}</div>
+                                                    <div className="text-sm text-zinc-300 group-hover:text-white transition-colors tracking-tight">{res.name}</div>
                                                     <div className="text-[10px] font-mono text-zinc-500 uppercase">{res.type} Format</div>
                                                 </div>
                                             </div>
-                                            <Download className="w-3 h-3 text-zinc-600 group-hover:text-white transition-colors" />
+                                            <Download className="w-4 h-4 text-zinc-600 group-hover:text-[var(--primary)] group-hover:-translate-y-0.5 transition-all duration-300 relative z-10" />
                                         </button>
                                     ))}
                                 </div>
@@ -134,15 +157,17 @@ export default function BlueprintsPage() {
                                         key={module.id}
                                         onClick={() => !isLocked && setActiveModuleId(module.id)}
                                         disabled={isLocked}
-                                        className={`w-full text-left p-4 rounded-xl border transition-all duration-300 relative overflow-hidden group ${isLocked
-                                            ? "opacity-50 border-white/5 cursor-not-allowed"
+                                        className={`w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden group ${isLocked
+                                            ? "opacity-50 border border-white/5 cursor-not-allowed bg-black/20"
                                             : isSelected
-                                                ? "bg-gradient-to-br from-[var(--primary)]/20 to-black/60 border-[var(--primary)] text-white shadow-[0_0_20px_rgba(var(--primary-rgb),0.1)]"
-                                                : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10 text-zinc-300"
+                                                ? "bg-gradient-to-br from-[var(--primary)]/10 to-black/60 border border-[var(--primary)]/50 text-white shadow-[0_0_30px_-5px_rgba(var(--primary-rgb),0.2)]"
+                                                : "bg-black/40 border border-white/5 hover:border-white/20 hover:bg-white-[0.02] text-zinc-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]"
                                             }`}
                                     >
+                                        <div className="absolute inset-0 border border-white/[0.02] rounded-xl pointer-events-none" />
+
                                         {isSelected && (
-                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--primary)] shadow-[0_0_10px_var(--primary)]" />
+                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--primary)] shadow-[0_0_15px_var(--primary)] z-10" />
                                         )}
 
                                         <div className="flex gap-4">

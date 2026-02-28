@@ -8,8 +8,11 @@ export default function Home() {
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[var(--accent)]/10 rounded-full blur-[150px] pointer-events-none" />
 
+      {/* Shadow Overlay to maintain text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-[var(--background)]/20 pointer-events-none z-10" />
+
       {/* Main Container */}
-      <main className="z-10 flex flex-col items-center text-center px-6 max-w-5xl w-full mt-24">
+      <main className="z-20 flex flex-col items-center text-center px-6 max-w-5xl w-full mt-24">
 
         {/* Logo Section */}
         <div className="mb-12 animate-fade-in-up relative z-20 flex justify-center w-full mix-blend-screen">
@@ -26,13 +29,17 @@ export default function Home() {
         </div>
 
         {/* Hero Typography */}
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
-          <span className="text-gradient">Unlock Capital. </span><br />
-          <span className="text-gradient-primary">Scale Instantly.</span>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-6 uppercase leading-tight">
+          <span className="text-white">Brand </span>
+          <span className="text-gradient-primary relative inline-block">
+            Activation
+            <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-50 blur-[2px]" />
+          </span><br />
+          <span className="text-white">Network</span>
         </h1>
 
         <p className="text-lg md:text-2xl text-[var(--muted-foreground)] mb-12 max-w-2xl font-light leading-relaxed">
-          Master the exact 7-module blueprint to secure business funding, automate high-ticket sales, and completely scale your agency.
+          Master the exact 7-module blueprint to secure business funding, automate high-ticket sales, and completely scale your Life.
         </p>
 
         {/* CTA Buttons */}
