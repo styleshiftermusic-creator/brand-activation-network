@@ -24,7 +24,7 @@
     "recharts": "^3.7.0",
     "remark-gfm": "^4.0.1",
     "resend": "^6.9.2",
-    "stripe": "^20.3.1",
+    "stripe": "^20.4.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
