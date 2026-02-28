@@ -2,7 +2,7 @@
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect } from "react";
-import { Play, Download, Lock, CheckCircle2, FileText, LayoutTemplate, Briefcase, BookOpen, Brain } from "lucide-react";
+import { Play, Download, Lock, CheckCircle2, FileText, LayoutTemplate, Briefcase, BookOpen, Brain, Loader2 } from "lucide-react";
 
 import { courseData } from "@/data/course-content";
 import ReactMarkdown from "react-markdown";
@@ -254,7 +254,7 @@ export default function MasterCoursePage() {
                                                     <Lock className="w-5 h-5 text-zinc-600" />
                                                 ) : (
                                                     <div className="relative">
-                                                        <div className="w-5 h-5 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+                                                        <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
                                                         <div className="absolute inset-0 w-5 h-5 rounded-full bg-emerald-500/20 blur animate-pulse" />
                                                     </div>
                                                 )}
