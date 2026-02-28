@@ -1,6 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Brand Activation Network | Master Business Funding & High-Ticket Sales",
+  description: "The 7-module blueprint to secure business funding, automate high-ticket sales, and scale your brand using AI-powered systems. Join the Brand Activation Network.",
+};
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">

@@ -2,7 +2,7 @@
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect } from "react";
-import { Play, Download, Lock, CheckCircle2, FileText, LayoutTemplate, Briefcase, BookOpen, Brain, Loader2 } from "lucide-react";
+import { Play, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2 } from "lucide-react";
 
 import { courseData } from "@/data/course-content";
 import ReactMarkdown from "react-markdown";

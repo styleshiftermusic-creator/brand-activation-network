@@ -10,7 +10,10 @@ const DATA_SOURCES = [
         format: "Notion System",
         size: "24.5 MB",
         icon: <Database className="w-5 h-5 text-blue-400" />,
-        color: "blue"
+        bgClass: "bg-blue-500/10",
+        hoverText: "group-hover:text-blue-400",
+        hoverBorder: "group-hover:border-blue-500/20",
+        hoverBg: "group-hover:bg-blue-500/10"
     },
     {
         id: "DS-02",
@@ -18,7 +21,10 @@ const DATA_SOURCES = [
         format: "PDF Document",
         size: "4.2 MB",
         icon: <FileText className="w-5 h-5 text-emerald-400" />,
-        color: "emerald"
+        bgClass: "bg-emerald-500/10",
+        hoverText: "group-hover:text-emerald-400",
+        hoverBorder: "group-hover:border-emerald-500/20",
+        hoverBg: "group-hover:bg-emerald-500/10"
     },
     {
         id: "DS-03",
@@ -26,7 +32,10 @@ const DATA_SOURCES = [
         format: "TXT / JSON",
         size: "1.1 MB",
         icon: <Bot className="w-5 h-5 text-amber-400" />,
-        color: "amber"
+        bgClass: "bg-amber-500/10",
+        hoverText: "group-hover:text-amber-400",
+        hoverBorder: "group-hover:border-amber-500/20",
+        hoverBg: "group-hover:bg-amber-500/10"
     }
 ];
 
@@ -166,7 +175,7 @@ export default function DataSourcesPage() {
                                     <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
                                     <div className="relative z-10">
                                         <div className="flex items-start justify-between mb-4">
-                                            <div className={`p-2 rounded-lg bg-${source.color}-500/10`}>
+                                            <div className={`p-2 rounded-lg ${source.bgClass}`}>
                                                 {source.icon}
                                             </div>
                                             <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">{source.id}</span>
@@ -176,7 +185,7 @@ export default function DataSourcesPage() {
                                             <span>{source.format}</span>
                                             <span>{source.size}</span>
                                         </div>
-                                        <button className={`w-full mt-4 py-2 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 group-hover:text-${source.color}-400 group-hover:border-${source.color}-500/20 group-hover:bg-${source.color}-500/10`}>
+                                        <button className={`w-full mt-4 py-2 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 ${source.hoverText} ${source.hoverBorder} ${source.hoverBg}`}>
                                             <Download className="w-3 h-3" /> Download
                                         </button>
                                     </div>

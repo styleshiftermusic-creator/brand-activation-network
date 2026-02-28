@@ -101,21 +101,21 @@ export default function MissionControl() {
 
                 const { data, error } = await supabase
                     .from('course_progress')
-                    .select('module_id, completed, unlocked')
+                    .select('module_id, status')
                     .eq('user_id', user.id);
 
                 if (error) throw error;
 
                 if (data && data.length > 0) {
-                    const progressMap = new Map(data.map((p: { module_id: string; completed: boolean; unlocked: boolean }) => [p.module_id, p]));
+                    const progressMap = new Map(data.map((p: { module_id: string; status: string }) => [p.module_id, p]));
                     const updatedMissions = DEFAULT_MISSIONS.map((mission) => {
                         const progress = progressMap.get(mission.id);
                         if (progress) {
                             return {
                                 ...mission,
-                                locked: !progress.unlocked,
-                                completed: progress.completed,
-                                status: progress.completed ? "COMPLETED" : (progress.unlocked ? "ACTIVE" : "LOCKED")
+                                locked: progress.status === 'LOCKED',
+                                completed: progress.status === 'COMPLETED',
+                                status: progress.status
                             };
                         }
                         return mission;

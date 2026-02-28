@@ -1,12 +1,14 @@
 "use client";
 
-import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase } from "lucide-react";
+import { useState } from "react";
+import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-export function Sidebar() {
+function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname();
+    const router = useRouter();
 
     const navItems = [
         { path: "/dashboard", label: "Active Feed", icon: <Activity className="h-4 w-4" /> },
@@ -17,7 +19,7 @@ export function Sidebar() {
     ];
 
     return (
-        <aside className="w-64 lg:w-72 border-r border-white/10 bg-black/20 backdrop-blur-xl p-6 flex flex-col hidden md:flex z-10 relative h-full min-h-screen">
+        <>
             <div className="mb-10 flex items-center gap-3">
                 <div className="h-8 w-8 rounded bg-[var(--primary)]/20 border border-[var(--primary)]/50 flex items-center justify-center">
                     <Terminal className="h-4 w-4 text-[var(--primary)]" />
@@ -36,6 +38,7 @@ export function Sidebar() {
                         <Link
                             key={item.path}
                             href={item.path}
+                            onClick={onNavigate}
                             className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 overflow-hidden ${isActive
                                 ? "bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30 shadow-[inset_0_0_20px_-5px_var(--primary)]"
                                 : "text-zinc-500 hover:text-zinc-200 border border-transparent hover:border-white/5"
@@ -60,7 +63,7 @@ export function Sidebar() {
                     <span className="text-xs font-mono text-green-500 uppercase tracking-widest">Uplink Stable</span>
                 </div>
                 <button
-                    onClick={() => supabase.auth.signOut()}
+                    onClick={async () => { await supabase.auth.signOut(); router.push('/'); }}
                     className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-500/10 text-zinc-600 hover:text-red-400 border border-transparent hover:border-red-500/20 hover:shadow-[0_0_15px_-3px_rgba(239,68,68,0.2)] transition-all duration-300 w-full text-left font-mono text-sm overflow-hidden"
                 >
                     <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent opacity-0 -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 pointer-events-none" />
@@ -68,6 +71,50 @@ export function Sidebar() {
                     <span className="relative z-10">Terminate Session</span>
                 </button>
             </div>
-        </aside>
+        </>
+    );
+}
+
+export function Sidebar() {
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    return (
+        <>
+            {/* Mobile Hamburger Button */}
+            <button
+                onClick={() => setMobileOpen(true)}
+                className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-black/60 backdrop-blur-xl border border-white/10 text-zinc-400 hover:text-white hover:border-[var(--primary)]/30 transition-all duration-300"
+                aria-label="Open navigation"
+            >
+                <Menu className="h-5 w-5" />
+            </button>
+
+            {/* Mobile Overlay + Drawer */}
+            {mobileOpen && (
+                <div className="fixed inset-0 z-40 md:hidden">
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+                        onClick={() => setMobileOpen(false)}
+                    />
+                    {/* Drawer */}
+                    <aside className="absolute left-0 top-0 w-72 h-full border-r border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl p-6 flex flex-col z-50 animate-fade-in-up">
+                        <button
+                            onClick={() => setMobileOpen(false)}
+                            className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-all"
+                            aria-label="Close navigation"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
+                        <SidebarContent onNavigate={() => setMobileOpen(false)} />
+                    </aside>
+                </div>
+            )}
+
+            {/* Desktop Sidebar (unchanged) */}
+            <aside className="w-64 lg:w-72 border-r border-white/10 bg-black/20 backdrop-blur-xl p-6 flex-col hidden md:flex z-10 relative h-full min-h-screen">
+                <SidebarContent />
+            </aside>
+        </>
     );
 }
