@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Brand Activation Network | Autonomy at the Speed of Thought",
   description: "Scale your capability. Leverage the Mission Control framework to transform how your agency builds with AI.",
+  icons: {
+    icon: "/logo.png",
+  },
   openGraph: {
     title: "Brand Activation Network",
     description: "Scale your agency with zero employees and zero burnout using Google Antigravity.",
