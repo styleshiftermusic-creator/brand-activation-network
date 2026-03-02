@@ -48,7 +48,10 @@ export default function Home() {
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 w-full justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center">
+          <a href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00" className="w-full sm:w-auto px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_40px_-10px_rgba(16,185,129,0.6)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.8)] hover:-translate-y-1 text-center text-lg tracking-wide">
+            Buy Now
+          </a>
           <Link href="/challenge" className="w-full sm:w-auto px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
             Join the Ongoing Challenge
           </Link>
@@ -105,9 +108,12 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-10 flex justify-center">
-            <Link href="/dashboard" className="px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
-              Start the Blueprint →
+          <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00" className="px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_40px_-10px_rgba(16,185,129,0.6)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.8)] hover:-translate-y-1 text-center text-lg tracking-wide">
+              Buy Now — Get Instant Access
+            </a>
+            <Link href="/challenge" className="px-8 py-4 glass hover:bg-white/10 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 text-center">
+              Or Join Free Challenge First →
             </Link>
           </div>
         </section>
@@ -155,6 +161,29 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ─── FINAL BUY CTA ─── */}
+        <section className="mt-32 w-full">
+          <div className="relative rounded-2xl overflow-hidden border border-emerald-500/20 bg-black/40 backdrop-blur-xl p-12 md:p-16 text-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-[var(--primary)]/10 pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
+                Ready to Activate?
+              </h2>
+              <p className="text-zinc-400 max-w-xl mx-auto mb-8 font-light leading-relaxed">
+                Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access.
+              </p>
+              <a
+                href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
+                className="inline-flex items-center gap-3 px-12 py-5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-xl transition-all duration-300 shadow-[0_0_50px_-10px_rgba(16,185,129,0.6)] hover:shadow-[0_0_70px_-10px_rgba(16,185,129,0.8)] hover:-translate-y-1"
+              >
+                Buy Now
+              </a>
+              <p className="mt-6 text-xs font-mono text-zinc-600 uppercase tracking-wider">Secure checkout via Stripe • Instant dashboard access</p>
+            </div>
           </div>
         </section>
 
