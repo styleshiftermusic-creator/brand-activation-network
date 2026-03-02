@@ -1,208 +1,174 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { useState, useEffect } from "react";
-import { Play, Download, Lock, CheckCircle2, FileText, LayoutTemplate, MessageSquare } from "lucide-react";
+import { Download, Sparkles, FileSpreadsheet, FileText, Bot, Briefcase, Target, Presentation, BookOpen } from "lucide-react";
 
-// Mock Data for the 7 Modules
-const MODULES = [
+const BLUEPRINTS = [
     {
-        id: "M-01",
-        title: "Introduction to Brand Activation",
-        duration: "15:00",
-        status: "COMPLETED",
-        description: "Welcome to the Brand Activation course. In this first module, you will learn the fundamental concepts of activating your brand and setting the stage for growth.",
-        resources: [
-            { type: "PDF", name: "Course Syllabus", icon: <FileText className="w-4 h-4" /> },
-            { type: "Notion", name: "Action Plan Template", icon: <LayoutTemplate className="w-4 h-4" /> }
-        ]
+        id: "BP-01",
+        title: "Pledge Loan Calculator",
+        description: "Pre-built spreadsheet to calculate exact pledge loan amounts, interest rates, and payoff timelines for credit union accounts.",
+        format: "Google Sheet",
+        category: "Finance",
+        icon: <FileSpreadsheet className="w-5 h-5" />,
+        color: "emerald",
     },
     {
-        id: "M-02",
-        title: "Your Brand's DNA",
-        duration: "45:00",
-        status: "ACTIVE",
-        description: "Discover the core identity of your brand. We will cover mission, vision, values, and how to communicate your unique selling proposition effectively.",
-        resources: [
-            { type: "PDF", name: "Brand DNA Workbook", icon: <FileText className="w-4 h-4" /> }
-        ]
+        id: "BP-02",
+        title: "Business Funding Checklist",
+        description: "Step-by-step checklist covering credit score requirements, documentation, and the exact sequence to secure business funding.",
+        format: "PDF",
+        category: "Finance",
+        icon: <FileText className="w-5 h-5" />,
+        color: "emerald",
     },
     {
-        id: "M-03",
-        title: "The Perfect Audience Avatar",
-        duration: "01:10:00",
-        status: "LOCKED",
-        description: "Identify and understand your ideal customer. Learn how to create detailed buyer personas and tailor your marketing messages to resonate deeply with them.",
-        resources: []
+        id: "BP-03",
+        title: "Investment Blueprint Template",
+        description: "Financial model for allocating business capital across real estate, index funds, and scaling your operations.",
+        format: "Notion Template",
+        category: "Finance",
+        icon: <Briefcase className="w-5 h-5" />,
+        color: "blue",
     },
-    { id: "M-04", title: "Irresistible Offer Creation", duration: "01:30:00", status: "LOCKED", description: "Craft offers so good people feel stupid saying no. We cover pricing strategies, value stacking, and risk reversal.", resources: [] },
-    { id: "M-05", title: "High-Converting Sales Funnels", duration: "02:00:00", status: "LOCKED", description: "Build the automated systems that turn cold traffic into paying customers. Step-by-step walkthroughs of landing pages, VSLs, and email sequences.", resources: [] },
-    { id: "M-06", title: "Traffic Generation & Ads", duration: "01:45:00", status: "LOCKED", description: "Master paid advertising and organic outreach to drive targeted visitors to your funnels. Covering Facebook Ads, Google Ads, and cold email.", resources: [] },
-    { id: "M-07", title: "Automating Your Fulfillment", duration: "01:20:00", status: "LOCKED", description: "Scale your agency without losing your mind. Learn how to automate client onboarding, service delivery, and reporting.", resources: [] },
+    {
+        id: "BP-04",
+        title: "OPA Marketing Playbook",
+        description: "The complete Other People's Audiences playbook — podcast pitches, shout-out page scripts, and content factory workflow.",
+        format: "Notion System",
+        category: "Marketing",
+        icon: <Target className="w-5 h-5" />,
+        color: "amber",
+    },
+    {
+        id: "BP-05",
+        title: "High-Ticket Sales Scripts",
+        description: "Word-for-word closing scripts, objection handlers, and the Webinar → Application → Close pipeline framework.",
+        format: "PDF",
+        category: "Sales",
+        icon: <Presentation className="w-5 h-5" />,
+        color: "purple",
+    },
+    {
+        id: "BP-06",
+        title: "AI Agent Prompt Library",
+        description: "Production-ready prompts for content generation, outreach automation, lead scoring, and client onboarding agents.",
+        format: "JSON / TXT",
+        category: "AI Systems",
+        icon: <Bot className="w-5 h-5" />,
+        color: "cyan",
+    },
 ];
 
+const COLOR_MAP: Record<string, { bg: string; text: string; border: string; glow: string }> = {
+    emerald: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/30", glow: "shadow-[0_0_20px_rgba(16,185,129,0.15)]" },
+    blue: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/30", glow: "shadow-[0_0_20px_rgba(59,130,246,0.15)]" },
+    amber: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/30", glow: "shadow-[0_0_20px_rgba(245,158,11,0.15)]" },
+    purple: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/30", glow: "shadow-[0_0_20px_rgba(168,85,247,0.15)]" },
+    cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/30", glow: "shadow-[0_0_20px_rgba(6,182,212,0.15)]" },
+};
+
 export default function BlueprintsPage() {
-    const [activeModuleId, setActiveModuleId] = useState("M-02"); // Defaulting to the active one for demo
-    const [isPlaying, setIsPlaying] = useState(false);
-
-    useEffect(() => {
-        setIsPlaying(false);
-    }, [activeModuleId]);
-
-    const activeModule = MODULES.find(m => m.id === activeModuleId) || MODULES[0];
-
     return (
         <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
             {/* Deep Ambient Glows */}
             <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-[var(--primary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
+            <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-emerald-900/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
             <Sidebar />
 
-            <main className="flex-1 p-6 lg:p-10 lg:pl-12 overflow-y-auto z-10 flex flex-col lg:flex-row gap-8">
-
-                {/* LEFT PANE: Cinematic Main Viewer */}
-                <div className="flex-1 flex flex-col animate-fade-in-up">
-                    <header className="mb-6 border-b border-white/10 pb-4">
-                        <div className="flex items-center gap-3 mb-2">
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] tracking-widest uppercase shadow-[0_0_15px_-3px_var(--primary)]">
-                                Module {activeModule.id.replace('M-', '')}
-                            </span>
-                            <span className="text-xs font-mono text-zinc-500 tracking-wider hidden sm:block">| ARC PROTOCOL</span>
-                        </div>
-                        <h1 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{activeModule.title}</h1>
+            <main className="flex-1 p-6 lg:p-10 overflow-y-auto z-10 relative">
+                <div className="max-w-5xl mx-auto animate-fade-in-up">
+                    <header className="mb-10 border-b border-white/10 pb-6">
+                        <h1 className="text-3xl font-medium tracking-tight text-white mb-2">Brand Blueprints</h1>
+                        <p className="text-zinc-500 font-mono text-sm max-w-2xl">
+                            Premium templates, calculators, and playbooks mapped to each module of your Brand Activation curriculum.
+                        </p>
                     </header>
 
-                    {/* Video Player Box with Glassmorphism */}
-                    <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl mb-8 relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center transition-transform duration-500 hover:-translate-y-1">
-                        {/* Outer Glass Border */}
-                        <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none z-20" />
-                        <div className="absolute inset-0 border border-white/[0.02] m-[1px] rounded-xl pointer-events-none z-20" />
+                    {/* HERO: Brand Activation Starter Kit */}
+                    <div className="mb-12 relative group rounded-2xl overflow-hidden border border-[var(--primary)]/30 bg-black/40 backdrop-blur-xl">
+                        {/* Shimmer Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[1500ms] pointer-events-none" />
+                        <div className="absolute inset-0 bg-[var(--primary)]/10 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-                        {!isPlaying ? (
-                            <>
-                                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-1000 mix-blend-luminosity z-0" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 z-10" />
-
-                                <button
-                                    onClick={() => setIsPlaying(true)}
-                                    className="relative z-30 h-20 w-20 rounded-full bg-[var(--primary)]/20 border border-[var(--primary)]/50 backdrop-blur-md flex items-center justify-center text-white hover:scale-110 hover:bg-[var(--primary)] transition-all duration-300 group shadow-[0_0_30px_var(--primary)]">
-                                    <Play className="h-8 w-8 ml-2 fill-current" />
-                                </button>
-
-                                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-zinc-400 z-20">
-                                    <span className="bg-black/60 px-2 py-1 rounded backdrop-blur border border-white/10">00:00 / {activeModule.duration}</span>
-                                    <span className="bg-[var(--primary)]/20 text-[var(--primary)] px-2 py-1 rounded backdrop-blur border border-[var(--primary)]/30 tracking-widest uppercase">High Definition</span>
+                        <div className="relative z-10 flex flex-col md:flex-row gap-8 p-8 lg:p-12 items-center md:items-start">
+                            {/* Kit Cover */}
+                            <div className="w-48 h-64 flex-shrink-0 rounded-lg shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8),0_0_20px_var(--primary)] border border-white/10 bg-gradient-to-br from-zinc-900 to-black relative overflow-hidden transform group-hover:-translate-y-2 group-hover:rotate-1 transition-all duration-500 flex flex-col justify-between p-6">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--primary)]/20 blur-[30px] rounded-full -translate-y-1/2 translate-x-1/2" />
+                                <div className="z-10 text-center space-y-2 mt-4">
+                                    <div className="text-[10px] font-mono tracking-[0.3em] text-[var(--primary)] uppercase">Complete</div>
+                                    <h3 className="text-xl font-bold tracking-tighter text-white leading-tight">Starter Kit<br />Bundle</h3>
                                 </div>
-                            </>
-                        ) : (
-                            <video
-                                src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
-                                autoPlay
-                                controls
-                                className="absolute inset-0 w-full h-full object-cover z-30 rounded-xl bg-black mix-blend-luminosity opacity-90"
-                            />
-                        )}
-                    </div>
-
-                    {/* Resources & Description */}
-                    <div className="flex flex-col md:flex-row gap-8">
-                        <div className="flex-1">
-                            <h3 className="text-white font-medium mb-3 tracking-tight">Protocol Overview</h3>
-                            <p className="text-zinc-400 leading-relaxed text-sm">
-                                {activeModule.description}
-                            </p>
-                        </div>
-
-                        {activeModule.resources && activeModule.resources.length > 0 && (
-                            <div className="md:w-64 flex-shrink-0">
-                                <h3 className="text-white font-medium mb-3 tracking-tight flex items-center gap-2">
-                                    <Download className="w-4 h-4 text-zinc-500" /> Reference Assets
-                                </h3>
-                                <div className="space-y-2">
-                                    {activeModule.resources.map((res, idx) => (
-                                        <button key={idx} className="w-full flex items-center justify-between p-3 rounded-lg border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_5px_15px_-5px_rgba(255,255,255,0.1)] group text-left relative overflow-hidden">
-                                            <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-lg" />
-                                            <div className="flex items-center gap-3 relative z-10">
-                                                <div className="text-zinc-500 group-hover:text-[var(--primary)] group-hover:scale-110 transition-all duration-300">
-                                                    {res.icon}
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm text-zinc-300 group-hover:text-white transition-colors tracking-tight">{res.name}</div>
-                                                    <div className="text-[10px] font-mono text-zinc-500 uppercase">{res.type} Format</div>
-                                                </div>
-                                            </div>
-                                            <Download className="w-4 h-4 text-zinc-600 group-hover:text-[var(--primary)] group-hover:-translate-y-0.5 transition-all duration-300 relative z-10" />
-                                        </button>
-                                    ))}
+                                <div className="z-10 w-full flex justify-center pb-2">
+                                    <Sparkles className="h-6 w-6 text-[var(--primary)]/50" />
                                 </div>
                             </div>
-                        )}
+
+                            {/* Kit Details */}
+                            <div className="flex-1 space-y-6 text-center md:text-left">
+                                <div>
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] text-[10px] font-mono uppercase tracking-widest mb-4">
+                                        <BookOpen className="w-3 h-3" />
+                                        All-In-One Bundle
+                                    </div>
+                                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+                                        Brand Activation Starter Kit
+                                    </h2>
+                                    <p className="text-zinc-400 leading-relaxed max-w-xl">
+                                        Everything you need to execute the full 7-module curriculum. Includes all calculators,
+                                        checklists, scripts, templates, and AI prompt libraries in one download.
+                                    </p>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
+                                    <button className="w-full sm:w-auto px-8 py-3 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-medium transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_var(--primary)] flex items-center justify-center gap-2">
+                                        <Download className="w-4 h-4" />
+                                        Download Starter Kit
+                                    </button>
+                                    <div className="text-xs font-mono text-zinc-500 uppercase flex gap-4">
+                                        <span>6 Assets</span>
+                                        <span>Format: ZIP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                </div>
-
-                {/* RIGHT PANE: Module Navigation Matrix */}
-                <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                    <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-5 sticky top-10 h-[calc(100vh-80px)] overflow-y-auto hidden-scrollbar">
-                        <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-zinc-500 mb-6">Course Matrix</h2>
-
-                        <div className="space-y-3">
-                            {MODULES.map((module) => {
-                                const isSelected = activeModuleId === module.id;
-                                const isLocked = module.status === "LOCKED";
-                                const isCompleted = module.status === "COMPLETED";
-
+                    {/* Blueprint Grid */}
+                    <div className="mb-6">
+                        <h3 className="text-lg font-medium text-white mb-6 tracking-tight">Individual Blueprints</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {BLUEPRINTS.map((bp) => {
+                                const colors = COLOR_MAP[bp.color] || COLOR_MAP.emerald;
                                 return (
-                                    <button
-                                        key={module.id}
-                                        onClick={() => !isLocked && setActiveModuleId(module.id)}
-                                        disabled={isLocked}
-                                        className={`w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden group ${isLocked
-                                            ? "opacity-50 border border-white/5 cursor-not-allowed bg-black/20"
-                                            : isSelected
-                                                ? "bg-gradient-to-br from-[var(--primary)]/10 to-black/60 border border-[var(--primary)]/50 text-white shadow-[0_0_30px_-5px_rgba(var(--primary-rgb),0.2)]"
-                                                : "bg-black/40 border border-white/5 hover:border-white/20 hover:bg-white-[0.02] text-zinc-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]"
-                                            }`}
-                                    >
-                                        <div className="absolute inset-0 border border-white/[0.02] rounded-xl pointer-events-none" />
-
-                                        {isSelected && (
-                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--primary)] shadow-[0_0_15px_var(--primary)] z-10" />
-                                        )}
-
-                                        <div className="flex gap-4">
-                                            {/* Status Icon */}
-                                            <div className="flex-shrink-0 mt-0.5">
-                                                {isCompleted ? (
-                                                    <CheckCircle2 className={`w-5 h-5 ${isSelected ? 'text-[var(--primary)]' : 'text-green-500'}`} />
-                                                ) : isLocked ? (
-                                                    <Lock className="w-5 h-5 text-zinc-600" />
-                                                ) : (
-                                                    <div className="relative">
-                                                        <div className="w-5 h-5 rounded-full border-2 border-[var(--primary)] border-t-transparent animate-spin" />
-                                                        <div className="absolute inset-0 w-5 h-5 rounded-full bg-[var(--primary)]/20 blur animate-pulse" />
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Content */}
-                                            <div>
-                                                <div className="text-[10px] font-mono text-zinc-500 mb-1 flex justify-between items-center">
-                                                    <span>{module.id}</span>
-                                                    <span>{module.duration}</span>
+                                    <div key={bp.id} className={`group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:${colors.border} transition-all duration-500 hover:-translate-y-1 hover:${colors.glow} overflow-hidden`}>
+                                        <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
+                                        <div className="relative z-10">
+                                            <div className="flex items-start justify-between mb-4">
+                                                <div className={`p-2.5 rounded-lg ${colors.bg} ${colors.text}`}>
+                                                    {bp.icon}
                                                 </div>
-                                                <h4 className={`text-sm leading-snug tracking-tight font-medium ${isLocked ? 'text-zinc-500' : isSelected ? 'text-white' : 'text-zinc-300'}`}>
-                                                    {module.title}
-                                                </h4>
+                                                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${colors.bg} ${colors.text} uppercase tracking-wider`}>
+                                                    {bp.category}
+                                                </span>
+                                            </div>
+                                            <h4 className="font-medium text-white mb-2 tracking-tight group-hover:text-[var(--primary)] transition-colors">{bp.title}</h4>
+                                            <p className="text-xs text-zinc-500 leading-relaxed mb-4">{bp.description}</p>
+                                            <div className="flex items-center justify-between mt-auto">
+                                                <span className="text-[10px] font-mono text-zinc-600 uppercase">{bp.format}</span>
+                                                <button className={`py-1.5 px-4 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center gap-1.5`}>
+                                                    <Download className="w-3 h-3" /> Get
+                                                </button>
                                             </div>
                                         </div>
-                                    </button>
+                                    </div>
                                 );
                             })}
                         </div>
                     </div>
-                </div>
 
+                </div>
             </main>
         </div>
     );

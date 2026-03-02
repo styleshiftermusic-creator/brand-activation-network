@@ -74,6 +74,90 @@ export default function Home() {
           ))}
         </div>
 
+        {/* ─── THE 7-MODULE BLUEPRINT ─── */}
+        <section className="mt-32 w-full">
+          <div className="text-center mb-12">
+            <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">The Curriculum</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4">The 7-Module Blueprint</h2>
+            <p className="text-[var(--muted-foreground)] max-w-xl mx-auto font-light">
+              From your first credit union pledge loan to a scaled, automated empire — every step is mapped.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
+            {[
+              { num: "01", title: "The Pledge Loan Credit Hack", desc: "Manufacture a perfect internal credit score at your credit union in 60–90 days." },
+              { num: "02", title: "Transitioning to Business Funding", desc: "Leverage personal credit to pull $50K–$250K in 0% APR business capital." },
+              { num: "03", title: "The Investment Blueprint", desc: "Deploy capital across real estate, index funds, and your own scaling operations." },
+              { num: "04", title: "Marketing & Audience Leverage", desc: "Use OPA plays — podcasts, shout-out pages, and content factories — to dominate." },
+              { num: "05", title: "High-Ticket Sales Philosophy", desc: "Master the 'Webinar → Application → Close' pipeline for $3K–$10K deals." },
+              { num: "06", title: "Scaling with One-to-Many", desc: "Replace 1-on-1 services with group programs, digital products, and licensing." },
+              { num: "07", title: "Mindset & Environment", desc: "Design the inputs, routines, and environment that make success unavoidable." },
+            ].map((mod) => (
+              <div key={mod.num} className="group relative p-6 rounded-2xl border border-white/5 bg-black/20 backdrop-blur-xl hover:border-[var(--primary)]/30 hover:bg-[var(--primary)]/5 transition-all duration-500 hover:-translate-y-1 overflow-hidden text-left">
+                <div className="absolute top-3 right-4 text-[10px] font-mono text-zinc-700 tracking-widest">M-{mod.num}</div>
+                <div className="h-10 w-10 rounded-lg bg-[var(--primary)]/10 border border-[var(--primary)]/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:shadow-[0_0_15px_var(--primary)] transition-all duration-500">
+                  <span className="text-sm font-bold text-[var(--primary)]">{mod.num}</span>
+                </div>
+                <h4 className="font-semibold text-white mb-2 tracking-tight group-hover:text-[var(--primary)] transition-colors">{mod.title}</h4>
+                <p className="text-sm text-zinc-500 leading-relaxed">{mod.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex justify-center">
+            <Link href="/dashboard" className="px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
+              Start the Blueprint →
+            </Link>
+          </div>
+        </section>
+
+        {/* ─── TESTIMONIALS ─── */}
+        <section className="mt-32 w-full">
+          <div className="text-center mb-12">
+            <span className="text-xs font-mono uppercase tracking-[0.3em] text-emerald-500 mb-4 block">Social Proof</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4">What Our Architects Say</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+            {[
+              {
+                quote: "I went from zero business credit to $150K in funding in under 90 days. The pledge loan strategy alone was worth 10x the investment.",
+                name: "Marcus T.",
+                role: "Agency Owner",
+                initials: "MT",
+              },
+              {
+                quote: "The high-ticket sales module completely changed how I close deals. I booked $42K in new contracts the first month after implementing the webinar pipeline.",
+                name: "Aisha R.",
+                role: "Brand Strategist",
+                initials: "AR",
+              },
+              {
+                quote: "I was trading hours for dollars. After Module 6, I transitioned to a group coaching model and 3x'd my revenue while working half the hours.",
+                name: "Devon L.",
+                role: "Executive Coach",
+                initials: "DL",
+              },
+            ].map((testimonial, i) => (
+              <div key={i} className="group relative p-8 rounded-2xl border border-white/5 bg-black/20 backdrop-blur-xl hover:border-emerald-500/20 hover:bg-emerald-500/5 transition-all duration-500 hover:-translate-y-1 text-left flex flex-col">
+                {/* Quote mark */}
+                <div className="text-4xl font-serif text-emerald-500/30 mb-4 leading-none">&ldquo;</div>
+                <p className="text-zinc-300 leading-relaxed mb-6 flex-grow italic">{testimonial.quote}</p>
+                <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+                  <div className="h-10 w-10 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-sm font-bold text-emerald-400">
+                    {testimonial.initials}
+                  </div>
+                  <div>
+                    <div className="font-medium text-white text-sm">{testimonial.name}</div>
+                    <div className="text-xs text-zinc-500">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
       </main>
 
       {/* Footer */}

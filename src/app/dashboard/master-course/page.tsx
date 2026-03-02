@@ -79,6 +79,36 @@ export default function MasterCoursePage() {
         }
     };
 
+    const markModuleComplete = async () => {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            // Mark current module as COMPLETED
+            await supabase.from('course_progress').upsert({
+                user_id: user.id,
+                module_id: activeModule.id,
+                status: 'COMPLETED'
+            }, { onConflict: 'user_id,module_id' });
+
+            // Unlock next module
+            const currentIndex = modules.findIndex(m => m.id === activeModule.id);
+            if (currentIndex < modules.length - 1) {
+                const nextModule = modules[currentIndex + 1];
+                await supabase.from('course_progress').upsert({
+                    user_id: user.id,
+                    module_id: nextModule.id,
+                    status: 'ACTIVE'
+                }, { onConflict: 'user_id,module_id' });
+            }
+
+            // Refresh UI
+            await fetchProgress();
+        } catch (err) {
+            console.error("Failed to save progress:", err);
+        }
+    };
+
     useEffect(() => {
         fetchProgress();
     }, []);
@@ -185,11 +215,32 @@ export default function MasterCoursePage() {
                         <div className="min-h-[400px]">
                             {activeTab === 'study' && (
                                 <div className="animate-fade-in-up">
-                                    <div className="prose prose-invert prose-emerald prose-sm md:prose-base max-w-none text-zinc-300 leading-relaxed font-sans pb-20">
+                                    <div className="prose prose-invert prose-emerald prose-sm md:prose-base max-w-none text-zinc-300 leading-relaxed font-sans">
                                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                             {activeModule.description}
                                         </ReactMarkdown>
                                     </div>
+
+                                    {/* Mark Complete Button */}
+                                    {activeModule.status !== 'COMPLETED' && (
+                                        <div className="mt-10 mb-20 flex justify-center">
+                                            <button
+                                                onClick={markModuleComplete}
+                                                className="px-8 py-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-white font-medium tracking-wide transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-3 group"
+                                            >
+                                                <CheckCircle2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                                Mark Module Complete
+                                            </button>
+                                        </div>
+                                    )}
+                                    {activeModule.status === 'COMPLETED' && (
+                                        <div className="mt-10 mb-20 flex justify-center">
+                                            <div className="px-8 py-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-500/60 font-medium tracking-wide flex items-center gap-3">
+                                                <CheckCircle2 className="w-5 h-5" />
+                                                Module Completed
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 

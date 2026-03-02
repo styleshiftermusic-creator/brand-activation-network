@@ -6,20 +6,9 @@ import { Download, BookOpen, Database, Sparkles, FileText, Bot, CreditCard, Mail
 const DATA_SOURCES = [
     {
         id: "DS-01",
-        title: "Client Acquisition Protocol",
-        format: "Notion System",
-        size: "24.5 MB",
-        icon: <Database className="w-5 h-5 text-blue-400" />,
-        bgClass: "bg-blue-500/10",
-        hoverText: "group-hover:text-blue-400",
-        hoverBorder: "group-hover:border-blue-500/20",
-        hoverBg: "group-hover:bg-blue-500/10"
-    },
-    {
-        id: "DS-02",
-        title: "High-Ticket Closing Scripts",
-        format: "PDF Document",
-        size: "4.2 MB",
+        title: "Pledge Loan Calculator",
+        format: "Spreadsheet",
+        size: "2.4 MB",
         icon: <FileText className="w-5 h-5 text-emerald-400" />,
         bgClass: "bg-emerald-500/10",
         hoverText: "group-hover:text-emerald-400",
@@ -27,15 +16,59 @@ const DATA_SOURCES = [
         hoverBg: "group-hover:bg-emerald-500/10"
     },
     {
+        id: "DS-02",
+        title: "Business Funding Checklist",
+        format: "PDF Document",
+        size: "3.8 MB",
+        icon: <FileText className="w-5 h-5 text-blue-400" />,
+        bgClass: "bg-blue-500/10",
+        hoverText: "group-hover:text-blue-400",
+        hoverBorder: "group-hover:border-blue-500/20",
+        hoverBg: "group-hover:bg-blue-500/10"
+    },
+    {
         id: "DS-03",
-        title: "Auto-Outreach AI Prompts",
-        format: "TXT / JSON",
-        size: "1.1 MB",
-        icon: <Bot className="w-5 h-5 text-amber-400" />,
+        title: "OPA Marketing Playbook",
+        format: "Notion System",
+        size: "18.6 MB",
+        icon: <Database className="w-5 h-5 text-amber-400" />,
         bgClass: "bg-amber-500/10",
         hoverText: "group-hover:text-amber-400",
         hoverBorder: "group-hover:border-amber-500/20",
         hoverBg: "group-hover:bg-amber-500/10"
+    },
+    {
+        id: "DS-04",
+        title: "High-Ticket Sales Scripts",
+        format: "PDF Document",
+        size: "4.2 MB",
+        icon: <FileText className="w-5 h-5 text-purple-400" />,
+        bgClass: "bg-purple-500/10",
+        hoverText: "group-hover:text-purple-400",
+        hoverBorder: "group-hover:border-purple-500/20",
+        hoverBg: "group-hover:bg-purple-500/10"
+    },
+    {
+        id: "DS-05",
+        title: "Webinar Funnel Swipe File",
+        format: "Notion Template",
+        size: "12.1 MB",
+        icon: <Database className="w-5 h-5 text-cyan-400" />,
+        bgClass: "bg-cyan-500/10",
+        hoverText: "group-hover:text-cyan-400",
+        hoverBorder: "group-hover:border-cyan-500/20",
+        hoverBg: "group-hover:bg-cyan-500/10"
+    },
+    {
+        id: "DS-06",
+        title: "AI Agent Prompt Library",
+        format: "JSON / TXT",
+        size: "1.1 MB",
+        icon: <Bot className="w-5 h-5 text-rose-400" />,
+        bgClass: "bg-rose-500/10",
+        hoverText: "group-hover:text-rose-400",
+        hoverBorder: "group-hover:border-rose-500/20",
+        hoverBg: "group-hover:bg-rose-500/10"
     }
 ];
 
