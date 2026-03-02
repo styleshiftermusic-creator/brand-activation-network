@@ -1,25 +1,36 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
 :root {
-  --background: #09090b; /* Very dark zinc */
-  --foreground: #ffffff; /* pure white */
-  
-  --primary: #9d4edd; /* Deep purple */
+  --background: #09090b;
+  /* Very dark zinc */
+  --foreground: #ffffff;
+  /* pure white */
+
+  --primary: #9d4edd;
+  /* Deep purple */
   --primary-foreground: #ffffff;
-  
-  --secondary: #27272a; /* Zinc 800 */
-  --secondary-foreground: #fafafa; /* Zinc 50 */
-  
-  --muted: #18181b; /* Zinc 900 */
-  --muted-foreground: #a1a1aa; /* Zinc 400 */
-  
-  --accent: #5c2092; /* Darker purple */
+
+  --secondary: #27272a;
+  /* Zinc 800 */
+  --secondary-foreground: #fafafa;
+  /* Zinc 50 */
+
+  --muted: #18181b;
+  /* Zinc 900 */
+  --muted-foreground: #a1a1aa;
+  /* Zinc 400 */
+
+  --accent: #5c2092;
+  /* Darker purple */
   --accent-foreground: #fafafa;
-  
-  --border: #27272a; /* Zinc 800 */
-  --input: #27272a;  /* Zinc 800 */
+
+  --border: #27272a;
+  /* Zinc 800 */
+  --input: #27272a;
+  /* Zinc 800 */
   --ring: #9d4edd;
-  
+
   --radius: 0.75rem;
 }
 
@@ -27,6 +38,7 @@
   * {
     @apply border-[var(--border)];
   }
+
   body {
     @apply bg-[var(--background)] text-[var(--foreground)] font-sans antialiased selection:bg-[var(--primary)] selection:text-[var(--foreground)];
   }
@@ -36,13 +48,91 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-500;
   }
+
   .text-gradient-primary {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#c77dff] to-[#7b2cbf];
   }
+
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
+
   .glass-card {
     @apply bg-[var(--secondary)]/40 backdrop-blur-xl border border-[var(--border)] shadow-2xl;
   }
+}
+
+/* ─── Study Guide Markdown Tables ─────────────────────────────────────── */
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+}
+
+.prose thead th {
+  background: rgba(16, 185, 129, 0.08);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.prose tbody td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #d4d4d8;
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.prose tbody tr:hover {
+  background: rgba(16, 185, 129, 0.04);
+}
+
+/* ─── Cheat Sheet Blockquotes ─────────────────────────────────────────── */
+.prose blockquote {
+  border-left: 3px solid #10b981;
+  background: rgba(16, 185, 129, 0.06);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  font-style: normal;
+}
+
+.prose blockquote p {
+  margin: 0;
+  color: #a1a1aa;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.prose blockquote strong {
+  color: #34d399;
+}
+
+/* ─── Audio Player Theme ──────────────────────────────────────────────── */
+audio::-webkit-media-controls-panel {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  color: #a1a1aa;
+  font-family: 'Inter', monospace;
+  font-size: 0.75rem;
 }

@@ -6,6 +6,7 @@ import { Play, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2 
 
 import { courseData } from "@/data/course-content";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
 import { supabase } from "@/lib/supabase";
 
@@ -14,14 +15,20 @@ const MODULES = Object.entries(courseData).map(([key, data], index) => {
     // Unlocking all modules for the live production site
     let status = "ACTIVE";
 
+    // Estimate duration from study guide word count (~150 wpm narration pace)
+    const wordCount = data.studyGuide.split(/\s+/).length;
+    const totalMinutes = Math.ceil(wordCount / 150);
+    const mins = String(totalMinutes).padStart(2, '0');
+    const duration = `${mins}:00`;
+
     return {
         id: `M-0${key}`,
         title: data.title,
-        duration: "45:00", // Placeholder duration
+        duration,
         status: status,
-        description: data.studyGuide, // Passing the actual markdown study guide
-        quiz: data.quiz, // Passing the interactive quiz data
-        mediaSrc: data.audioSrc, // Passing the real course media
+        description: data.studyGuide,
+        quiz: data.quiz,
+        mediaSrc: data.audioSrc,
         resources: [
             { type: "PDF", name: "Module Blueprint", icon: <FileText className="w-4 h-4" /> }
         ]
@@ -122,12 +129,18 @@ export default function MasterCoursePage() {
                                 </div>
                             </>
                         ) : (
-                            <video
-                                src={activeModule.mediaSrc}
-                                autoPlay
-                                controls
-                                className="absolute inset-0 w-full h-full object-cover z-30 rounded-xl bg-black"
-                            />
+                            <div className="absolute inset-0 w-full h-full z-30 rounded-xl bg-black/80 flex flex-col items-center justify-center gap-6 p-8">
+                                <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.4)]">
+                                    <Play className="h-8 w-8 fill-emerald-400 text-emerald-400" />
+                                </div>
+                                <p className="text-sm font-mono text-zinc-400 tracking-wider uppercase">Now Playing — Module {activeModule.id.replace('M-0', '')}</p>
+                                <audio
+                                    src={activeModule.mediaSrc}
+                                    autoPlay
+                                    controls
+                                    className="w-full max-w-md"
+                                />
+                            </div>
                         )}
                     </div>
 
@@ -173,7 +186,7 @@ export default function MasterCoursePage() {
                             {activeTab === 'study' && (
                                 <div className="animate-fade-in-up">
                                     <div className="prose prose-invert prose-emerald prose-sm md:prose-base max-w-none text-zinc-300 leading-relaxed font-sans pb-20">
-                                        <ReactMarkdown>
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                             {activeModule.description}
                                         </ReactMarkdown>
                                     </div>

@@ -74,7 +74,7 @@ export function AuthScreen() {
     return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center relative overflow-hidden px-6 font-mono selection:bg-[var(--primary)]/30">
             {/* CRT Scanline Overlay */}
-            <div className="absolute inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-50"></div>
+            <div className="absolute inset-0 pointer-events-none bg-[url('/noise.svg')] opacity-20 mix-blend-overlay z-50"></div>
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#000_100%)] z-40 opacity-80"></div>
 
             {/* Subtle Ambient Glow */}

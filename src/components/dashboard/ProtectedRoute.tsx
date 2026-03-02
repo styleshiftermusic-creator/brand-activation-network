@@ -30,7 +30,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         return (
             <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center relative overflow-hidden font-mono selection:bg-[var(--primary)]/30">
                 {/* CRT Scanline Overlay */}
-                <div className="absolute inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay z-50"></div>
+                <div className="absolute inset-0 pointer-events-none bg-[url('/noise.svg')] opacity-20 mix-blend-overlay z-50"></div>
                 <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#000_100%)] z-40 opacity-80"></div>
                 <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)] z-10" />
                 <p className="text-[var(--primary)] text-xs mt-4 tracking-widest uppercase z-10 animate-pulse">Establishing Secure Uplink...</p>
@@ -38,10 +38,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         );
     }
 
-    // TEMP BYPASS FOR LOCAL QA TESTING
-    if (process.env.NODE_ENV === 'development') {
-        return <>{children}</>;
-    }
+    // Auth enforced in all environments
 
     // If no active session, intercept the route and render the AuthScreen
     if (!isAuthenticated) {
