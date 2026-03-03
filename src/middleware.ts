@@ -36,29 +36,27 @@ export async function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
-    // Protect /dashboard/* routes — redirect to home if not authenticated
-    if (pathname.startsWith("/dashboard") && !user) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/";
-        return NextResponse.redirect(url);
-    }
-
     // Protect /audio/* files — block with 401 if not authenticated
+    // These are the actual course assets that must never leak
     if (pathname.startsWith("/audio") && !user) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Protect /api/course-content — block with 401 if not authenticated
+    // Study guides + quiz answers must stay server-side only
     if (pathname.startsWith("/api/course-content") && !user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    // NOTE: /dashboard/* pages are NOT blocked here.
+    // The ProtectedRoute component handles showing the AuthScreen (login form)
+    // for unauthenticated users. Middleware only protects raw data access.
 
     return supabaseResponse;
 }
 
 export const config = {
     matcher: [
-        "/dashboard/:path*",
         "/audio/:path*",
         "/api/course-content/:path*",
     ],

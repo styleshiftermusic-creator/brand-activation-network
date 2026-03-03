@@ -44,13 +44,13 @@ export default function Home() {
         </h1>
 
         <p className="text-lg md:text-2xl text-[var(--muted-foreground)] mb-12 max-w-2xl font-light leading-relaxed">
-          Master the exact 7-module blueprint to secure business funding, automate high-ticket sales, and completely scale your Life.
+          Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your Life.
         </p>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center">
           <a href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00" className="w-full sm:w-auto px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_40px_-10px_rgba(16,185,129,0.6)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.8)] hover:-translate-y-1 text-center text-lg tracking-wide">
-            Buy Now
+            Activate Now
           </a>
           <Link href="/challenge" className="w-full sm:w-auto px-8 py-4 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all duration-300 shadow-[0_0_40px_-10px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-15px_rgba(157,78,221,0.7)] hover:-translate-y-1 text-center">
             Join the Ongoing Challenge
@@ -110,7 +110,7 @@ export default function Home() {
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
             <a href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00" className="px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_40px_-10px_rgba(16,185,129,0.6)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.8)] hover:-translate-y-1 text-center text-lg tracking-wide">
-              Buy Now — Get Instant Access
+              Activate Now — Get Instant Access
             </a>
             <Link href="/challenge" className="px-8 py-4 glass hover:bg-white/10 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 text-center">
               Or Join Free Challenge First →
@@ -180,7 +180,7 @@ export default function Home() {
                 href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
                 className="inline-flex items-center gap-3 px-12 py-5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-xl transition-all duration-300 shadow-[0_0_50px_-10px_rgba(16,185,129,0.6)] hover:shadow-[0_0_70px_-10px_rgba(16,185,129,0.8)] hover:-translate-y-1"
               >
-                Buy Now
+                Activate Now
               </a>
               <p className="mt-6 text-xs font-mono text-zinc-600 uppercase tracking-wider">Secure checkout via Stripe • Instant dashboard access</p>
             </div>
