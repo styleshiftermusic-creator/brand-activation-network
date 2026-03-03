@@ -4,42 +4,74 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect } from "react";
 import { Play, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2 } from "lucide-react";
 
-import { courseData } from "@/data/course-content";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
 import { supabase } from "@/lib/supabase";
 
-// Mapping the actual AI Workshop Engine curriculum data to our dashboard structure
-const MODULES = Object.entries(courseData).map(([key, data], index) => {
-    // Unlocking all modules for the live production site
-    let status = "ACTIVE";
+interface QuizQuestion {
+    question: string;
+    options: string[];
+    correctAnswer?: number | string;
+    answer?: string;
+    citation?: string;
+    source_citation?: string;
+}
 
-    // Estimate duration from study guide word count (~150 wpm narration pace)
-    const wordCount = data.studyGuide.split(/\s+/).length;
-    const totalMinutes = Math.ceil(wordCount / 150);
-    const mins = String(totalMinutes).padStart(2, '0');
-    const duration = `${mins}:00`;
+interface ModuleData {
+    id: string;
+    title: string;
+    duration: string;
+    status: string;
+    description: string;
+    quiz: QuizQuestion[];
+    mediaSrc: string;
+    resources: { type: string; name: string; icon: React.ReactNode }[];
+}
 
-    return {
-        id: `M-0${key}`,
-        title: data.title,
-        duration,
-        status: status,
-        description: data.studyGuide,
-        quiz: data.quiz,
-        mediaSrc: data.audioSrc,
-        resources: [
-            { type: "PDF", name: "Module Blueprint", icon: <FileText className="w-4 h-4" /> }
-        ]
-    };
-});
+function buildModules(courseData: Record<string, { title: string; studyGuide: string; quiz: QuizQuestion[]; audioSrc: string }>): ModuleData[] {
+    return Object.entries(courseData).map(([key, data]) => {
+        const wordCount = data.studyGuide.split(/\s+/).length;
+        const totalMinutes = Math.ceil(wordCount / 150);
+        const mins = String(totalMinutes).padStart(2, '0');
+        return {
+            id: `M-0${key}`,
+            title: data.title,
+            duration: `${mins}:00`,
+            status: "ACTIVE",
+            description: data.studyGuide,
+            quiz: data.quiz,
+            mediaSrc: data.audioSrc,
+            resources: [
+                { type: "PDF", name: "Module Blueprint", icon: <FileText className="w-4 h-4" /> }
+            ]
+        };
+    });
+}
 
 export default function MasterCoursePage() {
-    const [activeModuleId, setActiveModuleId] = useState("M-01"); // Defaulting to the active one for demo
+    const [activeModuleId, setActiveModuleId] = useState("M-01");
     const [isPlaying, setIsPlaying] = useState(false);
     const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources'>('study');
-    const [modules, setModules] = useState(MODULES);
+    const [modules, setModules] = useState<ModuleData[]>([]);
+    const [isLoadingContent, setIsLoadingContent] = useState(true);
+
+    // Fetch course content from protected API
+    useEffect(() => {
+        async function loadCourseContent() {
+            try {
+                const res = await fetch("/api/course-content");
+                if (!res.ok) throw new Error("Failed to load course content");
+                const data = await res.json();
+                setModules(buildModules(data));
+            } catch (err) {
+                console.error("Error loading course content:", err);
+            } finally {
+                setIsLoadingContent(false);
+            }
+        }
+        loadCourseContent();
+    }, []);
 
     useEffect(() => {
         setIsPlaying(false);
@@ -110,10 +142,24 @@ export default function MasterCoursePage() {
     };
 
     useEffect(() => {
-        fetchProgress();
-    }, []);
+        if (modules.length > 0) fetchProgress();
+    }, [modules]);
 
     const activeModule = modules.find(m => m.id === activeModuleId) || modules[0];
+
+    if (isLoadingContent || modules.length === 0) {
+        return (
+            <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-emerald-500/30 relative overflow-hidden">
+                <Sidebar />
+                <main className="flex-1 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
+                        <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest animate-pulse">Loading Course Vault...</p>
+                    </div>
+                </main>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-emerald-500/30 relative overflow-hidden">
