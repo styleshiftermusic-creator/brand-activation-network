@@ -11,6 +11,7 @@ export function AuthScreen() {
     const [authError, setAuthError] = useState("");
     const [authMessage, setAuthMessage] = useState("");
     const [bootSequence, setBootSequence] = useState<string[]>([]);
+    const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
     useEffect(() => {
         const logs = [
@@ -28,6 +29,14 @@ export function AuthScreen() {
                 clearInterval(interval);
             }
         }, 400);
+
+        // Check if we arrived via a password reset link
+        const hash = window.location.hash;
+        if (hash && hash.includes("type=recovery")) {
+            setIsUpdatingPassword(true);
+            setAuthMessage("RECOVERY TOKEN VERIFIED. ENTER NEW CLEARANCE LEVEL.");
+        }
+
         return () => clearInterval(interval);
     }, []);
 
@@ -38,7 +47,17 @@ export function AuthScreen() {
         setAuthMessage("");
 
         try {
-            if (isResetMode) {
+            if (isUpdatingPassword) {
+                if (password.length < 6) {
+                    setAuthError("Password must be at least 6 characters.");
+                    return;
+                }
+                const { error } = await supabase.auth.updateUser({ password });
+                if (error) throw error;
+                setAuthMessage("CLEARANCE LEVEL UPDATED. SYSTEM READY.");
+                setIsUpdatingPassword(false);
+                setTimeout(() => window.location.href = "/dashboard", 1500);
+            } else if (isResetMode) {
                 const parsedEmail = z.string().email("Invalid email address").safeParse(email);
                 if (!parsedEmail.success) {
                     setAuthError(parsedEmail.error.issues[0].message);
@@ -110,21 +129,25 @@ export function AuthScreen() {
                     )}
 
                     <form onSubmit={handleAuth} className="flex flex-col gap-6">
-                        <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-wider text-zinc-500">Node Identifier [Email]</label>
-                            <input
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-black/50 border-b-2 border-white/10 px-0 py-2 text-white font-mono focus:border-[var(--primary)] focus:outline-none transition-colors placeholder:text-zinc-800 rounded-none"
-                                placeholder="architect@agency.com"
-                            />
-                        </div>
-
-                        {!isResetMode && (
+                        {!isUpdatingPassword && (
                             <div className="space-y-2">
-                                <label className="text-xs uppercase tracking-wider text-zinc-500">Security Clearance [Password]</label>
+                                <label className="text-xs uppercase tracking-wider text-zinc-500">Node Identifier [Email]</label>
+                                <input
+                                    type="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full bg-black/50 border-b-2 border-white/10 px-0 py-2 text-white font-mono focus:border-[var(--primary)] focus:outline-none transition-colors placeholder:text-zinc-800 rounded-none"
+                                    placeholder="architect@agency.com"
+                                />
+                            </div>
+                        )}
+
+                        {(!isResetMode || isUpdatingPassword) && (
+                            <div className="space-y-2">
+                                <label className="text-xs uppercase tracking-wider text-zinc-500">
+                                    {isUpdatingPassword ? "New Security Clearance [Password]" : "Security Clearance [Password]"}
+                                </label>
                                 <input
                                     type="password"
                                     required
@@ -138,7 +161,7 @@ export function AuthScreen() {
 
                         <button
                             type="submit"
-                            disabled={isLoggingIn || !email || (!isResetMode && !password)}
+                            disabled={isLoggingIn || (!isUpdatingPassword && !email) || (!isResetMode && !password)}
                             className="w-full py-3 mt-4 bg-white/5 hover:bg-[var(--primary)]/20 border border-[var(--primary)]/50 text-[var(--primary)] hover:text-white hover:border-[var(--primary)] transition-all duration-300 font-mono text-sm tracking-widest uppercase flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoggingIn ? (
@@ -148,28 +171,30 @@ export function AuthScreen() {
                                 </>
                             ) : (
                                 <>
-                                    {isResetMode ? "TRANSMIT RECOVERY LINK" : "INITIALIZE UPLINK"}
+                                    {isUpdatingPassword ? "CONFIRM NEW CLEARANCE" : isResetMode ? "TRANSMIT RECOVERY LINK" : "INITIALIZE UPLINK"}
                                     <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                 </>
                             )}
                         </button>
                     </form>
 
-                    <div className="mt-8 flex justify-between items-center border-t border-white/5 pt-4">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setIsResetMode(!isResetMode);
-                                setAuthError("");
-                                setAuthMessage("");
-                            }}
-                            className="text-xs text-zinc-600 hover:text-[var(--primary)] transition-colors uppercase tracking-wider"
-                        >
-                            {isResetMode ? "< CANCEL" : "OVERRIDE CLEARANCE?"}
-                        </button>
+                    {!isUpdatingPassword && (
+                        <div className="mt-8 flex justify-between items-center border-t border-white/5 pt-4">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsResetMode(!isResetMode);
+                                    setAuthError("");
+                                    setAuthMessage("");
+                                }}
+                                className="text-xs text-zinc-600 hover:text-[var(--primary)] transition-colors uppercase tracking-wider"
+                            >
+                                {isResetMode ? "< CANCEL" : "OVERRIDE CLEARANCE?"}
+                            </button>
 
-                        <span className="text-xs text-zinc-700 font-mono">v1.0.4 - SECURE</span>
-                    </div>
+                            <span className="text-xs text-zinc-700 font-mono">v1.0.4 - SECURE</span>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

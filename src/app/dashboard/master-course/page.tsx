@@ -150,11 +150,42 @@ export default function MasterCoursePage() {
     if (isLoadingContent || modules.length === 0) {
         return (
             <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-emerald-500/30 relative overflow-hidden">
+                <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
                 <Sidebar />
-                <main className="flex-1 flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                        <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
-                        <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest animate-pulse">Loading Course Vault...</p>
+                <main className="flex-1 p-6 lg:p-10 lg:pl-12 overflow-y-auto z-10 flex flex-col lg:flex-row gap-8">
+                    {/* LEFT PANE SKELETON */}
+                    <div className="flex-1 flex flex-col animate-pulse">
+                        <div className="mb-6 border-b border-white/10 pb-4">
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="h-5 w-20 bg-emerald-500/10 rounded" />
+                                <div className="h-4 w-40 bg-white/5 rounded hidden sm:block" />
+                            </div>
+                            <div className="h-8 w-72 bg-white/5 rounded" />
+                        </div>
+                        <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl mb-8 border border-white/10 flex items-center justify-center">
+                            <div className="h-20 w-20 rounded-full bg-emerald-500/10 border border-emerald-500/30" />
+                        </div>
+                        <div className="flex gap-1 mb-6">
+                            {[1, 2, 3].map(i => <div key={i} className="h-10 flex-1 bg-white/5 rounded-lg" />)}
+                        </div>
+                        <div className="space-y-3">
+                            {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-4 bg-white/5 rounded" style={{ width: `${90 - i * 8}%` }} />)}
+                        </div>
+                    </div>
+                    {/* RIGHT PANE SKELETON */}
+                    <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 animate-pulse">
+                        <div className="h-6 w-48 bg-white/5 rounded mb-4" />
+                        <div className="space-y-2">
+                            {[1, 2, 3, 4, 5, 6, 7].map(i => (
+                                <div key={i} className="p-4 rounded-xl bg-black/40 border border-white/5 flex items-center gap-4">
+                                    <div className="h-10 w-10 rounded-lg bg-emerald-500/10" />
+                                    <div className="flex-1 space-y-2">
+                                        <div className="h-4 w-32 bg-white/5 rounded" />
+                                        <div className="h-3 w-20 bg-white/5 rounded" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </main>
             </div>

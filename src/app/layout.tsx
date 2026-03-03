@@ -14,16 +14,37 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Brand Activation Network | Autonomy at the Speed of Thought",
-  description: "Scale your capability. Leverage the Mission Control framework to transform how your agency builds with AI.",
+  description: "Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your life. The 7-module system for building with AI.",
   icons: {
     icon: "/logo.png",
+    apple: "/logo.png",
   },
+  metadataBase: new URL("https://brandactivationnetwork.com"),
   openGraph: {
     title: "Brand Activation Network",
-    description: "Scale your agency with zero employees and zero burnout using Google Antigravity.",
+    description: "Master business funding, high-ticket sales, and AI-powered systems. The 7-module blueprint to scale your brand.",
     siteName: "Brand Activation Network",
     type: "website",
-  }
+    url: "https://brandactivationnetwork.com",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Brand Activation Network — Master Business Funding • High-Ticket Sales • AI Systems",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brand Activation Network",
+    description: "Master business funding, high-ticket sales, and AI-powered systems. The 7-module blueprint to scale your brand.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
