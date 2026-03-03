@@ -12,6 +12,8 @@ const BLUEPRINTS = [
         category: "Finance",
         icon: <FileSpreadsheet className="w-5 h-5" />,
         color: "emerald",
+        downloadUrl: "/blueprints/pledge-loan-calculator.md",
+        fileName: "Pledge-Loan-Calculator.md",
     },
     {
         id: "BP-02",
@@ -21,6 +23,8 @@ const BLUEPRINTS = [
         category: "Finance",
         icon: <FileText className="w-5 h-5" />,
         color: "emerald",
+        downloadUrl: "/blueprints/business-funding-checklist.md",
+        fileName: "Business-Funding-Checklist.md",
     },
     {
         id: "BP-03",
@@ -30,6 +34,8 @@ const BLUEPRINTS = [
         category: "Finance",
         icon: <Briefcase className="w-5 h-5" />,
         color: "blue",
+        downloadUrl: "/blueprints/investment-blueprint-template.md",
+        fileName: "Investment-Blueprint-Template.md",
     },
     {
         id: "BP-04",
@@ -39,6 +45,8 @@ const BLUEPRINTS = [
         category: "Marketing",
         icon: <Target className="w-5 h-5" />,
         color: "amber",
+        downloadUrl: "/blueprints/opa-marketing-playbook.md",
+        fileName: "OPA-Marketing-Playbook.md",
     },
     {
         id: "BP-05",
@@ -48,6 +56,8 @@ const BLUEPRINTS = [
         category: "Sales",
         icon: <Presentation className="w-5 h-5" />,
         color: "purple",
+        downloadUrl: "/blueprints/high-ticket-sales-scripts.md",
+        fileName: "High-Ticket-Sales-Scripts.md",
     },
     {
         id: "BP-06",
@@ -57,6 +67,8 @@ const BLUEPRINTS = [
         category: "AI Systems",
         icon: <Bot className="w-5 h-5" />,
         color: "cyan",
+        downloadUrl: "/blueprints/ai-agent-prompt-library.json",
+        fileName: "AI-Agent-Prompt-Library.json",
     },
 ];
 
@@ -67,6 +79,24 @@ const COLOR_MAP: Record<string, { bg: string; text: string; border: string; glow
     purple: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/30", glow: "shadow-[0_0_20px_rgba(168,85,247,0.15)]" },
     cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/30", glow: "shadow-[0_0_20px_rgba(6,182,212,0.15)]" },
 };
+
+function downloadFile(url: string, fileName: string) {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function downloadAllBlueprints() {
+    // Download each file with a small delay between them
+    BLUEPRINTS.forEach((bp, index) => {
+        setTimeout(() => {
+            downloadFile(bp.downloadUrl, bp.fileName);
+        }, index * 500);
+    });
+}
 
 export default function BlueprintsPage() {
     return (
@@ -122,7 +152,10 @@ export default function BlueprintsPage() {
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
-                                    <button className="w-full sm:w-auto px-8 py-3 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-medium transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_var(--primary)] flex items-center justify-center gap-2">
+                                    <button
+                                        onClick={downloadAllBlueprints}
+                                        className="w-full sm:w-auto px-8 py-3 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-medium transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_var(--primary)] flex items-center justify-center gap-2"
+                                    >
                                         <Download className="w-4 h-4" />
                                         Download Starter Kit
                                     </button>
@@ -157,7 +190,10 @@ export default function BlueprintsPage() {
                                             <p className="text-xs text-zinc-500 leading-relaxed mb-4">{bp.description}</p>
                                             <div className="flex items-center justify-between mt-auto">
                                                 <span className="text-[10px] font-mono text-zinc-600 uppercase">{bp.format}</span>
-                                                <button className={`py-1.5 px-4 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center gap-1.5`}>
+                                                <button
+                                                    onClick={() => downloadFile(bp.downloadUrl, bp.fileName)}
+                                                    className={`py-1.5 px-4 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center gap-1.5`}
+                                                >
                                                     <Download className="w-3 h-3" /> Get
                                                 </button>
                                             </div>

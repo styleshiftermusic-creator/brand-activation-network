@@ -36,9 +36,9 @@ export async function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
-    // Protect /audio/* files — block with 401 if not authenticated
+    // Protect /audio/* and /blueprints/* files — block with 401 if not authenticated
     // These are the actual course assets that must never leak
-    if (pathname.startsWith("/audio") && !user) {
+    if ((pathname.startsWith("/audio") || pathname.startsWith("/blueprints")) && !user) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -58,6 +58,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         "/audio/:path*",
+        "/blueprints/:path*",
         "/api/course-content/:path*",
     ],
 };
