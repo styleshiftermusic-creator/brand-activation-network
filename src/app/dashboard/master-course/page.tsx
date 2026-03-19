@@ -106,7 +106,7 @@ export default function MasterCoursePage() {
                 });
                 setModules(prev => prev.map(m => m.id === 'M-01' ? { ...m, status: 'ACTIVE' } : { ...m, status: 'LOCKED' }));
             }
-        } catch (err) {
+        } catch {
             console.warn("Telemetry database not yet initialized. Falling back to Unlocked Mode.");
         }
     };

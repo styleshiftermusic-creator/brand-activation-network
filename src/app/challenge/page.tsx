@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import RegistrationForm from "@/components/RegistrationForm";
-import { ArrowRight, Calendar, PlayCircle, ShieldCheck } from "lucide-react";
+import { Calendar, PlayCircle } from "lucide-react";
 
 export const metadata = {
     title: "AI Workshop Engine Challenge | Brand Activation Network",

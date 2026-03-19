@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Play, Download, Lock, CheckCircle2, FileText, LayoutTemplate, MessageSquare } from "lucide-react";
 
 // Mock Data for the 7 Modules (AntiGravity / Mission Control theme)
@@ -46,11 +46,12 @@ export default function AntiGravitySystemPage() {
     const [activeModuleId, setActiveModuleId] = useState("M-02"); // Defaulting to the active one for demo
     const [isPlaying, setIsPlaying] = useState(false);
 
-    useEffect(() => {
-        setIsPlaying(false);
-    }, [activeModuleId]);
-
     const activeModule = MODULES.find(m => m.id === activeModuleId) || MODULES[0];
+
+    const handleModuleSelect = (id: string) => {
+        setActiveModuleId(id);
+        setIsPlaying(false);
+    };
 
     return (
         <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
@@ -156,7 +157,7 @@ export default function AntiGravitySystemPage() {
                                 return (
                                     <button
                                         key={module.id}
-                                        onClick={() => !isLocked && setActiveModuleId(module.id)}
+                                        onClick={() => !isLocked && handleModuleSelect(module.id)}
                                         disabled={isLocked}
                                         className={`w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden group ${isLocked
                                             ? "opacity-50 border border-white/5 cursor-not-allowed bg-black/20"

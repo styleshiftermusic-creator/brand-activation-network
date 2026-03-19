@@ -3,6 +3,17 @@ export const courseData = {
     "title": "The Pledge Loan Credit Hack",
     "category": "Strategy > Internal Relationship Scoring",
     "audioSrc": "/audio/module-1.mp3",
+    "visuals": [
+      "/course-visuals/mod1_slide1_title_1772542021424.png",
+      "/course-visuals/mod1_slide2_problem_1772542039800.png",
+      "/course-visuals/mod1_slide3_mechanism_1772542055658.png",
+      "/course-visuals/mod1_slide4_paydown_1772542083594.png",
+      "/course-visuals/mod1_slide5_recycling_1772542101517.png",
+      "/course-visuals/mod1_slide6_seasoning_1772542115427.png",
+      "/course-visuals/mod1_slide7_graduation_1772542169504.png",
+      "/course-visuals/mod1_slide8_checklist_1772542185548.png",
+      "/course-visuals/mod1_slide9_closing_1772542201461.png"
+    ],
     "studyGuide": "# Module 1: The Pledge Loan Credit Hack\n\n## The Core Idea\nCredit unions assign their own **internal relationship score** — separate from your FICO. This hack manufactures a perfect score in 60–90 days using only your own cash.\n\n## 3 Concepts to Lock In\n\n**1. Pledge Loan = Trust Signal**\nYou deposit cash, the bank freezes it as collateral and issues you a loan. When you pay down 80–85% within 24 hours, the algorithm reads you as an elite-level borrower.\n\n**2. The Seasoning Window**\nDon't pay off the remaining 15–20% all at once. Put it on autopay over 2–3 months. Closing the account early kills the relationship before it matures.\n\n**3. Comparable Credit**\nThis is why personal credit matters for business. Business lenders match **70–200%** of your highest personal limit. A $20k personal card can unlock a $40k business approval.\n\n## Execution at a Glance\n\n| Step | Action | Why |\n|---|---|---|\n| 1 | Open savings at Navy Fed / DCU / Air Force CU | Target institutions with Pledge Loan products |\n| 2 | Deposit $1,000–$2,000, request Pledge Loan | Bank freezes savings, issues you the loan |\n| 3 | Pay down **80–85%** within 24 hours | Signals lend-worthiness, releases majority of funds |\n| 4 | Recycle: use released funds at next CU | Stack 3 positions with one starting amount |\n| 5 | Set autopay on remaining 15–20% | Season the account for 2–3 months |\n| 6 | Check pre-qualifications (soft pull) | Apply for $10k–$20k personal credit cards |\n\n## Cheat Sheet\n\n> **Institutions:** Navy Federal · DCU · Air Force Credit Union · PSCU\n> **Magic Number:** 80–85% paydown within 24 hours\n> **Seasoning Window:** 2–3 months on autopay\n> **End Goal:** Two personal cards at $10k+ limits → business funding bridge",
     "quiz": [
       {
@@ -61,6 +72,15 @@ export const courseData = {
     "title": "Transitioning to Business Funding",
     "category": "Strategy > Business Credit",
     "audioSrc": "/audio/module-2.mp3",
+    "visuals": [
+      "/course-visuals/mod2_slide1_title_1772564771571.png",
+      "/course-visuals/mod2_slide2_comparable_1772564788826.png",
+      "/course-visuals/mod2_slide3_bloc_1772564803107.png",
+      "/course-visuals/mod2_slide4_institutions_1772564833721.png",
+      "/course-visuals/mod2_slide5_allocation_1772564847516.png",
+      "/course-visuals/mod2_slide6_checklist_1772564861108.png",
+      "/course-visuals/mod2_slide7_closing_1772564892580.png"
+    ],
     "studyGuide": "# Module 2: Transitioning to Business Funding\n\n## The Core Idea\nPersonal credit is the key. Business credit is the vault. Once you have two personal cards at $10k+, you can anchor business approvals of **$40k–$100k** using Comparable Credit.\n\n## 3 Concepts to Lock In\n\n**1. The 70–200% Match Rule**\nBusiness lenders look at your highest personal limit and offer 70–200% of that amount for business. A $20k personal card is your anchor. Without it, you are capped.\n\n**2. B-LOC vs. Business Credit Cards**\nA Business Line of Credit (B-LOC) is liquid cash in your checking account. Business credit cards are revolving — often 0% intro APR for 9–21 months. Use the right tool for the right spend.\n\n**3. The Amex Trap**\nDon't rush to get the Amex Gold or Platinum. Those are charge cards — full balance due every 30 days, high annual fees. Target the **Blue Business Plus** or **Blue Business Cash** (0% interest). Exception: the Plum Card (60-day payoff).\n\n## Institution Targets\n\n| Institution | Why |\n|---|---|\n| Your existing CU (Navy Fed, etc.) | Leverage the relationship you already built |\n| Wells Fargo | Startup-friendly B-LOC up to $50k, no 2-yr requirement |\n| Truist | High-limit geo-based bank (check your region) |\n| American Express | Blue Business Plus / Blue Business Cash (0% APR) |\n\n## Cheat Sheet\n\n> **Zero Point Gate:** 2 personal cards · $10k+ each · accounts seasoned · LLC established\n> **Don't Buy:** lifestyle, luxury, vanity\n> **Do Buy:** mentorship, marketing, speed",
     "quiz": [
       {
@@ -124,6 +144,16 @@ export const courseData = {
     "title": "The Investment Blueprint",
     "category": "Wealth > Asset Allocation",
     "audioSrc": "/audio/module-3.mp3",
+    "visuals": [
+      "/course-visuals/mod3_slide1_title_1772564905358.png",
+      "/course-visuals/mod3_slide2_visibility_1772564921626.png",
+      "/course-visuals/mod3_slide3_mentorship_1772564952303.png",
+      "/course-visuals/mod3_slide4_opa_1772564969277.png",
+      "/course-visuals/mod3_slide5_reciprocity_1772564980388.png",
+      "/course-visuals/mod3_slide6_scale_1772565021097.png",
+      "/course-visuals/mod3_slide7_trust_1772565034626.png",
+      "/course-visuals/mod3_slide8_closing_1772565048238.png"
+    ],
     "studyGuide": "# Module 3: The Investment Blueprint\n\n## The Core Idea\nMoney doesn't make you rich. *Deployed* money does. This module is the map for turning your capital into a compounding machine — starting with the Knowledge Investment.\n\n## 3 Concepts to Lock In\n\n**1. Visibility Beats Ability**\nThe market doesn't pay the best practitioner. It pays the most *visible* one. Set aside $20k of your capital strictly for marketing. When tied to a sales mechanism, that's a mathematical investment — not an expense.\n\n**2. OPA: Other People's Audiences**\nDon't build an audience from scratch. Leverage podcast hosts, Instagram shout-out pages, and community leaders who already own the attention you need. The Bourbon Chicken Theory: give your best content for free on someone else's platform → they drive traffic to your opt-in → you own the email list.\n\n**3. One-to-Many is the Scale Vehicle**\nOne sales call to one person = burnout. One webinar to 500 people = leverage. Commit to weekly virtual events for 12 months. It force-develops four skills simultaneously: marketing, speaking, sales, and leadership.\n\n## Capital Allocation Blueprint\n\n| Allocation | Amount | Goes Into |\n|---|---|---|\n| Knowledge Investment | ~$10k | Mentor / proven blueprint |\n| Marketing War Chest | ~$20k | OPA + paid traffic |\n| Operations Reserve | Remaining | Team, tools, infrastructure |\n\n## Cheat Sheet\n\n> **OPA Plays:** Podcast tour · Shout-out pages (bulk deal: 5 posts for $3k) · Community partnerships\n> **Content Tool:** Opus.io — 1 podcast → 60 short clips for TikTok, Reels, Shorts\n> **Sales Vehicle:** Weekly webinar · 4 Levers of Trust: You → Value → Themselves → The Vehicle",
     "quiz": [
       {

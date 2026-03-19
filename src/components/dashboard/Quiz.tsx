@@ -59,7 +59,7 @@ export default function Quiz({ moduleId, questions, onComplete }: QuizProps) {
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
-                    const finalScore = selectedOption === getCorrectIndex(questions[currentQuestion]) ? score + 1 : score;
+                    const finalScore = score; // Score is already updated in handleOptionClick
                     const passed = (finalScore / questions.length) >= 0.8; // 80% passing grade requirement
 
                     await supabase.from('quiz_scores').insert({

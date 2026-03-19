@@ -31,14 +31,13 @@ const nextConfig: NextConfig = {
             value: "same-site",
           },
           {
-            key: "Content-Security-Policy-Report-Only",
+            key: "Content-Security-Policy",
             value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://api.stripe.com; font-src 'self' data:; report-uri /api/csp-report",
           },
-          // HSTS will be enabled after confirming canonical redirects
-          // {
-          //   key: "Strict-Transport-Security",
-          //   value: "max-age=31536000; includeSubDomains; preload",
-          // },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload",
+          },
         ],
       },
     ];

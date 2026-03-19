@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+
 import { ProtectedRoute } from "@/components/dashboard/ProtectedRoute";
 
 export const metadata = {

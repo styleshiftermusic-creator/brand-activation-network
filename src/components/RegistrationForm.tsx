@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowRight, ShieldCheck, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowRight, ShieldCheck, Loader2, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { z } from "zod";
 
@@ -12,9 +13,9 @@ const registerSchema = z.object({
 });
 
 export default function RegistrationForm() {
+    const router = useRouter();
     const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [turnstileToken, setTurnstileToken] = useState("");
 
@@ -45,7 +46,7 @@ export default function RegistrationForm() {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                setIsSuccess(true);
+                router.push('/challenge/confirmation');
             } else {
                 setErrorMsg(data.error || "Something went wrong. Please try again.");
             }
@@ -56,24 +57,6 @@ export default function RegistrationForm() {
             setIsSubmitting(false);
         }
     };
-
-    if (isSuccess) {
-        return (
-            <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in-up">
-                <div className="h-16 w-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-6">
-                    <CheckCircle className="h-8 w-8" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Registration Confirmed</h3>
-                <p className="text-[var(--muted-foreground)]">Your spot is secured. Check your email for the Workshop Engine playbook.</p>
-                <button
-                    onClick={() => window.location.href = "https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"}
-                    className="mt-8 px-6 py-3 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-medium transition-all shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)]"
-                >
-                    Unlock the AI Workshop Engine
-                </button>
-            </div>
-        );
-    }
 
     return (
         <div className="glass-card rounded-2xl p-8 relative flex flex-col">

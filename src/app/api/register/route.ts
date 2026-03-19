@@ -87,29 +87,63 @@ export async function POST(req: Request) {
 
         console.log("LIVE BACKEND: Successfully registered new lead into Supabase:", email);
 
-        // Attempt to send email alert
-        if (process.env.RESEND_API_KEY && process.env.ADMIN_EMAIL) {
+        // Attempt to send emails
+        if (process.env.RESEND_API_KEY) {
             try {
                 const resend = new Resend(process.env.RESEND_API_KEY);
-                await resend.emails.send({
-                    from: 'Workshop Engine <onboarding@resend.dev>',
-                    to: process.env.ADMIN_EMAIL,
-                    subject: '🚨 New Workshop Registration!',
-                    html: `
-                        <div style="font-family: sans-serif; padding: 20px;">
-                            <h2>New Challenge Registration</h2>
-                            <p><strong>Name:</strong> ${name}</p>
-                            <p><strong>Email:</strong> ${email}</p>
-                            <p><em>This lead has been successfully added to your Supabase Database.</em></p>
-                        </div>
-                    `
-                });
-                console.log("Email alert dispatched to", process.env.ADMIN_EMAIL);
+
+                const emailPromises = [];
+
+                // 1. Admin Alert
+                if (process.env.ADMIN_EMAIL) {
+                    emailPromises.push(
+                        resend.emails.send({
+                            from: 'Workshop Engine <onboarding@resend.dev>',
+                            to: process.env.ADMIN_EMAIL,
+                            subject: '🚨 New Workshop Registration!',
+                            html: `
+                                <div style="font-family: sans-serif; padding: 20px;">
+                                    <h2>New Challenge Registration</h2>
+                                    <p><strong>Name:</strong> ${name}</p>
+                                    <p><strong>Email:</strong> ${email}</p>
+                                    <p><em>This lead has been successfully added to your Supabase Database.</em></p>
+                                </div>
+                            `
+                        })
+                    );
+                }
+
+                // 2. User Welcome Email
+                emailPromises.push(
+                    resend.emails.send({
+                        from: 'Workshop Engine <onboarding@resend.dev>',
+                        to: email,
+                        subject: 'Your Spot is Secured: The AI Workshop Engine Challenge',
+                        html: `
+                            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
+                                <h2>Registration Confirmed.</h2>
+                                <p>Hey ${name.split(' ')[0] || 'there'},</p>
+                                <p>Your spot for the next <strong>AI Workshop Engine Challenge</strong> is officially secured.</p>
+                                <p>In this live event, we'll cover the exact systems, AI agents, and automations required to scale an agency horizontally without infinitely expanding payroll.</p>
+                                <h3>Next Steps:</h3>
+                                <ol>
+                                    <li><strong>Join the Community:</strong> <a href="#" style="color: #6366f1;">Click here</a> to join our private cohort group.</li>
+                                    <li><strong>Mark Your Calendar:</strong> Our next kickoff begins this Tuesday. Make sure you are present.</li>
+                                </ol>
+                                <p>Talk soon,</p>
+                                <p>The Brand Activation Network Team</p>
+                            </div>
+                        `
+                    })
+                );
+
+                await Promise.all(emailPromises);
+                console.log("Welcome email and admin alert dispatched successfully.");
             } catch (emailErr) {
-                console.error("Failed to send email alert:", emailErr);
+                console.error("Failed to send welcome email / alert:", emailErr);
             }
         } else {
-            console.log("Resend API Key or Admin Email not configured, skipping email alert.");
+            console.log("Resend API Key not configured, skipping email dispatch.");
         }
 
         return NextResponse.json({ success: true, message: "Lead captured successfully" });

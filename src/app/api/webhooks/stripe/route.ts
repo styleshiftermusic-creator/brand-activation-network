@@ -63,7 +63,7 @@ export async function POST(req: Request) {
 
             if (error) {
                 console.error("Error provisioning user via Supabase Admin:", error);
-                return NextResponse.json({ success: false, message: 'Provider Error' }, { status: 500 });
+                return NextResponse.json({ success: false, message: 'Provider Error', details: error.message }, { status: 500 });
             } else {
                 console.log("Successfully provisioned and sent invite to:", customerEmail);
             }

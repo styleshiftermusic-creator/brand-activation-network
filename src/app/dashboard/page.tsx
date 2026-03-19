@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+
 import { supabase } from "@/lib/supabase";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
@@ -10,8 +10,8 @@ import { MissionFeed } from "@/components/dashboard/MissionFeed";
 
 const DEFAULT_MISSIONS = [
     { id: "M-01", status: "COMPLETED", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: false, completed: true },
-    { id: "M-02", status: "COMPLETED", title: "High-level Tax Strategies", category: "[FINANCE]", time: "01:12:00", locked: false, completed: true },
-    { id: "M-03", status: "ACTIVE", title: "Velocity Banking Principles", category: "[FINANCE]", time: "00:55:00", locked: false, completed: false },
+    { id: "M-02", status: "COMPLETED", title: "Transitioning to Business Funding", category: "[FINANCE]", time: "01:12:00", locked: false, completed: true },
+    { id: "M-03", status: "ACTIVE", title: "The Investment Blueprint", category: "[WEALTH]", time: "00:55:00", locked: false, completed: false },
     { id: "M-04", status: "LOCKED", title: "Marketing & Audience Leverage", category: "[BUSINESS]", time: "01:30:00", locked: true, completed: false },
     { id: "M-05", status: "LOCKED", title: "High-Ticket Sales Philosophy", category: "[BUSINESS]", time: "00:42:00", locked: true, completed: false },
     { id: "M-06", status: "LOCKED", title: "Scaling with One-to-Many", category: "[SCALE]", time: "01:05:00", locked: true, completed: false },

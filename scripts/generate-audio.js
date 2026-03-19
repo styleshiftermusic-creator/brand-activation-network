@@ -67,15 +67,22 @@ const modules = [
 function extractNarration(markdown) {
     const lines = markdown.split("\n");
     const spoken = [];
+    let hasStarted = false;
 
     for (const line of lines) {
         const trimmed = line.trim();
+
+        if (trimmed === "**NARRATOR:**") {
+            hasStarted = true;
+            continue;
+        }
+
+        if (!hasStarted) continue;
 
         // Skip stage directions: lines starting with > or wrapped in *...*
         if (trimmed.startsWith(">")) continue;
         if (trimmed.startsWith("*") && trimmed.endsWith("*")) continue;
         if (trimmed.startsWith("**[SLIDE")) continue;
-        if (trimmed === "**NARRATOR:**") continue;
         if (trimmed.startsWith("#")) continue;
         if (trimmed.startsWith("---")) continue;
         if (trimmed === "*[END OF SCRIPT]*") continue;
