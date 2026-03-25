@@ -4,20 +4,37 @@ import { useState } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export function LeadMagnetForm() {
-    const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [email, setEmail] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email) return;
 
         setStatus("loading");
+        setErrorMessage("");
 
-        // Simulate an API call
-        setTimeout(() => {
+        try {
+            const res = await fetch("/api/subscribe", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || "Failed to subscribe. Please try again.");
+            }
+
             setStatus("success");
             setEmail("");
-        }, 1500);
+        } catch (err: unknown) {
+            console.error("Subscription error:", err);
+            setStatus("error");
+            setErrorMessage(err instanceof Error ? err.message : "Something went wrong.");
+        }
     };
 
     return (
@@ -73,6 +90,12 @@ export function LeadMagnetForm() {
                                 )}
                             </button>
                         </form>
+                    )}
+
+                    {status === "error" && (
+                        <p className="mt-4 text-sm text-red-400 font-medium">
+                            {errorMessage}
+                        </p>
                     )}
 
                     <p className="mt-5 text-[10px] text-zinc-600 font-mono uppercase tracking-widest">

@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   CheckCircle,
   Star,
-  ChevronRight,
   BarChart2,
   Layers,
   Brain,
@@ -131,16 +130,10 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard"
-            className="hidden md:block text-xs text-zinc-400 hover:text-white transition-colors px-4 py-2 border border-white/10 rounded-lg hover:border-white/20"
+            className="hidden md:block text-xs text-zinc-400 hover:text-white transition-colors px-6 py-2.5 border border-white/10 rounded-full hover:border-white/30 hover:bg-white/5"
           >
-            Login
+            Member Login
           </Link>
-          <a
-            href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
-            className="text-xs px-5 py-2.5 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-lg font-semibold transition-all duration-300 shadow-[0_0_25px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_35px_-5px_rgba(157,78,221,0.7)] hover:-translate-y-px"
-          >
-            Activate Now
-          </a>
         </div>
       </nav>
 
@@ -154,14 +147,14 @@ export default function Home() {
         </div>
 
         {/* Logo */}
-        <div className="mb-10 flex justify-center mix-blend-screen">
+        <div className="mb-10 flex justify-center">
           <Image
             src="/logo.png"
             alt="Brand Activation Network Logo"
             width={520}
             height={260}
             priority
-            className="w-auto h-32 md:h-44 object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+            className="w-auto h-32 md:h-44 object-contain drop-shadow-2xl opacity-60 hover:opacity-100 hover:scale-[1.02] transition-all duration-500"
           />
         </div>
 
@@ -180,26 +173,18 @@ export default function Home() {
           Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your life.
         </p>
 
-        {/* CTA Row */}
-        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mb-16">
+        {/* Unified Singular CTA */}
+        <div className="flex flex-col items-center gap-5 w-full mb-16">
           <a
             href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
-            className="group w-full sm:w-auto flex items-center justify-center gap-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-8px_rgba(52,211,153,0.7)] hover:shadow-[0_0_60px_-8px_rgba(52,211,153,0.9)] hover:-translate-y-1"
+            className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
           >
-            Activate Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            Activate Network Access <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+            <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
           </a>
-          <Link
-            href="/challenge"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-[var(--primary)]/40 bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 text-white rounded-xl font-medium transition-all duration-300 hover:-translate-y-1 hover:border-[var(--primary)]/60"
-          >
-            Join Free Challenge <ChevronRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/dashboard"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300 rounded-xl font-medium transition-all duration-300 hover:-translate-y-1"
-          >
-            Member Login
-          </Link>
+          <div className="flex items-center gap-2 text-sm text-zinc-500 font-medium">
+            Not ready? <Link href="/challenge" className="text-[var(--primary)] hover:text-[#c77dff] transition-colors underline underline-offset-4 decoration-[var(--primary)]/30 hover:decoration-[#c77dff]/80">Join the free 5-day challenge</Link>
+          </div>
         </div>
 
         {/* Social proof mini row */}

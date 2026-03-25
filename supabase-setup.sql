@@ -47,3 +47,12 @@ CREATE POLICY "Users can update their own course progress"
 ON public.course_progress
 FOR UPDATE TO authenticated
 USING (auth.uid() = user_id);
+
+-- 3. Optimization Pass (Data Architect)
+-- Explicit Indexes for Foreign Keys and High-Traffic Lookups
+CREATE INDEX IF NOT EXISTS idx_course_progress_user_id ON public.course_progress(user_id);
+CREATE INDEX IF NOT EXISTS idx_webinar_registrations_email ON public.webinar_registrations(email);
+
+-- Note from Data Architect: The missing SELECT policy on webinar_registrations
+-- is an intentional security design choice, preventing unauthenticated iteration
+-- over captured leads. Only the service_role key can read this data.

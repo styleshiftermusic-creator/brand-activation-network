@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /audio/
+Disallow: /blueprints/
+Disallow: /course-visuals/
+
+Sitemap: https://brandactivationnetwork.com/sitemap.xml

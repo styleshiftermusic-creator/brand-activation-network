@@ -1,74 +1,80 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Download, BookOpen, Database, Sparkles, FileText, Bot, CreditCard, Mail } from "lucide-react";
+import { Download, BookOpen, Database, Sparkles, FileText, Bot, Lock } from "lucide-react";
 
 const DATA_SOURCES = [
     {
         id: "DS-01",
         title: "Pledge Loan Calculator",
         format: "Spreadsheet",
-        size: "2.4 MB",
+        size: "2.5 KB",
         icon: <FileText className="w-5 h-5 text-emerald-400" />,
         bgClass: "bg-emerald-500/10",
         hoverText: "group-hover:text-emerald-400",
         hoverBorder: "group-hover:border-emerald-500/20",
-        hoverBg: "group-hover:bg-emerald-500/10"
+        hoverBg: "group-hover:bg-emerald-500/10",
+        href: "/blueprints/pledge-loan-calculator.md"
     },
     {
         id: "DS-02",
         title: "Business Funding Checklist",
         format: "PDF Document",
-        size: "3.8 MB",
+        size: "3.1 KB",
         icon: <FileText className="w-5 h-5 text-blue-400" />,
         bgClass: "bg-blue-500/10",
         hoverText: "group-hover:text-blue-400",
         hoverBorder: "group-hover:border-blue-500/20",
-        hoverBg: "group-hover:bg-blue-500/10"
+        hoverBg: "group-hover:bg-blue-500/10",
+        href: "/blueprints/business-funding-checklist.md"
     },
     {
         id: "DS-03",
         title: "OPA Marketing Playbook",
         format: "Notion System",
-        size: "18.6 MB",
+        size: "4.2 KB",
         icon: <Database className="w-5 h-5 text-amber-400" />,
         bgClass: "bg-amber-500/10",
         hoverText: "group-hover:text-amber-400",
         hoverBorder: "group-hover:border-amber-500/20",
-        hoverBg: "group-hover:bg-amber-500/10"
+        hoverBg: "group-hover:bg-amber-500/10",
+        href: "/blueprints/opa-marketing-playbook.md"
     },
     {
         id: "DS-04",
         title: "High-Ticket Sales Scripts",
         format: "PDF Document",
-        size: "4.2 MB",
+        size: "4.9 KB",
         icon: <FileText className="w-5 h-5 text-purple-400" />,
         bgClass: "bg-purple-500/10",
         hoverText: "group-hover:text-purple-400",
         hoverBorder: "group-hover:border-purple-500/20",
-        hoverBg: "group-hover:bg-purple-500/10"
+        hoverBg: "group-hover:bg-purple-500/10",
+        href: "/blueprints/high-ticket-sales-scripts.md"
     },
     {
         id: "DS-05",
-        title: "Webinar Funnel Swipe File",
+        title: "Investment Blueprint Template",
         format: "Notion Template",
-        size: "12.1 MB",
+        size: "4.0 KB",
         icon: <Database className="w-5 h-5 text-cyan-400" />,
         bgClass: "bg-cyan-500/10",
         hoverText: "group-hover:text-cyan-400",
         hoverBorder: "group-hover:border-cyan-500/20",
-        hoverBg: "group-hover:bg-cyan-500/10"
+        hoverBg: "group-hover:bg-cyan-500/10",
+        href: "/blueprints/investment-blueprint-template.md"
     },
     {
         id: "DS-06",
         title: "AI Agent Prompt Library",
         format: "JSON / TXT",
-        size: "1.1 MB",
+        size: "5.3 KB",
         icon: <Bot className="w-5 h-5 text-rose-400" />,
         bgClass: "bg-rose-500/10",
         hoverText: "group-hover:text-rose-400",
         hoverBorder: "group-hover:border-rose-500/20",
-        hoverBg: "group-hover:bg-rose-500/10"
+        hoverBg: "group-hover:bg-rose-500/10",
+        href: "/blueprints/ai-agent-prompt-library.json"
     }
 ];
 
@@ -84,7 +90,7 @@ export default function DataSourcesPage() {
             <main className="flex-1 p-6 lg:p-10 overflow-y-auto z-10 relative">
                 <div className="max-w-5xl mx-auto animate-fade-in-up">
                     <header className="mb-10 border-b border-white/10 pb-6">
-                        <h1 className="text-3xl font-medium tracking-tight text-white mb-2">Secure Data Sources</h1>
+                        <h1 className="text-3xl font-medium tracking-tight text-white mb-2">The Million Dollar File</h1>
                         <p className="text-zinc-500 font-mono text-sm max-w-2xl">
                             Access premium assets, datasets, and foundational materials mapped directly to your
                             Brand Activation Network account.
@@ -129,9 +135,9 @@ export default function DataSourcesPage() {
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
-                                    <button className="w-full sm:w-auto px-8 py-3 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-medium transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_var(--primary)] flex items-center justify-center gap-2">
-                                        <Download className="w-4 h-4" />
-                                        Access Framework
+                                    <button disabled className="w-full opacity-50 cursor-not-allowed sm:w-auto px-8 py-3 rounded-lg border border-[var(--primary)]/30 text-white font-medium flex items-center justify-center gap-2">
+                                        <Lock className="w-4 h-4" />
+                                        Framework Releasing Q4
                                     </button>
                                     <div className="text-xs font-mono text-zinc-500 uppercase flex gap-4">
                                         <span>Size: 1.2 GB</span>
@@ -142,66 +148,10 @@ export default function DataSourcesPage() {
                         </div>
                     </div>
 
-                    {/* System Integrations */}
-                    <div className="mb-12">
-                        <h3 className="text-lg font-medium text-white mb-6 tracking-tight">Active Integrations</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {/* Stripe */}
-                            <div className="group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:border-indigo-500/30 hover:bg-indigo-500/5 transition-all duration-500 hover:-translate-y-1">
-                                <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
-                                <div className="flex items-center gap-4 relative z-10">
-                                    <div className="p-3 rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:scale-110 transition-transform duration-500">
-                                        <CreditCard className="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-medium text-white tracking-tight">Stripe</h4>
-                                        <p className="text-xs font-mono text-zinc-500 mt-1">Monetization Engine</p>
-                                    </div>
-                                </div>
-                                <div className="w-full h-1 mt-4 bg-black/40 rounded-full overflow-hidden">
-                                    <div className="w-full h-full bg-indigo-500/50 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
-                                </div>
-                            </div>
 
-                            {/* Supabase */}
-                            <div className="group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-500 hover:-translate-y-1">
-                                <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
-                                <div className="flex items-center gap-4 relative z-10">
-                                    <div className="p-3 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform duration-500">
-                                        <Database className="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-medium text-white tracking-tight">Supabase</h4>
-                                        <p className="text-xs font-mono text-zinc-500 mt-1">PostgreSQL Telemetry</p>
-                                    </div>
-                                </div>
-                                <div className="w-full h-1 mt-4 bg-black/40 rounded-full overflow-hidden">
-                                    <div className="w-full h-full bg-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-                                </div>
-                            </div>
-
-                            {/* Resend */}
-                            <div className="group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:border-zinc-400/30 hover:bg-zinc-400/5 transition-all duration-500 hover:-translate-y-1">
-                                <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
-                                <div className="flex items-center gap-4 relative z-10">
-                                    <div className="p-3 rounded-lg bg-zinc-500/10 text-zinc-400 group-hover:scale-110 transition-transform duration-500">
-                                        <Mail className="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-medium text-white tracking-tight">Resend</h4>
-                                        <p className="text-xs font-mono text-zinc-500 mt-1">Transactional Ops</p>
-                                    </div>
-                                </div>
-                                <div className="w-full h-1 mt-4 bg-black/40 rounded-full overflow-hidden">
-                                    <div className="w-full h-full bg-zinc-400/50 shadow-[0_0_10px_rgba(161,161,170,0.5)]"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Standard Vault Grid */}
                     <div className="mb-6">
-                        <h3 className="text-lg font-medium text-white mb-6 tracking-tight">Auxiliary Datasets</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {DATA_SOURCES.map((source) => (
                                 <div key={source.id} className="group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:border-white/10 hover:bg-white/[0.02] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] overflow-hidden">
@@ -218,9 +168,9 @@ export default function DataSourcesPage() {
                                             <span>{source.format}</span>
                                             <span>{source.size}</span>
                                         </div>
-                                        <button className={`w-full mt-4 py-2 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 ${source.hoverText} ${source.hoverBorder} ${source.hoverBg}`}>
+                                        <a href={source.href} target="_blank" rel="noopener noreferrer" className={`w-full mt-4 py-2 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 ${source.hoverText} ${source.hoverBorder} ${source.hoverBg}`}>
                                             <Download className="w-3 h-3" /> Download
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             ))}

@@ -9,9 +9,9 @@ import { MetricChart } from "@/components/dashboard/MetricChart";
 import { MissionFeed } from "@/components/dashboard/MissionFeed";
 
 const DEFAULT_MISSIONS = [
-    { id: "M-01", status: "COMPLETED", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: false, completed: true },
-    { id: "M-02", status: "COMPLETED", title: "Transitioning to Business Funding", category: "[FINANCE]", time: "01:12:00", locked: false, completed: true },
-    { id: "M-03", status: "ACTIVE", title: "The Investment Blueprint", category: "[WEALTH]", time: "00:55:00", locked: false, completed: false },
+    { id: "M-01", status: "LOCKED", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: true, completed: false },
+    { id: "M-02", status: "LOCKED", title: "Transitioning to Business Funding", category: "[FINANCE]", time: "01:12:00", locked: true, completed: false },
+    { id: "M-03", status: "LOCKED", title: "The Investment Blueprint", category: "[WEALTH]", time: "00:55:00", locked: true, completed: false },
     { id: "M-04", status: "LOCKED", title: "Marketing & Audience Leverage", category: "[BUSINESS]", time: "01:30:00", locked: true, completed: false },
     { id: "M-05", status: "LOCKED", title: "High-Ticket Sales Philosophy", category: "[BUSINESS]", time: "00:42:00", locked: true, completed: false },
     { id: "M-06", status: "LOCKED", title: "Scaling with One-to-Many", category: "[SCALE]", time: "01:05:00", locked: true, completed: false },
@@ -118,11 +118,21 @@ export default function MissionControl() {
                                 status: progress.status
                             };
                         }
+                        // Default any unrecorded mission to LOCKED
                         return mission;
                     });
                     setMissions(updatedMissions);
                 } else {
-                    // Default fallback for new users: unlock the first module
+                    // First time user, initialize M-01 in DB
+                    try {
+                        await supabase.from('course_progress').insert({
+                            user_id: user.id,
+                            module_id: 'M-01',
+                            status: 'ACTIVE'
+                        });
+                    } catch (e) {
+                         console.info("Could not initialize telemetry database row.");
+                    }
                     const initialMissions = [...DEFAULT_MISSIONS];
                     initialMissions[0].locked = false;
                     initialMissions[0].status = "ACTIVE";

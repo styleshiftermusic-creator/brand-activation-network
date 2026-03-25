@@ -1,8 +1,8 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { useState, useEffect } from "react";
-import { Play, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Play, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image } from "lucide-react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -26,10 +26,11 @@ interface ModuleData {
     description: string;
     quiz: QuizQuestion[];
     mediaSrc: string;
+    visuals: string[];
     resources: { type: string; name: string; icon: React.ReactNode }[];
 }
 
-function buildModules(courseData: Record<string, { title: string; studyGuide: string; quiz: QuizQuestion[]; audioSrc: string }>): ModuleData[] {
+function buildModules(courseData: Record<string, { title: string; studyGuide: string; quiz: QuizQuestion[]; audioSrc: string; visuals?: string[] }>): ModuleData[] {
     return Object.entries(courseData).map(([key, data]) => {
         const wordCount = data.studyGuide.split(/\s+/).length;
         const totalMinutes = Math.ceil(wordCount / 150);
@@ -42,6 +43,7 @@ function buildModules(courseData: Record<string, { title: string; studyGuide: st
             description: data.studyGuide,
             quiz: data.quiz,
             mediaSrc: data.audioSrc,
+            visuals: data.visuals || [],
             resources: [
                 { type: "PDF", name: "Module Blueprint", icon: <FileText className="w-4 h-4" /> }
             ]
@@ -51,10 +53,14 @@ function buildModules(courseData: Record<string, { title: string; studyGuide: st
 
 export default function MasterCoursePage() {
     const [activeModuleId, setActiveModuleId] = useState("M-01");
-    const [isPlaying, setIsPlaying] = useState(false);
     const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources'>('study');
     const [modules, setModules] = useState<ModuleData[]>([]);
     const [isLoadingContent, setIsLoadingContent] = useState(true);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const isManualNavRef = useRef(false);
+
+    const activeModule = modules.find(m => m.id === activeModuleId) || modules[0];
 
     // Fetch course content from protected API
     useEffect(() => {
@@ -74,8 +80,66 @@ export default function MasterCoursePage() {
     }, []);
 
     useEffect(() => {
-        setIsPlaying(false);
+        setCurrentSlide(0);
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
     }, [activeModuleId]);
+
+    // Audio-Slide Sync: auto-advance slides based on audio position
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const handleTimeUpdate = () => {
+            if (isManualNavRef.current) return;
+            const { currentTime, duration } = audio;
+            if (!duration || duration === 0) return;
+
+            const slideCount = activeModule?.visuals?.length || 0;
+            if (slideCount <= 1) return;
+
+            const secondsPerSlide = duration / slideCount;
+            const targetSlide = Math.min(
+                Math.floor(currentTime / secondsPerSlide),
+                slideCount - 1
+            );
+            setCurrentSlide(prev => prev !== targetSlide ? targetSlide : prev);
+        };
+
+        audio.addEventListener('timeupdate', handleTimeUpdate);
+        return () => audio.removeEventListener('timeupdate', handleTimeUpdate);
+    }, [activeModule]);
+
+    // Seek audio to the correct position when manually navigating slides
+    const seekToSlide = useCallback((slideIndex: number) => {
+        const audio = audioRef.current;
+        if (!audio || !audio.duration) return;
+        const slideCount = activeModule?.visuals?.length || 1;
+        const secondsPerSlide = audio.duration / slideCount;
+        // Briefly suppress auto-advance to avoid fighting the manual nav
+        isManualNavRef.current = true;
+        audio.currentTime = slideIndex * secondsPerSlide;
+        setTimeout(() => { isManualNavRef.current = false; }, 300);
+    }, [activeModule]);
+
+    const goToPrevSlide = useCallback(() => {
+        setCurrentSlide(prev => {
+            const next = Math.max(0, prev - 1);
+            seekToSlide(next);
+            return next;
+        });
+    }, [seekToSlide]);
+
+    const goToNextSlide = useCallback(() => {
+        const maxSlide = (activeModule?.visuals?.length || 1) - 1;
+        setCurrentSlide(prev => {
+            const next = Math.min(maxSlide, prev + 1);
+            seekToSlide(next);
+            return next;
+        });
+    }, [seekToSlide, activeModule]);
 
     const fetchProgress = async () => {
         try {
@@ -145,8 +209,6 @@ export default function MasterCoursePage() {
         if (modules.length > 0) fetchProgress();
     }, [modules]);
 
-    const activeModule = modules.find(m => m.id === activeModuleId) || modules[0];
-
     if (isLoadingContent || modules.length === 0) {
         return (
             <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-emerald-500/30 relative overflow-hidden">
@@ -213,42 +275,81 @@ export default function MasterCoursePage() {
                         <h1 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{activeModule.title}</h1>
                     </header>
 
-                    {/* Video Player Box with Glassmorphism */}
-                    <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl mb-8 relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center transition-transform duration-500 hover:-translate-y-1">
+                    {/* Slide Viewer — Always Visible */}
+                    <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center">
                         {/* Outer Glass Border */}
                         <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none z-20" />
                         <div className="absolute inset-0 border border-white/[0.02] m-[1px] rounded-xl pointer-events-none z-20" />
 
-                        {!isPlaying ? (
+                        {/* Slide Visual or Fallback */}
+                        {activeModule.visuals && activeModule.visuals.length > 0 ? (
                             <>
-                                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-1000 mix-blend-luminosity grayscale z-0" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 z-10" />
+                                <img
+                                    key={`${activeModule.id}-${currentSlide}`}
+                                    src={activeModule.visuals[currentSlide]}
+                                    alt={`${activeModule.title} — Slide ${currentSlide + 1}`}
+                                    className="absolute inset-0 w-full h-full object-contain z-0 animate-fade-in"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 z-10 pointer-events-none" />
 
-                                <button
-                                    onClick={() => setIsPlaying(true)}
-                                    className="relative z-30 h-20 w-20 rounded-full bg-emerald-500/20 border border-emerald-500/50 backdrop-blur-md flex items-center justify-center text-white hover:scale-110 hover:bg-emerald-500 transition-all duration-300 group shadow-[0_0_30px_rgba(16,185,129,0.5)]">
-                                    <Play className="h-8 w-8 ml-2 fill-current" />
-                                </button>
+                                {/* Slide Navigation — Always Active */}
+                                {activeModule.visuals.length > 1 && (
+                                    <>
+                                        <button
+                                            onClick={goToPrevSlide}
+                                            disabled={currentSlide === 0}
+                                            className="absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/60 border border-white/10 text-white/70 hover:text-white hover:bg-black/80 disabled:opacity-20 disabled:cursor-not-allowed transition-all backdrop-blur-md"
+                                        >
+                                            <ChevronLeft className="w-5 h-5" />
+                                        </button>
+                                        <button
+                                            onClick={goToNextSlide}
+                                            disabled={currentSlide === activeModule.visuals.length - 1}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/60 border border-white/10 text-white/70 hover:text-white hover:bg-black/80 disabled:opacity-20 disabled:cursor-not-allowed transition-all backdrop-blur-md"
+                                        >
+                                            <ChevronRight className="w-5 h-5" />
+                                        </button>
+                                    </>
+                                )}
 
-                                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono text-zinc-400 z-20">
-                                    <span className="bg-black/60 px-2 py-1 rounded backdrop-blur border border-white/10">00:00 / {activeModule.duration}</span>
-                                    <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded backdrop-blur border border-emerald-500/30 tracking-widest uppercase">Master Course Vault</span>
-                                </div>
+                                {/* Slide Counter Badge */}
+                                {activeModule.visuals.length > 1 && (
+                                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30">
+                                        <span className="bg-black/70 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10 text-xs font-mono text-zinc-400 flex items-center gap-1.5">
+                                            <Image className="w-3 h-3" />
+                                            {currentSlide + 1} / {activeModule.visuals.length}
+                                        </span>
+                                    </div>
+                                )}
                             </>
                         ) : (
-                            <div className="absolute inset-0 w-full h-full z-30 rounded-xl bg-black/80 flex flex-col items-center justify-center gap-6 p-8">
-                                <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.4)]">
-                                    <Play className="h-8 w-8 fill-emerald-400 text-emerald-400" />
+                            <>
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-black z-0" />
+                                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 gap-3">
+                                    <Image className="w-12 h-12 text-emerald-500/30" />
+                                    <p className="text-xs font-mono text-zinc-600 tracking-wider uppercase">Slide visuals loading</p>
                                 </div>
-                                <p className="text-sm font-mono text-zinc-400 tracking-wider uppercase">Now Playing — Module {activeModule.id.replace('M-0', '')}</p>
-                                <audio
-                                    src={activeModule.mediaSrc}
-                                    autoPlay
-                                    controls
-                                    className="w-full max-w-md"
-                                />
-                            </div>
+                            </>
                         )}
+                    </div>
+
+                    {/* Audio Player Bar — Separate from slides */}
+                    <div className="w-full mt-3 mb-6 p-4 bg-black/50 backdrop-blur-xl rounded-xl border border-white/10 flex items-center gap-4">
+                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]">
+                            <Play className="h-4 w-4 fill-emerald-400 text-emerald-400 ml-0.5" />
+                        </div>
+                        <div className="flex-1 flex flex-col gap-1 min-w-0">
+                            <span className="text-[10px] font-mono text-zinc-500 tracking-wider uppercase truncate">
+                                Module {activeModule.id.replace('M-0', '')} — {activeModule.title}
+                            </span>
+                            <audio
+                                ref={audioRef}
+                                key={activeModule.mediaSrc}
+                                src={activeModule.mediaSrc}
+                                controls
+                                className="w-full h-8 [&::-webkit-media-controls-panel]:bg-transparent"
+                            />
+                        </div>
                     </div>
 
                     {/* Tab Navigation & Content Area */}

@@ -13,9 +13,9 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     const navItems = [
         { path: "/dashboard", label: "Active Feed", icon: <Activity className="h-4 w-4" /> },
         { path: "/dashboard/master-course", label: "The Master Course", icon: <Briefcase className="h-4 w-4" /> },
+        { path: "/dashboard/data-sources", label: "The Million Dollar File", icon: <Database className="h-4 w-4" /> },
         { path: "/dashboard/blueprints", label: "Brand Blueprints", icon: <FolderDot className="h-4 w-4" /> },
         { path: "/dashboard/antigravity-system", label: "AntiGravity System", icon: <Terminal className="h-4 w-4" /> },
-        { path: "/dashboard/data-sources", label: "Data Sources", icon: <Database className="h-4 w-4" /> },
     ];
 
     return (

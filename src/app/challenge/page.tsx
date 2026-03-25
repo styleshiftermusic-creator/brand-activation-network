@@ -17,7 +17,7 @@ export default function ChallengeFunnel() {
 
             {/* Navigation Layer */}
             <nav className="w-full max-w-6xl px-6 py-8 flex justify-between items-center z-10 animate-fade-in-up">
-                <div className="flex items-center gap-2 mix-blend-screen">
+                <div className="flex items-center gap-2">
                     <Link href="/">
                         <Image src="/logo.png" alt="BAN Logo" width={180} height={60} className="h-10 w-auto object-contain hover:scale-105 transition-transform" />
                     </Link>

@@ -211,7 +211,16 @@ export const courseData = {
   "4": {
     "title": "Marketing & Audience Leverage",
     "category": "Growth > Audience Building",
-    "audioSrc": "/audio/module-4.wav",
+    "audioSrc": "/audio/module-4.mp3",
+    "visuals": [
+      "/course-visuals/mod4_slide1_title_1772565083203.png",
+      "/course-visuals/mod4_slide2_visibility_1774307691038.png",
+      "/course-visuals/mod4_slide3_opa_1774307704615.png",
+      "/course-visuals/mod4_slide4_plays_1774307718069.png",
+      "/course-visuals/mod4_slide5_content_1774307743432.png",
+      "/course-visuals/mod4_slide6_checklist_1774307758017.png",
+      "/course-visuals/mod4_slide7_closing_1774307771749.png"
+    ],
     "studyGuide": "# Module 4: Marketing & Audience Leverage\n\n## The Core Idea\nBeing the best-kept secret doesn't pay the bills. This module turns your capital into **manufactured visibility** using three OPA plays and one content engine.\n\n## The OPA Playbook\n\n**Play 1: The Podcast Tour**\nGet on 3–5 niche podcasts. Use the **Power Five Method**: bring 5 free resources to give the audience on the spot. Don't sell — give. Drive every listener to a free opt-in page to collect their email and phone number.\n\n**Play 2: Shout-Out Pages**\nDM niche Instagram aggregator pages with one line: *\"How much for promo?\"* Then negotiate a bulk deal — 5 posts for the price of 3. Repetition builds familiarity. One post is a whisper. Five posts is a pattern.\n\n**Play 3: The Content Factory**\nEvery podcast you record is raw material. Upload it to **Opus.io** (~$9.99/mo). It generates 40–60 short clips automatically. Post across TikTok, Reels, and Shorts. You create omnipresence on 3 platforms from 1 recording.\n\n## Data is the Real Asset\n\nSocial media is rented land. Your email and SMS list is owned real estate. Every OPA play must funnel into a free opt-in that captures name, email, and phone. If Instagram shuts down tomorrow, your list survives.\n\n## Cheat Sheet\n\n> **Budget:** $20k marketing allocation from your business funding\n> **Tool:** Opus.io for clip generation\n> **Funnel:** All traffic → free opt-in → email/SMS list → webinar\n> **Negotiation:** Always ask for bulk promo, not single posts",
     "quiz": [
       {
@@ -274,7 +283,16 @@ export const courseData = {
   "5": {
     "title": "High-Ticket Sales Philosophy",
     "category": "Sales > Psychology",
-    "audioSrc": "/audio/module-5.wav",
+    "audioSrc": "/audio/module-5.mp3",
+    "visuals": [
+      "/course-visuals/mod5_slide1_title_1774307796260.png",
+      "/course-visuals/mod5_slide2_trap_1774307809337.png",
+      "/course-visuals/mod5_slide3_ceo_1774307823987.png",
+      "/course-visuals/mod5_slide4_qualify_1774307851113.png",
+      "/course-visuals/mod5_slide5_onetomany_1774307864841.png",
+      "/course-visuals/mod5_slide6_trust_1774307877885.png",
+      "/course-visuals/mod5_slide7_closing_1774307901221.png"
+    ],
     "studyGuide": "# Module 5: High-Ticket Sales Philosophy\n\n## The Core Idea\nYour price point is a filter. Low prices attract clients who drain you. High prices attract clients who execute. The simplest move you can make today: **double your prices**.\n\n## 3 Concepts to Lock In\n\n**1. The Cheap Client Trap**\nA $500 client sends 9 emails on Saturday. A $35,000 client does the homework before the call. Cheap prices don't just reduce your profit margin — they reduce your peace of mind. High-ticket eliminates bad fits at the door.\n\n**2. Value vs. Time**\nClients don't pay for your hours. They pay for the speed of the result. If a 60-minute call solves a $35,000 problem, that hour *is* worth $35,000. Stop quoting time. Start quoting transformation.\n\n**3. The 4 Levers of Trust**\nYou can't close high-ticket without four types of trust built in sequence:\n- **Trust You:** Zero-to-Hero story (show where you started, not just where you are)\n- **Trust the Value:** Give the Bourbon Chicken — free insight that actually works\n- **Trust Themselves:** Break their limiting beliefs before you pitch\n- **Trust the Vehicle:** Evidence over tactics — third-party proof, stats, analogies\n\n## Client Qualification Gate\n\n| Green Light | Red Flag |\n|---|---|\n| Coachable — follows the blueprint | Wants to remix before mastering |\n| Committed to execution | Excited but avoids action |\n| Financially invested | Gambling their last dollar |\n\n## Cheat Sheet\n\n> **Double your prices — today, not next month**\n> **Fire bad clients:** refund and remove to protect culture\n> **Weekly webinar:** 52 events in a year = master of all 4 skills\n> **One-to-Many:** 50 pitches collapsed into 1 hour = the CEO model",
     "quiz": [
       {
@@ -332,7 +350,16 @@ export const courseData = {
   "6": {
     "title": "Scaling with One-to-Many",
     "category": "Growth > Systems",
-    "audioSrc": "/audio/module-6.wav",
+    "audioSrc": "/audio/module-6.mp3",
+    "visuals": [
+      "/course-visuals/mod6_slide1_title_1774307914007.png",
+      "/course-visuals/mod6_slide2_burnout_1774307926478.png",
+      "/course-visuals/mod6_slide3_frequency_1774307953498.png",
+      "/course-visuals/mod6_slide4_funnel_1774307968553.png",
+      "/course-visuals/mod6_slide5_structure_1774332796849.png",
+      "/course-visuals/mod6_slide6_checklist_1774332812504.png",
+      "/course-visuals/mod6_slide7_closing_1774332823284.png"
+    ],
     "studyGuide": "# Module 6: Scaling with One-to-Many\n\n## The Core Idea\nAt some point, your calendar runs out of hours. The only ceiling-breaker is collapsing your 50 individual sales conversations into one 60-minute room where everyone hears the pitch simultaneously.\n\n## 3 Concepts to Lock In\n\n**1. The Burnout Ceiling**\n10 sales calls a day = exhaustion and a revenue that stops the moment you stop. A weekly webinar to 500 people = leverage. The math is simply different.\n\n**2. The Power of Weekly Frequency**\nCommit to one virtual event every week for 52 consecutive weeks. That single discipline forces you to master four skills at once: **marketing** (filling the room), **speaking** (showing up confidently), **sales** (converting), and **leadership** (delegating to a team).\n\n**3. The Presentation Structure**\n1. Zero-to-Hero Open — your story, not your highlight reel\n2. Mindset Reset — destroy limiting beliefs directly\n3. Evidence Drop — third-party proof, stats, social proof, analogies\n4. The Offer — the logical next step, never a pressure close\n\n## Filling the Room: OPA Recap\n\nAll traffic from your Podcast Tour, Shout-Out Pages, and Opus.io clips has one destination: the webinar registration page. Every marketing effort funnels into the live event.\n\n## Cheat Sheet\n\n> **Platform:** Zoom or StreamYard (chat is mandatory)\n> **Frequency:** Every week — not when you feel like it\n> **Non-negotiable:** Registration funnel live before you market\n> **Email/SMS List:** Your most durable asset — own it, protect it",
     "quiz": [
       {
@@ -390,7 +417,16 @@ export const courseData = {
   "7": {
     "title": "Mindset & Environment",
     "category": "Foundations > Psychology",
-    "audioSrc": "/audio/module-7.wav",
+    "audioSrc": "/audio/module-7.mp3",
+    "visuals": [
+      "/course-visuals/mod7_slide1_title_1774332851081.png",
+      "/course-visuals/mod7_slide2_proximity_1774332865843.png",
+      "/course-visuals/mod7_slide3_seeit_1774332879696.png",
+      "/course-visuals/mod7_slide4_certainty_1774332907896.png",
+      "/course-visuals/mod7_slide5_checklist_1774332921392.png",
+      "/course-visuals/mod7_slide6_final_1774332934863.png",
+      "/course-visuals/mod7_slide7_closing_1774332961307.png"
+    ],
     "studyGuide": "# Module 7: Mindset & Environment\n\n## The Core Idea\nEvery strategy in this curriculum is useless if the person holding it doesn't believe they can execute it. Mindset isn't a soft topic — it is the operating system every other module runs on.\n\n## 3 Concepts to Lock In\n\n**1. The Law of Proximity**\nWhoever you're around, you become. Stagnant rooms produce stagnant results. High-level rooms recalibrate your standards without a single conversation. You must physically get into rooms where your goals are someone else's baseline.\n\n**2. See It to Seize It**\nYour brain can't fully pursue what it hasn't experienced as real. Go test drive the car. Walk through the neighborhood. Attend the conference even if you have to split the ticket. Physical exposure rewires your sense of what's possible.\n\n**3. Certainty Over Belief**\nYou don't need more belief — you need more certainty. Certainty comes from data: a proven system with measurable results. When you know that every $1 spent on ads returns $3.50, you stop hesitating and start scaling.\n\n## The Final Checklist\n\n| Action | Why |\n|---|---|\n| Attend 1 high-level event this quarter | Proximity is the fastest mindset upgrade |\n| Assign a 90-day coachability window to your mentor | Don't remix before you've mastered |\n| Double your prices this week | Filter for premium clients immediately |\n| Write your Zero-to-Hero story today | Your best sales tool is your origin story |\n| Search Eventbrite for local entrepreneur events | High-level rooms exist in every city |\n\n## Cheat Sheet\n\n> **Law of Proximity:** You become whoever you're around — curate aggressively\n> **Coachability:** Follow the blueprint to a T for 90 days before remixing\n> **Certainty Formula:** Proven system + tracked data = no more hesitation\n> **Final Word:** You can have excuses or you can have results — never both",
     "quiz": [
       {
