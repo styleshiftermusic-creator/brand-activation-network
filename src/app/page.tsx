@@ -19,16 +19,16 @@ import {
 export const metadata = {
   title: "Brand Activation Network | Master Business Funding & High-Ticket Sales",
   description:
-    "The 7-module blueprint to secure business funding, automate high-ticket sales, and scale your brand using AI-powered systems. Join the Brand Activation Network.",
+    "The Master Blueprint to secure business funding, automate high-ticket sales, and scale your brand using AI-powered systems. Join the Brand Activation Network.",
 };
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
 const STATS = [
-  { value: "5,000+", label: "Active Members" },
-  { value: "$150K", label: "Avg. Funding Unlocked" },
-  { value: "90 Days", label: "To First Capital" },
-  { value: "7", label: "Core Modules" },
+  { value: "3", label: "Core Scaling Pillars" },
+  { value: "$0", label: "Ad Spend Required" },
+  { value: "100%", label: "Automated Systems" },
+  { value: "1", label: "Private Network" },
 ];
 
 const VALUE_PROPS = [
@@ -92,7 +92,7 @@ export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
-    name: "Brand Activation Network: The 7-Module Blueprint",
+    name: "Brand Activation Network: The Master Blueprint",
     description: "Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your brand.",
     provider: { "@type": "Organization", name: "Brand Activation Network" },
     educationalCredentialAwarded: "Certification of Completion",
@@ -143,7 +143,7 @@ export default function Home() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-mono tracking-widest text-[var(--primary)] uppercase mb-8 hover:border-[var(--primary)]/50 transition-colors">
           <Zap className="w-3 h-3 fill-current" />
-          The 7-Module Blueprint · Now Available
+          The Master Blueprint · Now Available
         </div>
 
         {/* Logo */}
@@ -176,7 +176,7 @@ export default function Home() {
         {/* Unified Singular CTA */}
         <div className="flex flex-col items-center gap-5 w-full mb-16">
           <a
-            href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
+            href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
             className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
           >
             Activate Network Access <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
@@ -196,7 +196,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <span><span className="text-white font-semibold">5,000+</span> members activated</span>
+          <span><span className="text-white font-semibold flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 fill-current text-[var(--primary)] text-emerald-400" />Private Network</span> Access Open</span>
           <span className="hidden md:flex items-center gap-1 text-amber-400">
             {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
           </span>
@@ -242,12 +242,12 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
-      {/* ─── 7-MODULE BLUEPRINT ─── */}
+      {/* ─── MASTER BLUEPRINT ─── */}
       <ScrollReveal delay={0.05}>
         <section id="modules" className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
           <div className="text-center mb-14">
             <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">The Curriculum</span>
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4">The 7-Module Blueprint</h2>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4">The Master Blueprint</h2>
             <p className="text-zinc-500 max-w-xl mx-auto font-light">
               From your first credit union pledge loan to a scaled, automated empire — every step is mapped.
             </p>
@@ -290,7 +290,7 @@ export default function Home() {
 
           <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
             <a
-              href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
+              href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
               className="group flex items-center gap-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-10px_rgba(52,211,153,0.8)] hover:-translate-y-1"
             >
               Get All 7 Modules <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -368,7 +368,7 @@ export default function Home() {
                 Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access.
               </p>
               <a
-                href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
+                href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
                 className="group inline-flex items-center gap-3 px-14 py-5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_80px_-10px_rgba(52,211,153,0.9)] hover:-translate-y-1.5"
               >
                 Activate Now <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />

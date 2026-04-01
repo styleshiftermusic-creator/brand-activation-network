@@ -271,7 +271,7 @@ export default function ChallengeConfirmation() {
                         </div>
 
                         <Link
-                            href="https://buy.stripe.com/test_4gMeV5eBA6SB9hUc5BeQM00"
+                            href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
                             className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
                         >
                             YES, UPGRADE MY ORDER NOW
