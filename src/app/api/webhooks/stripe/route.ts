@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from 'resend';
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,31 @@ export async function POST(req: Request) {
                 return NextResponse.json({ success: false, message: 'Provider Error', details: error.message }, { status: 500 });
             } else {
                 console.log("Successfully provisioned and sent invite to:", customerEmail);
+            }
+
+            // --- ADMIN NOTIFICATION ---
+            if (process.env.RESEND_API_KEY && process.env.ADMIN_EMAIL) {
+                try {
+                    const resend = new Resend(process.env.RESEND_API_KEY);
+                    await resend.emails.send({
+                        from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>', // Needs custom domain to be fully reliable if sending to non-owner
+                        to: process.env.ADMIN_EMAIL,
+                        subject: '💰 New Course Purchase!',
+                        html: `
+                            <div style="font-family: sans-serif; padding: 20px;">
+                                <h2>A new user has purchased the course!</h2>
+                                <p><strong>Name:</strong> ${customerName || 'N/A'}</p>
+                                <p><strong>Email:</strong> ${customerEmail}</p>
+                                <p><em>They have been provisioned in Supabase and sent a login invite.</em></p>
+                            </div>
+                        `
+                    });
+                    console.log("Admin purchase notification sent.");
+                } catch (emailErr) {
+                    console.error("Failed to send admin purchase notification:", emailErr);
+                }
+            } else {
+                console.warn("RESEND_API_KEY or ADMIN_EMAIL missing. Admin notification skipped.");
             }
         }
     }

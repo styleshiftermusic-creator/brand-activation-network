@@ -1,5 +1,16 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+        },
+    }
+);
 import { Resend } from 'resend';
 import { z } from 'zod';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -75,7 +86,7 @@ export async function POST(req: Request) {
                 if (process.env.ADMIN_EMAIL) {
                     emailPromises.push(
                         resend.emails.send({
-                            from: 'Workshop Engine <onboarding@resend.dev>',
+                            from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
                             to: process.env.ADMIN_EMAIL,
                             subject: '🎉 New Lead Magnet Download!',
                             html: `
@@ -96,7 +107,7 @@ export async function POST(req: Request) {
 
                 emailPromises.push(
                     resend.emails.send({
-                        from: 'Workshop Engine <onboarding@resend.dev>',
+                        from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
                         to: email,
                         subject: 'Here is your OPA Marketing Playbook',
                         html: `

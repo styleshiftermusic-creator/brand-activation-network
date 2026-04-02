@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://brandactivationnetwork.com"),
   openGraph: {
     title: "Brand Activation Network",
-    description: "Master business funding, high-ticket sales, and AI-powered systems. The 7-module blueprint to scale your brand.",
+    description: "Master business funding, high-ticket sales, and AI-powered systems. The Master Blueprint to scale your brand.",
     siteName: "Brand Activation Network",
     type: "website",
     url: "https://brandactivationnetwork.com",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Brand Activation Network",
-    description: "Master business funding, high-ticket sales, and AI-powered systems. The 7-module blueprint to scale your brand.",
+    description: "Master business funding, high-ticket sales, and AI-powered systems. The Master Blueprint to scale your brand.",
     images: ["/og-image.png"],
   },
   robots: {
