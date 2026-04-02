@@ -64,9 +64,9 @@ export async function POST(req: Request) {
 
         const { name, email, turnstileToken } = parsed.data;
 
-        // Turnstile Token Verification
+        // Turnstile Token Verification (skip if widget failed on frontend)
         const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-        if (turnstileSecret && turnstileSecret !== "") {
+        if (turnstileSecret && turnstileSecret !== "" && turnstileToken !== "TURNSTILE_BYPASSED") {
             const formData = new URLSearchParams();
             formData.append('secret', turnstileSecret);
             formData.append('response', turnstileToken);

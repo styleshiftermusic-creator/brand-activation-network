@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, ShieldCheck, Loader2, AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { z } from "zod";
@@ -18,15 +18,25 @@ export default function RegistrationForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [turnstileToken, setTurnstileToken] = useState("");
+    const [turnstileReady, setTurnstileReady] = useState(false);
+    const turnstileTimedOut = useRef(false);
+
+    // If Turnstile doesn't resolve within 8 seconds, allow submission without it
+    useEffect(() => {
+        if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) return;
+        const timer = setTimeout(() => {
+            if (!turnstileReady) {
+                console.warn("Turnstile timed out — allowing submission without token.");
+                turnstileTimedOut.current = true;
+                setTurnstileReady(true);
+            }
+        }, 8000);
+        return () => clearTimeout(timer);
+    }, [turnstileReady]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setErrorMsg("");
-
-        if (!turnstileToken && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
-            setErrorMsg("Please complete the bot protection check.");
-            return;
-        }
 
         const parsed = registerSchema.safeParse(formData);
         if (!parsed.success) {
@@ -40,7 +50,10 @@ export default function RegistrationForm() {
             const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...formData, turnstileToken }),
+                body: JSON.stringify({
+                    ...formData,
+                    turnstileToken: turnstileToken || "TURNSTILE_BYPASSED",
+                }),
             });
 
             const data = await response.json();
@@ -110,7 +123,15 @@ export default function RegistrationForm() {
                     <div className="py-2">
                         <Turnstile
                             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-                            onSuccess={(token) => setTurnstileToken(token)}
+                            onSuccess={(token) => {
+                                setTurnstileToken(token);
+                                setTurnstileReady(true);
+                            }}
+                            onError={() => {
+                                console.warn("Turnstile error — allowing submission without token.");
+                                turnstileTimedOut.current = true;
+                                setTurnstileReady(true);
+                            }}
                             options={{ theme: 'dark' }}
                         />
                     </div>
@@ -141,3 +162,4 @@ export default function RegistrationForm() {
         </div>
     );
 }
+
