@@ -158,8 +158,8 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json({ success: true, message: "Lead captured successfully" });
-    } catch (error) {
-        console.error("Registration error:", error);
-        return NextResponse.json({ success: false, error: "Failed to process request" }, { status: 500 });
+    } catch (error: any) {
+        console.error("Registration error FULL:", error);
+        return NextResponse.json({ success: false, error: `CRASH: ${error?.message || String(error)}` }, { status: 500 });
     }
 }
