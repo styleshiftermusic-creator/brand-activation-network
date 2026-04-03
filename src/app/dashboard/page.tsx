@@ -38,26 +38,20 @@ export default function MissionControl() {
     const activeMission = missions.find(m => !m.completed && !m.locked) || missions[0];
     const progressPercentage = Math.round((completedCount / missions.length) * 100);
 
-    // Fetch real telemetry data
+    // Fetch real telemetry data via secure server-side route
     useEffect(() => {
 
         const fetchTelemetry = async () => {
             try {
                 setChartLoading(true);
-                // Fetch recent webinar registrations backwards from 7 days
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-                const { data, error } = await supabase
-                    .from('webinar_registrations')
-                    .select('registered_at')
-                    .gte('registered_at', sevenDaysAgo.toISOString())
-                    .order('registered_at', { ascending: true });
+                const res = await fetch("/api/admin/telemetry");
+                if (!res.ok) throw new Error(`Telemetry fetch failed: ${res.status}`);
 
-                if (error) throw error;
+                const { registrations } = await res.json();
 
-                if (data && data.length > 0) {
-                    const grouped = data.reduce((acc: Record<string, number>, curr) => {
+                if (registrations && registrations.length > 0) {
+                    const grouped = registrations.reduce((acc: Record<string, number>, curr: { registered_at: string }) => {
                         const date = new Date(curr.registered_at).toLocaleDateString(undefined, { weekday: 'short' });
                         acc[date] = (acc[date] || 0) + 1;
                         return acc;
