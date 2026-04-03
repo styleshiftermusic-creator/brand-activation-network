@@ -1,26 +1,33 @@
 import Script from "next/script";
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+
 export function Analytics() {
     return (
         <>
-            {/* Google Analytics */}
-            <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-                strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-                {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
+            {/* Google Analytics — only loads when ID is configured */}
+            {GA_ID && (
+                <>
+                    <Script
+                        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+                        strategy="afterInteractive"
+                    />
+                    <Script id="google-analytics" strategy="afterInteractive">
+                        {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){window.dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `}
+                    </Script>
+                </>
+            )}
 
-          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-        `}
-            </Script>
-
-            {/* Meta Pixel */}
-            <Script id="meta-pixel" strategy="afterInteractive">
-                {`
+            {/* Meta Pixel — only loads when ID is configured */}
+            {META_PIXEL_ID && (
+                <Script id="meta-pixel" strategy="afterInteractive">
+                    {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -29,10 +36,11 @@ export function Analytics() {
           t.src=v;s=b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+          fbq('init', '${META_PIXEL_ID}');
           fbq('track', 'PageView');
         `}
-            </Script>
+                </Script>
+            )}
         </>
     );
 }

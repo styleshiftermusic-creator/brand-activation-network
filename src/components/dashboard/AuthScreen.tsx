@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Terminal, Loader2, ChevronRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
