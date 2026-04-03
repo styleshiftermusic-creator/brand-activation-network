@@ -62,7 +62,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 });
         }
 
-        const { name, email, turnstileToken } = parsed.data;
+        const { name, email, phone, turnstileToken } = parsed.data;
 
         // Turnstile Token Verification (skip if widget failed on frontend)
         const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
@@ -87,6 +87,7 @@ export async function POST(req: Request) {
             {
                 full_name: name,
                 email: email,
+                phone: phone || null,
                 event_name: 'AI Workshop Engine Challenge'
             }
         ]);
@@ -158,8 +159,8 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json({ success: true, message: "Lead captured successfully" });
-    } catch (error: any) {
-        console.error("Registration error FULL:", error);
-        return NextResponse.json({ success: false, error: `CRASH: ${error?.message || String(error)}` }, { status: 500 });
+    } catch (error) {
+        console.error("Registration error:", error);
+        return NextResponse.json({ success: false, error: "Something went wrong. Please try again." }, { status: 500 });
     }
 }
