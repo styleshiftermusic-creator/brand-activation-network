@@ -3,7 +3,7 @@
 This document serves as the master blueprint for all AI agents (Antigravity, Claude, etc.) operating within this workspace. You MUST read and adhere to these guidelines before executing any changes.
 
 ## 1. System & Tech Stack
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Next.js 16 (App Router)
 - **Database & Auth:** Supabase (PostgreSQL, Email/Password, RLS)
 - **Payments:** Stripe (Webhook driven user provisioning)
 - **Deployment:** Vercel
