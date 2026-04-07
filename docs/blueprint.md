@@ -3,7 +3,7 @@
 ## 1. Core Identity
 
 - **Project Name:** Brand Activation Network (BAN)
-- **Objective:** Provide a scalable "AI Workshop Engine" that allows agency owners to collapse decades into days via automation and high-ticket sales.
+- **Objective:** Provide a scalable "The Master Blueprint" that allows agency owners to collapse decades into days via automation and high-ticket sales.
 - **Aesthetic:** High-end, premium, dark mode, glassmorphic. "Million-dollar SaaS" look. Use vibrant primary accents (Electric Purple/Blue).
 
 ## 2. Architecture & Stack

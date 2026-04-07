@@ -2,7 +2,7 @@
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Play, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image } from "lucide-react";
+import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image } from "lucide-react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -57,8 +57,36 @@ export default function MasterCoursePage() {
     const [modules, setModules] = useState<ModuleData[]>([]);
     const [isLoadingContent, setIsLoadingContent] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [audioProgress, setAudioProgress] = useState(0);
+    const [audioDuration, setAudioDuration] = useState(0);
     const audioRef = useRef<HTMLAudioElement>(null);
     const isManualNavRef = useRef(false);
+
+    const togglePlay = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
+        }
+    };
+
+    const handleTimelineClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!audioRef.current || !audioDuration) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const clickPosition = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const newTime = clickPosition * audioDuration;
+        audioRef.current.currentTime = newTime;
+        setAudioProgress(newTime);
+    };
+
+    const formatTime = (time: number) => {
+        if (isNaN(time)) return "0:00";
+        const mins = Math.floor(time / 60);
+        const secs = Math.floor(time % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
 
     const activeModule = modules.find(m => m.id === activeModuleId) || modules[0];
 
@@ -333,21 +361,59 @@ export default function MasterCoursePage() {
                         )}
                     </div>
 
-                    {/* Audio Player Bar — Separate from slides */}
-                    <div className="w-full mt-3 mb-6 p-4 bg-black/50 backdrop-blur-xl rounded-xl border border-white/10 flex items-center gap-4">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]">
-                            <Play className="h-4 w-4 fill-emerald-400 text-emerald-400 ml-0.5" />
-                        </div>
-                        <div className="flex-1 flex flex-col gap-1 min-w-0">
-                            <span className="text-[10px] font-mono text-zinc-500 tracking-wider uppercase truncate">
-                                Module {activeModule.id.replace('M-0', '')} — {activeModule.title}
-                            </span>
+                    {/* Audio Player Bar — Custom UI */}
+                    <div className="w-full mt-3 mb-6 p-4 bg-black/50 backdrop-blur-xl rounded-xl border border-white/10 flex items-center gap-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                        <button 
+                            onClick={togglePlay}
+                            className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:bg-emerald-500/25 transition-all text-emerald-400 group focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                        >
+                            {isPlaying ? (
+                                <Pause className="h-5 w-5 fill-emerald-400 text-emerald-400 group-hover:scale-110 transition-transform" />
+                            ) : (
+                                <Play className="h-5 w-5 fill-emerald-400 text-emerald-400 ml-1 group-hover:scale-110 transition-transform" />
+                            )}
+                        </button>
+                        
+                        <div className="flex-1 flex flex-col gap-2.5 min-w-0 py-1">
+                            {/* Track Info & Time */}
+                            <div className="flex justify-between items-end text-[10px] font-mono tracking-wider uppercase">
+                                <span className="text-zinc-400 truncate pr-4">
+                                    <span className="text-emerald-500/80 mr-2">Module {activeModule.id.replace('M-0', '')}</span> 
+                                    {activeModule.title}
+                                </span>
+                                <span className="text-zinc-500 flex-shrink-0">
+                                    {formatTime(audioProgress)} / {formatTime(audioDuration || 0)}
+                                </span>
+                            </div>
+                            
+                            {/* Custom Playback Timeline */}
+                            <div 
+                                className="w-full h-1.5 bg-white/5 rounded-full cursor-pointer relative group/timeline"
+                                onClick={handleTimelineClick}
+                            >
+                                {/* Hover background effect */}
+                                <div className="absolute -inset-y-2 left-0 right-0" />
+                                
+                                <div 
+                                    className="absolute top-0 left-0 h-full bg-emerald-500/80 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-100 ease-linear"
+                                    style={{ width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%` }}
+                                />
+                                <div 
+                                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-0 group-hover/timeline:opacity-100 transition-opacity ease-out pointer-events-none"
+                                    style={{ left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`, transform: 'translate(-50%, -50%)' }}
+                                />
+                            </div>
+
                             <audio
                                 ref={audioRef}
                                 key={activeModule.mediaSrc}
                                 src={activeModule.mediaSrc}
-                                controls
-                                className="w-full h-8 [&::-webkit-media-controls-panel]:bg-transparent"
+                                onTimeUpdate={(e) => setAudioProgress(e.currentTarget.currentTime)}
+                                onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration)}
+                                onPlay={() => setIsPlaying(true)}
+                                onPause={() => setIsPlaying(false)}
+                                onEnded={() => setIsPlaying(false)}
+                                className="hidden"
                             />
                         </div>
                     </div>

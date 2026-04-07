@@ -88,7 +88,7 @@ export async function POST(req: Request) {
                 full_name: name,
                 email: email,
                 phone: phone || null,
-                event_name: 'AI Workshop Engine Challenge'
+                event_name: 'The Master Blueprint Challenge'
             }
         ]);
 
@@ -130,12 +130,12 @@ export async function POST(req: Request) {
                     resend.emails.send({
                         from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
                         to: email,
-                        subject: 'Your Spot is Secured: The AI Workshop Engine Challenge',
+                        subject: 'Your Spot is Secured: The Master Blueprint Challenge',
                         html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
                                 <h2>Registration Confirmed.</h2>
                                 <p>Hey ${name.split(' ')[0] || 'there'},</p>
-                                <p>Your spot for the next <strong>AI Workshop Engine Challenge</strong> is officially secured.</p>
+                                <p>Your spot for the next <strong>The Master Blueprint Challenge</strong> is officially secured.</p>
                                 <p>In this live event, we'll cover the exact systems, AI agents, and automations required to scale an agency horizontally without infinitely expanding payroll.</p>
                                 <h3>Next Steps:</h3>
                                 <ol>

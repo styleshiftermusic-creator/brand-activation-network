@@ -1,6 +1,6 @@
 # Database Architecture Plan
 
-**Objective:** Design a scalable backend architecture for the Brand Activation Network to capture leads via webinars/challenges and deliver authenticated premium course content (The AI Workshop Engine).
+**Objective:** Design a scalable backend architecture for the Brand Activation Network to capture leads via webinars/challenges and deliver authenticated premium course content (The The Master Blueprint).
 
 ## Entities & Schemas
 
@@ -21,13 +21,13 @@ Tracks opt-ins for specific one-to-many sales events (e.g., Weekly Challenges).
 
 * `id` (UUID, Primary Key)
 * `user_id` (UUID, Foreign Key -> `users.id`)
-* `event_name` (String) - E.g., "AI Workshop Engine Challenge"
+* `event_name` (String) - E.g., "The Master Blueprint Challenge"
 * `attended` (Boolean, Default: false)
 * `registered_at` (Timestamp)
 
 ### 3. `course_progress` | The Dashboard Tracker
 
-Monitors student movement through the AI Workshop Engine modules to ensure they follow the blueprint "To A T".
+Monitors student movement through the The Master Blueprint modules to ensure they follow the blueprint "To A T".
 
 * `id` (UUID, Primary Key)
 * `user_id` (UUID, Foreign Key -> `users.id`)

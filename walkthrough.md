@@ -1,9 +1,9 @@
-# Agency Release Notes: AI Workshop Engine
+# Agency Release Notes: The Master Blueprint
 
 ## Project Context
 
 **Client:** Brand Activation Network
-**Objective:** Establish the foundational architecture and high-conversion frontend funnel for the "AI Workshop Engine" product launch.
+**Objective:** Establish the foundational architecture and high-conversion frontend funnel for the "The Master Blueprint" product launch.
 
 ---
 
@@ -31,7 +31,7 @@ We have successfully orchestrated the setup of the Next.js (App Router) structur
 
 ### 3. The Premium Dashboard (`/dashboard`)
 
-* **Purpose:** The authenticated product delivery zone mapping the 7 exact modules of the AI Workshop Engine curriculum.
+* **Purpose:** The authenticated product delivery zone mapping the 7 exact modules of the The Master Blueprint curriculum.
 * **The Auth Gate:** Completely protected by an interactive frontend "Architect Login" lock screen. Users *must* provide credentials (mock verification), which drops the glassmorphism wall and transitions into the main course structure.
 * **UX/UI Elements:** Features a persistent left-hand sidebar navigation, dynamic module completion states (Locked vs. Open vs. Completed), and an interactive linear progress bar (14% completion map).
 

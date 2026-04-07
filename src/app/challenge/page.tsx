@@ -4,8 +4,8 @@ import RegistrationForm from "@/components/RegistrationForm";
 import { Calendar, PlayCircle } from "lucide-react";
 
 export const metadata = {
-    title: "AI Workshop Engine Challenge | Brand Activation Network",
-    description: "Register for the weekly AI Workshop Engine Challenge. Stop burning out. Start scaling.",
+    title: "The Master Blueprint Challenge | Brand Activation Network",
+    description: "Register for the weekly The Master Blueprint Challenge. Stop burning out. Start scaling.",
 };
 
 export default function ChallengeFunnel() {
@@ -40,7 +40,7 @@ export default function ChallengeFunnel() {
                         Collapse <span className="text-gradient">Decades</span> Into <span className="text-gradient-primary">Days.</span>
                     </h1>
                     <p className="text-xl text-[var(--muted-foreground)] mb-10 leading-relaxed font-light">
-                        Stop trading time for money. Join the free weekly workshop to learn the exact <strong>AI Workshop Engine</strong> blueprint to scale your agency without hiring an army of employees.
+                        Stop trading time for money. Join the free weekly workshop to learn the exact <strong>The Master Blueprint</strong> to scale your agency without hiring an army of employees.
                     </p>
 
                     <div className="space-y-6 mb-12">
