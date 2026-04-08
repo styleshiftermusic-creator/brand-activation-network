@@ -36,13 +36,17 @@ const ratelimit = redis ? new Ratelimit({
 
 export async function POST(req: Request) {
     try {
-        // IP Rate Limiting
+        // IP Rate Limiting (degrades gracefully if Redis is unavailable)
         const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
         if (ratelimit) {
-            const { success } = await ratelimit!.limit(ip);
-            if (!success) {
-                console.warn(`Rate limit exceeded for IP: ${ip}`);
-                return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });
+            try {
+                const { success } = await ratelimit.limit(ip);
+                if (!success) {
+                    console.warn(`Rate limit exceeded for IP: ${ip}`);
+                    return NextResponse.json({ success: false, error: "Too many requests. Please try again later." }, { status: 429 });
+                }
+            } catch (rateLimitErr) {
+                console.warn("Rate limiter unavailable, skipping:", rateLimitErr);
             }
         }
 
