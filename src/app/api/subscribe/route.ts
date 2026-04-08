@@ -107,7 +107,7 @@ export async function POST(req: Request) {
                 // We construct the absolute URL for the playbook download link.
                 // Assuming domain is brandactivationnetwork.com
                 const origin = req.headers.get('origin') || 'https://brandactivationnetwork.com';
-                const playbookUrl = `${origin}/blueprints/opa-marketing-playbook.md`;
+                const playbookUrl = `${origin}/api/download/playbook`;
 
                 emailPromises.push(
                     resend.emails.send({
