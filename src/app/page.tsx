@@ -3,8 +3,8 @@ import Image from "next/image";
 import Script from "next/script";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { LeadMagnetForm } from "@/components/LeadMagnetForm";
+import { HeroCTA, ModuleCTA, FinalCTA } from "@/components/WaitlistCTA";
 import {
-  ArrowRight,
   Zap,
   TrendingUp,
   Users,
@@ -89,6 +89,7 @@ const TESTIMONIALS = [
 // ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function Home() {
+  const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
@@ -175,13 +176,7 @@ export default function Home() {
 
         {/* Unified Singular CTA */}
         <div className="flex flex-col items-center gap-5 w-full mb-16">
-          <a
-            href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
-            className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
-          >
-            Activate Network Access <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
-            <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
-          </a>
+          <HeroCTA stripeLink={stripeLink} />
           <div className="flex items-center gap-2 text-sm text-zinc-500 font-medium">
             Not ready? <Link href="/challenge" className="text-[var(--primary)] hover:text-[#c77dff] transition-colors underline underline-offset-4 decoration-[var(--primary)]/30 hover:decoration-[#c77dff]/80">Join the free 5-day challenge</Link>
           </div>
@@ -289,12 +284,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a
-              href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
-              className="group flex items-center gap-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-10px_rgba(52,211,153,0.8)] hover:-translate-y-1"
-            >
-              Get All 7 Modules <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            <ModuleCTA stripeLink={stripeLink} />
             <Link
               href="/challenge"
               className="flex items-center gap-2 px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300 rounded-xl font-medium transition-all duration-300 hover:-translate-y-1"
@@ -367,12 +357,7 @@ export default function Home() {
               <p className="text-zinc-400 max-w-xl font-light leading-relaxed">
                 Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access.
               </p>
-              <a
-                href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
-                className="group inline-flex items-center gap-3 px-14 py-5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_80px_-10px_rgba(52,211,153,0.9)] hover:-translate-y-1.5"
-              >
-                Activate Now <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-              </a>
+              <FinalCTA stripeLink={stripeLink} />
               <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-600">
                 {[
                   { icon: <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />, label: "Secure checkout via Stripe" },

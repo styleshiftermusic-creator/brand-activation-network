@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+import { registerSchema } from '@/lib/schemas';
+
+export const dynamic = "force-dynamic";
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,19 +17,12 @@ const supabase = createClient(
         },
     }
 );
-import { Resend } from 'resend';
-import { z } from 'zod';
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
 
-export const dynamic = "force-dynamic";
-
-// Rate limiting setup (5 requests per 15 minutes per IP)
 // Rate limiting setup (5 requests per 15 minutes per IP)
 const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
 const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-// Only initialize if the environment variables are present, otherwise stay null to prevent build-time errors
+// Only initialize if env vars are present to prevent build-time errors
 const redis = redisUrl && redisToken ? new Redis({
     url: redisUrl,
     token: redisToken,
@@ -34,8 +33,6 @@ const ratelimit = redis ? new Ratelimit({
     limiter: Ratelimit.slidingWindow(5, "15 m"),
     analytics: true,
 }) : null;
-
-import { registerSchema } from '@/lib/schemas';
 
 export async function POST(req: Request) {
     try {

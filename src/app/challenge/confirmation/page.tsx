@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { WaitlistCTA } from "@/components/WaitlistCTA";
 import {
     ArrowRight,
     ShieldCheck,
@@ -147,6 +148,7 @@ function FeatureCard({ icon, title, body, color, glow = "" }: {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function ChallengeConfirmation() {
+  const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
     return (
         <div className="min-h-screen bg-[#080808] text-white flex flex-col relative overflow-hidden">
 
@@ -270,13 +272,12 @@ export default function ChallengeConfirmation() {
                             </p>
                         </div>
 
-                        <Link
-                            href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
+                        <WaitlistCTA
+                            stripeLink={stripeLink}
                             className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
                         >
-                            YES, UPGRADE MY ORDER NOW
-                            <ArrowRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                            {stripeLink ? "YES, UPGRADE MY ORDER NOW" : "JOIN THE WAITLIST"} →
+                        </WaitlistCTA>
 
                         <div className="flex flex-wrap items-center justify-center gap-5 text-xs text-zinc-600">
                             <span className="flex items-center gap-1.5">
