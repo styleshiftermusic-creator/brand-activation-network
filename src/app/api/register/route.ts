@@ -35,13 +35,7 @@ const ratelimit = redis ? new Ratelimit({
     analytics: true,
 }) : null;
 
-// Zod Schema
-const registerSchema = z.object({
-    name: z.string().min(2, "Name must be at least 2 characters").max(100),
-    email: z.string().email("Invalid email address"),
-    phone: z.string().optional(),
-    turnstileToken: z.string().min(1, "Bot protection token missing"),
-});
+import { registerSchema } from '@/lib/schemas';
 
 export async function POST(req: Request) {
     try {
@@ -69,7 +63,7 @@ export async function POST(req: Request) {
         if (turnstileSecret && turnstileSecret !== "" && turnstileToken !== "TURNSTILE_BYPASSED") {
             const formData = new URLSearchParams();
             formData.append('secret', turnstileSecret);
-            formData.append('response', turnstileToken);
+            formData.append('response', turnstileToken || "");
             if (ip) formData.append('remoteip', ip);
 
             const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {

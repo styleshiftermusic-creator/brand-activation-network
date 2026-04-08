@@ -6,11 +6,7 @@ import { useRouter } from "next/navigation";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { z } from "zod";
 
-const registerSchema = z.object({
-    name: z.string().min(2, "Name must be at least 2 characters").max(100),
-    email: z.string().email("Invalid email address"),
-    phone: z.string().optional(),
-});
+import { registerSchema } from "@/lib/schemas";
 
 export default function RegistrationForm() {
     const router = useRouter();
@@ -25,14 +21,12 @@ export default function RegistrationForm() {
     useEffect(() => {
         if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) return;
         const timer = setTimeout(() => {
-            if (!turnstileReady) {
-                console.warn("Turnstile timed out — allowing submission without token.");
-                turnstileTimedOut.current = true;
-                setTurnstileReady(true);
-            }
+            console.warn("Turnstile timed out — allowing submission without token.");
+            turnstileTimedOut.current = true;
+            setTurnstileReady(true);
         }, 8000);
         return () => clearTimeout(timer);
-    }, [turnstileReady]);
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

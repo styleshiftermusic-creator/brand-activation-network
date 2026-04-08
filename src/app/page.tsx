@@ -176,7 +176,7 @@ export default function Home() {
         {/* Unified Singular CTA */}
         <div className="flex flex-col items-center gap-5 w-full mb-16">
           <a
-            href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
+            href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
             className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
           >
             Activate Network Access <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
@@ -290,7 +290,7 @@ export default function Home() {
 
           <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
             <a
-              href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
+              href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
               className="group flex items-center gap-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-10px_rgba(52,211,153,0.8)] hover:-translate-y-1"
             >
               Get All 7 Modules <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -368,7 +368,7 @@ export default function Home() {
                 Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access.
               </p>
               <a
-                href="https://buy.stripe.com/cNi7sDfOifVG2hVdOzaAw00"
+                href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#"}
                 className="group inline-flex items-center gap-3 px-14 py-5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_80px_-10px_rgba(52,211,153,0.9)] hover:-translate-y-1.5"
               >
                 Activate Now <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
