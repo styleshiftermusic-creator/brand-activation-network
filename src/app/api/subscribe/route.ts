@@ -67,7 +67,7 @@ export async function POST(req: Request) {
             {
                 full_name: 'Lead Magnet Download',
                 email: email,
-                event_name: 'OPA Playbook Download'
+                event_name: 'BAN Credit Sweep Download'
             }
         ]);
 

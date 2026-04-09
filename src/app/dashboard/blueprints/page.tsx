@@ -58,14 +58,14 @@ const BLUEPRINTS = [
     },
     {
         id: "BP-04",
-        title: "OPA Marketing Playbook",
+        title: "BAN Credit Sweep Blueprint",
         description: "The complete Other People's Audiences playbook — podcast pitches, shout-out page scripts, and content factory workflow.",
         format: "Notion System",
         category: "Marketing",
         icon: <Target className="w-5 h-5" />,
         color: "amber",
         downloadUrl: "/blueprints/opa-marketing-playbook.md",
-        fileName: "OPA-Marketing-Playbook.md",
+        fileName: "BAN-Credit-Sweep-Blueprint.html",
         howToUse: [
             "Duplicate the Notion workspace into your account.",
             "Review the DM scripts for Instagram Shout-Out pages.",

@@ -30,7 +30,7 @@ const DATA_SOURCES = [
     },
     {
         id: "DS-03",
-        title: "OPA Marketing Playbook",
+        title: "BAN Credit Sweep Blueprint",
         format: "Notion System",
         size: "4.2 KB",
         icon: <Database className="w-5 h-5 text-amber-400" />,

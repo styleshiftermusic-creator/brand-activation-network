@@ -113,7 +113,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                 </div>
                 <h3 className="text-2xl font-bold text-white tracking-tight">You&apos;re on the list.</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
-                  You&apos;ll be the first to know when enrollment opens. We&apos;ll also send you the <strong className="text-white">OPA Marketing Playbook</strong> as a gift.
+                  You&apos;ll be the first to know when enrollment opens. We&apos;ll also send you the <strong className="text-white">BAN Credit Sweep Blueprint</strong> as a free gift.
                 </p>
                 <button
                   onClick={onClose}
@@ -131,7 +131,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                   </span>
                 </h2>
                 <p className="text-zinc-400 text-sm leading-relaxed mb-7">
-                  We&apos;re finalizing the launch. Join the priority waitlist and we&apos;ll notify you the moment the doors open — plus you&apos;ll receive the <strong className="text-zinc-300">OPA Marketing Playbook</strong> for free.
+                  We&apos;re finalizing the launch. Join the priority waitlist and we&apos;ll notify you the moment the doors open — plus you&apos;ll receive the <strong className="text-zinc-300">BAN Credit Sweep Blueprint</strong> for free.
                 </p>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
