@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Download, Sparkles, FileSpreadsheet, FileText, Bot, Briefcase, Target, Presentation, BookOpen, Info, X } from "lucide-react";
+import { Download, Sparkles, FileSpreadsheet, FileText, Bot, Briefcase, Target, Presentation, BookOpen, Info, X, ShieldCheck } from "lucide-react";
 
 const BLUEPRINTS = [
     {
@@ -58,14 +58,14 @@ const BLUEPRINTS = [
     },
     {
         id: "BP-04",
-        title: "BAN Credit Sweep Blueprint",
+        title: "OPA Marketing Playbook",
         description: "The complete Other People's Audiences playbook — podcast pitches, shout-out page scripts, and content factory workflow.",
         format: "Notion System",
         category: "Marketing",
         icon: <Target className="w-5 h-5" />,
         color: "amber",
         downloadUrl: "/blueprints/opa-marketing-playbook.md",
-        fileName: "BAN-Credit-Sweep-Blueprint.html",
+        fileName: "OPA-Marketing-Playbook.md",
         howToUse: [
             "Duplicate the Notion workspace into your account.",
             "Review the DM scripts for Instagram Shout-Out pages.",
@@ -105,6 +105,23 @@ const BLUEPRINTS = [
             "Copy the specific role prompt you need (e.g., 'Lead Generation Agent').",
             "Paste the text exactly as written into ChatGPT, Claude, or your own AI Agent builder.",
             "Replace the bracketed information [LIKE THIS] with your specific business details."
+        ]
+    },
+    {
+        id: "BP-07",
+        title: "BAN Credit Sweep Blueprint",
+        description: "Two proven methods to remove unauthorized hard inquiries — 24-hour phone scripts and 7-day 609 letter framework.",
+        format: "HTML Blueprint",
+        category: "Credit",
+        icon: <ShieldCheck className="w-5 h-5" />,
+        color: "emerald",
+        downloadUrl: "/api/download/playbook",
+        fileName: "BAN-Credit-Sweep-Blueprint.html",
+        howToUse: [
+            "Click 'Get' to open the blueprint in your browser.",
+            "Start with Method 1 (Phone) — you can call the fraud departments today.",
+            "Use Method 2 (609 Letter) for collections, charge-offs, and derogatory marks.",
+            "Print the Combined Checklist and check off each step as you go."
         ]
     },
 ];
@@ -199,7 +216,7 @@ export default function BlueprintsPage() {
                                         Download Starter Kit
                                     </button>
                                     <div className="text-xs font-mono text-zinc-500 uppercase flex gap-4">
-                                        <span>6 Assets</span>
+                                        <span>7 Assets</span>
                                         <span>Format: ZIP</span>
                                     </div>
                                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Download, BookOpen, Database, Sparkles, FileText, Bot, Lock } from "lucide-react";
+import { Download, BookOpen, Database, Sparkles, FileText, Bot, Lock, ShieldCheck } from "lucide-react";
 
 const DATA_SOURCES = [
     {
@@ -30,7 +30,7 @@ const DATA_SOURCES = [
     },
     {
         id: "DS-03",
-        title: "BAN Credit Sweep Blueprint",
+        title: "OPA Marketing Playbook",
         format: "Notion System",
         size: "4.2 KB",
         icon: <Database className="w-5 h-5 text-amber-400" />,
@@ -75,6 +75,18 @@ const DATA_SOURCES = [
         hoverBorder: "group-hover:border-rose-500/20",
         hoverBg: "group-hover:bg-rose-500/10",
         href: "/blueprints/ai-agent-prompt-library.json"
+    },
+    {
+        id: "DS-07",
+        title: "BAN Credit Sweep Blueprint",
+        format: "HTML Blueprint",
+        size: "12.8 KB",
+        icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
+        bgClass: "bg-emerald-500/10",
+        hoverText: "group-hover:text-emerald-400",
+        hoverBorder: "group-hover:border-emerald-500/20",
+        hoverBg: "group-hover:bg-emerald-500/10",
+        href: "/api/download/playbook"
     }
 ];
 
