@@ -127,7 +127,7 @@ export async function POST(req: Request) {
                                 </ul>
                                 <div style="margin: 30px 0;">
                                     <a href="${playbookUrl}" style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
-                                        Download The Blueprint
+                                        View Your Blueprint →
                                     </a>
                                 </div>
                                 <p>If the button above doesn't work, copy and paste this link:</p>
