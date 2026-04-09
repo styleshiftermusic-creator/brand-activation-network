@@ -6,14 +6,14 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
-        const filePath = path.join(process.cwd(), 'public', 'blueprints', 'opa-marketing-playbook.md');
+        const filePath = path.join(process.cwd(), 'public', 'blueprints', 'ban-credit-sweep.md');
         const fileBuffer = await readFile(filePath);
 
         return new NextResponse(fileBuffer, {
             status: 200,
             headers: {
                 'Content-Type': 'text/markdown; charset=utf-8',
-                'Content-Disposition': 'attachment; filename="OPA-Marketing-Playbook.md"',
+                'Content-Disposition': 'attachment; filename="BAN-Credit-Sweep-Blueprint.md"',
                 'Cache-Control': 'no-store',
             },
         });

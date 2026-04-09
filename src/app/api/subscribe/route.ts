@@ -92,10 +92,10 @@ export async function POST(req: Request) {
                         resend.emails.send({
                             from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
                             to: process.env.ADMIN_EMAIL,
-                            subject: '🎉 New Lead Magnet Download!',
+                            subject: '🎉 New Credit Sweep Lead!',
                             html: `
                                 <div style="font-family: sans-serif; padding: 20px;">
-                                    <h2>New OPA Playbook Lead</h2>
+                                    <h2>New BAN Credit Sweep Download</h2>
                                     <p><strong>Email:</strong> ${email}</p>
                                 </div>
                             `
@@ -113,19 +113,26 @@ export async function POST(req: Request) {
                     resend.emails.send({
                         from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
                         to: email,
-                        subject: 'Here is your OPA Marketing Playbook',
+                        subject: 'Your BAN Credit Sweep Blueprint is Here',
                         html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
-                                <h2>Your Playbook has arrived.</h2>
+                                <h2>Your Blueprint Has Arrived.</h2>
                                 <p>Hey there,</p>
-                                <p>You requested the <strong>OPA Marketing Playbook</strong>. Inside you'll find the exact templates and workflows required to command other people's audiences.</p>
+                                <p>You requested the <strong>BAN Credit Sweep Blueprint</strong>. Inside you'll find two complete methods to remove unauthorized hard inquiries from your credit report — in as little as 24 hours.</p>
+                                <p><strong>What's inside:</strong></p>
+                                <ul>
+                                    <li>Method 1: 24-Hour Phone Script (Experian, Equifax, TransUnion Fraud Depts)</li>
+                                    <li>Method 2: 7-Day 609 Letter via Data Breach/Identity Theft framework</li>
+                                    <li>Combined Quick-Action Checklist</li>
+                                </ul>
                                 <div style="margin: 30px 0;">
                                     <a href="${playbookUrl}" style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
-                                        Download The Playbook
+                                        Download The Blueprint
                                     </a>
                                 </div>
-                                <p>If the button above doesn't work, go here to view it:</p>
+                                <p>If the button above doesn't work, copy and paste this link:</p>
                                 <p><a href="${playbookUrl}">${playbookUrl}</a></p>
+                                <p>More tools are coming. Stay tuned.</p>
                                 <p>Talk soon,<br>The Brand Activation Network Team</p>
                             </div>
                         `
