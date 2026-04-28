@@ -1,9 +1,9 @@
+import { registerSchema } from '@/lib/schemas';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { registerSchema } from '@/lib/schemas';
 
 export const dynamic = "force-dynamic";
 
@@ -89,7 +89,13 @@ export async function POST(req: Request) {
 
         if (error) {
             console.error("Supabase Insertion Error:", error);
-            return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+            
+            // Handle unique constraint violation (duplicate email)
+            if (error.code === '23505') {
+                return NextResponse.json({ success: false, error: "This email is already registered." }, { status: 400 });
+            }
+            
+            return NextResponse.json({ success: false, error: "Something went wrong. Please try again." }, { status: 500 });
         }
 
         console.log("LIVE BACKEND: Successfully registered new lead into Supabase:", email);
