@@ -15,7 +15,7 @@
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.97.0",
     "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.36.2",
+    "@upstash/redis": "^1.37.0",
     "framer-motion": "^12.34.5",
     "lucide-react": "^0.575.0",
     "next": "^16.2.4",
