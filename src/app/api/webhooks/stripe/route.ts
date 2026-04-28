@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from 'resend';
+import { welcomeEmail, adminPurchaseEmail, BRAND } from '@/lib/email-templates';
 
 export const dynamic = "force-dynamic";
 
@@ -57,9 +58,10 @@ export async function POST(req: Request) {
 
             // Generate a secure invite via Supabase. 
             // This creates the user account and sends them an automatic email to log in and set their password.
+            const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || "https://brandactivationnetwork.com";
             const { error } = await supabaseAdmin.auth.admin.inviteUserByEmail(customerEmail, {
                 data: { name: customerName || "Architect" },
-                redirectTo: "https://brandactivationnetwork.com/dashboard",
+                redirectTo: `${redirectUrl}/dashboard`,
             });
 
             if (error) {
@@ -69,29 +71,43 @@ export async function POST(req: Request) {
                 console.log("Successfully provisioned and sent invite to:", customerEmail);
             }
 
-            // --- ADMIN NOTIFICATION ---
-            if (process.env.RESEND_API_KEY && process.env.ADMIN_EMAIL) {
+            // --- SEND BRANDED EMAILS ---
+            if (process.env.RESEND_API_KEY) {
                 try {
                     const resend = new Resend(process.env.RESEND_API_KEY);
-                    await resend.emails.send({
-                        from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>', // Needs custom domain to be fully reliable if sending to non-owner
-                        to: process.env.ADMIN_EMAIL,
-                        subject: '💰 New Course Purchase!',
-                        html: `
-                            <div style="font-family: sans-serif; padding: 20px;">
-                                <h2>A new user has purchased the course!</h2>
-                                <p><strong>Name:</strong> ${customerName || 'N/A'}</p>
-                                <p><strong>Email:</strong> ${customerEmail}</p>
-                                <p><em>They have been provisioned in Supabase and sent a login invite.</em></p>
-                            </div>
-                        `
-                    });
-                    console.log("Admin purchase notification sent.");
+                    const emailPromises = [];
+
+                    // 1. Premium Welcome Email to Customer
+                    const welcome = welcomeEmail(customerName || "Architect");
+                    emailPromises.push(
+                        resend.emails.send({
+                            from: BRAND.from,
+                            to: customerEmail,
+                            subject: welcome.subject,
+                            html: welcome.html,
+                        })
+                    );
+
+                    // 2. Admin Purchase Notification
+                    if (process.env.ADMIN_EMAIL) {
+                        const admin = adminPurchaseEmail(customerName || "N/A", customerEmail);
+                        emailPromises.push(
+                            resend.emails.send({
+                                from: BRAND.from,
+                                to: process.env.ADMIN_EMAIL,
+                                subject: admin.subject,
+                                html: admin.html,
+                            })
+                        );
+                    }
+
+                    await Promise.all(emailPromises);
+                    console.log("Purchase emails sent successfully (Welcome + Admin Alert).");
                 } catch (emailErr) {
-                    console.error("Failed to send admin purchase notification:", emailErr);
+                    console.error("Failed to send purchase emails:", emailErr);
                 }
             } else {
-                console.warn("RESEND_API_KEY or ADMIN_EMAIL missing. Admin notification skipped.");
+                console.warn("RESEND_API_KEY missing. Emails were not sent.");
             }
         }
     }

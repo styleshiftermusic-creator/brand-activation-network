@@ -145,66 +145,66 @@ export const courseData = {
     "category": "Wealth > Asset Allocation",
     "audioSrc": "/audio/module-3.mp3",
     "visuals": [
-      "/course-visuals/mod3_slide1_title_1772564905358.png",
-      "/course-visuals/mod3_slide2_visibility_1772564921626.png",
-      "/course-visuals/mod3_slide3_mentorship_1772564952303.png",
-      "/course-visuals/mod3_slide4_opa_1772564969277.png",
-      "/course-visuals/mod3_slide5_reciprocity_1772564980388.png",
-      "/course-visuals/mod3_slide6_scale_1772565021097.png",
-      "/course-visuals/mod3_slide7_trust_1772565034626.png",
-      "/course-visuals/mod3_slide8_closing_1772565048238.png"
+      "/course-visuals/mod3_slide1_title_new.png",
+      "/course-visuals/mod3_slide2_moneytrap_new.png",
+      "/course-visuals/mod3_slide3_buckets_new.png",
+      "/course-visuals/mod3_slide4_timeline_new.png",
+      "/course-visuals/mod3_slide5_comparison_new.png",
+      "/course-visuals/mod3_slide6_vehicles_new.png",
+      "/course-visuals/mod3_slide7_checklist_new.png",
+      "/course-visuals/mod3_slide8_closing_new.png"
     ],
-    "studyGuide": "# Module 3: The Investment Blueprint\n\n## The Core Idea\nMoney doesn't make you rich. *Deployed* money does. This module is the map for turning your capital into a compounding machine — starting with the Knowledge Investment.\n\n## 3 Concepts to Lock In\n\n**1. Visibility Beats Ability**\nThe market doesn't pay the best practitioner. It pays the most *visible* one. Set aside $20k of your capital strictly for marketing. When tied to a sales mechanism, that's a mathematical investment — not an expense.\n\n**2. OPA: Other People's Audiences**\nDon't build an audience from scratch. Leverage podcast hosts, Instagram shout-out pages, and community leaders who already own the attention you need. The Bourbon Chicken Theory: give your best content for free on someone else's platform → they drive traffic to your opt-in → you own the email list.\n\n**3. One-to-Many is the Scale Vehicle**\nOne sales call to one person = burnout. One webinar to 500 people = leverage. Commit to weekly virtual events for 12 months. It force-develops four skills simultaneously: marketing, speaking, sales, and leadership.\n\n## Capital Allocation Blueprint\n\n| Allocation | Amount | Goes Into |\n|---|---|---|\n| Knowledge Investment | ~$10k | Mentor / proven blueprint |\n| Marketing War Chest | ~$20k | OPA + paid traffic |\n| Operations Reserve | Remaining | Team, tools, infrastructure |\n\n## Cheat Sheet\n\n> **OPA Plays:** Podcast tour · Shout-out pages (bulk deal: 5 posts for $3k) · Community partnerships\n> **Content Tool:** Opus.io — 1 podcast → 60 short clips for TikTok, Reels, Shorts\n> **Sales Vehicle:** Weekly webinar · 4 Levers of Trust: You → Value → Themselves → The Vehicle",
+    "studyGuide": "# Module 3: The Investment Blueprint\n\n## The Core Idea\nMoney doesn't make you rich. *Deployed* money does. This module is the map for turning your newly acquired capital into a compounding machine — across three vehicles: knowledge, assets, and your own business.\n\n## 3 Concepts to Lock In\n\n**1. The Knowledge Investment Comes First**\nBefore you touch real estate or the stock market, invest in a mentor or proven blueprint. A $10k coaching investment that shaves 2 years off your learning curve is worth more than a $10k index fund return over the same period. Speed is the ROI.\n\n**2. The Three-Bucket Allocation**\nOnce your business funding lands ($50k–$250k at 0% APR), don't spend it all in one place. Split it strategically:\n- **Bucket 1 — Knowledge:** $5k–$10k for a mentor/mastermind\n- **Bucket 2 — Marketing:** $15k–$20k war chest for visibility plays (covered in Module 4)\n- **Bucket 3 — Operations & Assets:** Remaining capital into team, tools, and income-producing assets\n\n**3. The Compounding Machine**\nYour business is the highest-returning asset class you own. A dollar reinvested into marketing or systems that generate $3–$5 back is a 300–500% return — no stock market can compete. Reinvest profits back into the machine before diversifying into passive vehicles.\n\n## Capital Deployment Timeline\n\n| Phase | Timeline | Action |\n|---|---|---|\n| Phase 1 | Month 1–3 | Deploy into mentor + marketing war chest |\n| Phase 2 | Month 3–6 | Reinvest first revenue into scaling operations |\n| Phase 3 | Month 6–12 | Begin diversifying: index funds, real estate, reserves |\n| Phase 4 | Year 2+ | Passive income vehicles: rental properties, ETFs, licensing |\n\n## Passive Vehicle Quick Reference\n\n| Vehicle | Entry Point | Expected Return | Risk |\n|---|---|---|---|\n| S&P 500 Index Fund | $500+ | 8–12% annually | Low |\n| Real Estate (Rental) | $20k+ down | Cash flow + appreciation | Medium |\n| Business Reinvestment | $1+ | 300–500% | Medium-High |\n| High-Yield Savings | $1+ | 4–5% APY | Very Low |\n\n## Cheat Sheet\n\n> **Rule #1:** Invest in knowledge before assets — speed beats compounding at the start\n> **Rule #2:** Your business is the highest-ROI asset class you own\n> **Rule #3:** Don't diversify until your primary income engine is profitable\n> **Rule #4:** 0% APR capital is free leverage — deploy it, don't save it\n> **End Goal:** Build the business engine first, then stack passive income on top",
     "quiz": [
       {
-        "question": "According to the transcript, what is the first and most critical investment an entrepreneur should make to avoid mistakes and accelerate their success?",
+        "question": "According to the module, what should be the FIRST investment made with newly acquired business funding?",
         "options": [
-          "Buying expensive equipment",
-          "Hiring a coach or mentor to get a blueprint",
-          "Investing in stocks and bonds",
-          "Purchasing a luxury vehicle for status"
+          "Real estate rental properties",
+          "S&P 500 index funds",
+          "A coach or mentor with a proven blueprint",
+          "Cryptocurrency and speculative assets"
         ],
-        "answer": "Hiring a coach or mentor to get a blueprint"
+        "answer": "A coach or mentor with a proven blueprint"
       },
       {
-        "question": "What key phrase does Brand Activation Network use to explain why marketing is often more important than being the absolute best at your craft?",
+        "question": "What is the recommended allocation split for the marketing 'war chest' from your business funding?",
         "options": [
-          "Quality over quantity",
-          "Patience pays off",
-          "Visibility beats ability",
-          "Content is king"
+          "$1,000–$2,000",
+          "$5,000–$10,000",
+          "$15,000–$20,000",
+          "$50,000+"
         ],
-        "answer": "Visibility beats ability"
+        "answer": "$15,000–$20,000"
       },
       {
-        "question": "Which of the following is NOT one of the three recommended methods for leveraging 'Other People's Audiences' (OPA) to grow a brand?",
+        "question": "Why does the module describe your own business as the 'highest-returning asset class'?",
         "options": [
-          "Guest speaking on podcasts",
-          "Buying shout-outs on niche pages (e.g., The Shade Room)",
-          "Collaborating with other communities",
-          "Running traditional television commercials"
+          "Because businesses are tax-free",
+          "Because a dollar reinvested into marketing or systems can generate $3–$5 back (300–500% ROI)",
+          "Because the stock market always loses money",
+          "Because business income is passive by default"
         ],
-        "answer": "Running traditional television commercials"
+        "answer": "Because a dollar reinvested into marketing or systems can generate $3–$5 back (300–500% ROI)"
       },
       {
-        "question": "What sales mechanism is described as the most powerful way to scale a business in 2026 by selling 'one to many'?",
+        "question": "According to the Capital Deployment Timeline, when should you begin diversifying into passive income vehicles like index funds and real estate?",
         "options": [
-          "Door-to-door sales",
-          "Webinars and challenges",
-          "Cold calling",
-          "Direct mail campaigns"
+          "Immediately with your first funding",
+          "Month 1–3",
+          "Month 6–12, after reinvesting first revenue into scaling",
+          "Never — always keep all capital in the business"
         ],
-        "answer": "Webinars and challenges"
+        "answer": "Month 6–12, after reinvesting first revenue into scaling"
       },
       {
-        "question": "When presenting an offer, citing successful figures like Elon Musk or companies like Wells Fargo to validate a strategy is an example of what type of evidence?",
+        "question": "What is the key difference between Phase 1 (Month 1–3) and Phase 4 (Year 2+) in the investment timeline?",
         "options": [
-          "Third-party proof",
-          "Statistical analysis",
-          "Metaphors and analogies",
-          "Personal social proof"
+          "Phase 1 is about debt, Phase 4 is about savings",
+          "Phase 1 deploys into knowledge and marketing, Phase 4 builds passive income through rentals, ETFs, and licensing",
+          "Phase 1 is for personal expenses, Phase 4 is for business expenses",
+          "There is no difference — both phases involve the same strategy"
         ],
-        "answer": "Third-party proof"
+        "answer": "Phase 1 deploys into knowledge and marketing, Phase 4 builds passive income through rentals, ETFs, and licensing"
       }
     ]
   },

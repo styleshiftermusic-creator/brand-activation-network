@@ -4,8 +4,17 @@ import RegistrationForm from "@/components/RegistrationForm";
 import { Calendar, PlayCircle } from "lucide-react";
 
 export const metadata = {
-    title: "The Master Blueprint Challenge | Brand Activation Network",
-    description: "Register for the weekly The Master Blueprint Challenge. Stop burning out. Start scaling.",
+    title: "The Master Blueprint Challenge — Free Weekly Workshop",
+    description: "Register for the free weekly Master Blueprint Challenge. Learn the exact system to secure business funding, automate sales, and scale your brand. Stop burning out. Start scaling.",
+    alternates: {
+        canonical: "/challenge",
+    },
+    openGraph: {
+        title: "The Master Blueprint Challenge — Free Workshop",
+        description: "Join the free weekly workshop to learn the exact system to scale your agency without hiring an army of employees.",
+        url: "https://brandactivationnetwork.com/challenge",
+        images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    },
 };
 
 export default function ChallengeFunnel() {

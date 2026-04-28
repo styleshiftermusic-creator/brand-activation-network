@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Download, Sparkles, FileSpreadsheet, FileText, Bot, Briefcase, Target, Presentation, BookOpen, Info, X, ShieldCheck } from "lucide-react";
 
@@ -155,6 +156,29 @@ function downloadAllBlueprints() {
 export default function BlueprintsPage() {
     const [selectedBlueprint, setSelectedBlueprint] = useState<typeof BLUEPRINTS[0] | null>(null);
 
+    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW", id?: string, metadata?: any) => {
+        try {
+            fetch("/api/activity", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ activity_type: type, target_id: id, metadata }),
+            });
+        } catch (err) {
+            console.error("Failed to log activity:", err);
+        }
+    };
+
+    const handleDownload = (url: string, fileName: string, bpId: string) => {
+        logActivity("DOWNLOAD", bpId, { fileName });
+        downloadFile(url, fileName);
+    };
+
+    const handleDownloadAll = () => {
+        logActivity("DOWNLOAD", "BUNDLE-ALL", { count: BLUEPRINTS.length });
+        downloadAllBlueprints();
+    };
+
+
     return (
         <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
             {/* Deep Ambient Glows */}
@@ -207,19 +231,20 @@ export default function BlueprintsPage() {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
+                                <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-white/10 w-full">
                                     <button
-                                        onClick={downloadAllBlueprints}
-                                        className="w-full sm:w-auto px-8 py-3 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-medium transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_var(--primary)] flex items-center justify-center gap-2"
+                                        onClick={handleDownloadAll}
+                                        className="w-full sm:w-auto px-8 py-4 sm:py-3 rounded-xl sm:rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white font-bold sm:font-medium transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_var(--primary)] flex items-center justify-center gap-3 sm:gap-2 active:scale-95 sm:active:scale-100"
                                     >
-                                        <Download className="w-4 h-4" />
+                                        <Download className="w-5 h-5 sm:w-4 sm:h-4" />
                                         Download Starter Kit
                                     </button>
-                                    <div className="text-xs font-mono text-zinc-500 uppercase flex gap-4">
+                                    <div className="text-[10px] sm:text-xs font-mono text-zinc-500 uppercase flex gap-6 sm:gap-4 tracking-widest">
                                         <span>7 Assets</span>
                                         <span>Format: ZIP</span>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -228,10 +253,16 @@ export default function BlueprintsPage() {
                     <div className="mb-6">
                         <h3 className="text-lg font-medium text-white mb-6 tracking-tight">Individual Blueprints</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {BLUEPRINTS.map((bp) => {
+                            {BLUEPRINTS.map((bp, idx) => {
                                 const colors = COLOR_MAP[bp.color] || COLOR_MAP.emerald;
                                 return (
-                                    <div key={bp.id} className={`group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:${colors.border} transition-all duration-500 hover:-translate-y-1 hover:${colors.glow} overflow-hidden`}>
+                                    <motion.div 
+                                        key={bp.id} 
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.1 + idx * 0.05 }}
+                                        className={`group relative p-5 rounded-xl border border-white/5 bg-black/40 backdrop-blur-2xl hover:${colors.border} transition-all duration-500 hover:-translate-y-1 hover:${colors.glow} overflow-hidden`}
+                                    >
                                         <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
                                         <div className="relative z-10">
                                             <div className="flex items-start justify-between mb-4">
@@ -251,20 +282,21 @@ export default function BlueprintsPage() {
                                                 <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={() => setSelectedBlueprint(bp)}
-                                                        className={`flex-1 py-1.5 px-3 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-1.5`}
+                                                        className={`flex-1 py-2.5 sm:py-1.5 px-3 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-[10px] font-mono uppercase tracking-widest flex items-center justify-center gap-2 active:bg-white/20`}
                                                     >
                                                         <Info className="w-3 h-3" /> Instructions
                                                     </button>
                                                     <button
-                                                        onClick={() => downloadFile(bp.downloadUrl, bp.fileName)}
-                                                        className={`flex-1 py-1.5 px-3 rounded-lg border border-[var(--primary)]/30 bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-1.5`}
+                                                        onClick={() => handleDownload(bp.downloadUrl, bp.fileName, bp.id)}
+                                                        className={`flex-1 py-2.5 sm:py-1.5 px-3 rounded-lg border border-[var(--primary)]/30 bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 transition-all text-[10px] font-mono uppercase tracking-widest flex items-center justify-center gap-2 active:bg-[var(--primary)]/30 font-bold`}
                                                     >
                                                         <Download className="w-3 h-3" /> Get
                                                     </button>
                                                 </div>
+
                                             </div>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 );
                             })}
                         </div>
@@ -274,67 +306,81 @@ export default function BlueprintsPage() {
             </main>
 
             {/* Instructions Modal */}
-            {selectedBlueprint && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    {/* Backdrop */}
-                    <div
-                        className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
-                        onClick={() => setSelectedBlueprint(null)}
-                    />
-
-                    {/* Modal Content */}
-                    <div className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-6 lg:p-8 animate-fade-in-up">
-                        <button
+            <AnimatePresence>
+                {selectedBlueprint && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
                             onClick={() => setSelectedBlueprint(null)}
-                            className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+                        />
+
+                        {/* Modal Content */}
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-6 lg:p-8 overflow-hidden"
                         >
-                            <X className="w-5 h-5" />
-                        </button>
-
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className={`p-2 rounded-lg ${COLOR_MAP[selectedBlueprint.color]?.bg || 'bg-white/10'} ${COLOR_MAP[selectedBlueprint.color]?.text || 'text-white'}`}>
-                                {selectedBlueprint.icon}
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-white tracking-tight">{selectedBlueprint.title}</h3>
-                                <div className="text-xs font-mono text-zinc-500 uppercase mt-1">Instructions & Breakdown</div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white/5 border border-white/5 rounded-xl p-5 mb-6">
-                            <ul className="space-y-4">
-                                {selectedBlueprint.howToUse.map((step, i) => (
-                                    <li key={i} className="flex gap-3 text-sm text-zinc-300 leading-relaxed">
-                                        <span className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] text-xs font-bold font-mono mt-0.5">
-                                            {i + 1}
-                                        </span>
-                                        <span>{step}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <div className="flex justify-end gap-3">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-[80px] pointer-events-none" />
+                            
                             <button
                                 onClick={() => setSelectedBlueprint(null)}
-                                className="px-5 py-2.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                                className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
                             >
-                                Close
+                                <X className="w-5 h-5" />
                             </button>
-                            <button
-                                onClick={() => {
-                                    downloadFile(selectedBlueprint.downloadUrl, selectedBlueprint.fileName);
-                                    setSelectedBlueprint(null);
-                                }}
-                                className="px-5 py-2.5 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white text-sm font-medium transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center gap-2"
-                            >
-                                <Download className="w-4 h-4" />
-                                Download Asset
-                            </button>
-                        </div>
+
+                            <div className="flex items-center gap-3 mb-6 relative z-10">
+                                <div className={`p-2 rounded-lg ${COLOR_MAP[selectedBlueprint.color]?.bg || 'bg-white/10'} ${COLOR_MAP[selectedBlueprint.color]?.text || 'text-white'}`}>
+                                    {selectedBlueprint.icon}
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-white tracking-tight">{selectedBlueprint.title}</h3>
+                                    <div className="text-xs font-mono text-zinc-500 uppercase mt-1">Instructions & Breakdown</div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white/5 border border-white/5 rounded-xl p-5 mb-6 relative z-10">
+                                <ul className="space-y-4">
+                                    {selectedBlueprint.howToUse.map((step, i) => (
+                                        <li key={i} className="flex gap-3 text-sm text-zinc-300 leading-relaxed">
+                                            <span className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] text-xs font-bold font-mono mt-0.5">
+                                                {i + 1}
+                                            </span>
+                                            <span>{step}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row justify-end gap-3 relative z-10">
+                                <button
+                                    onClick={() => setSelectedBlueprint(null)}
+                                    className="order-2 sm:order-1 w-full sm:w-auto px-5 py-3 sm:py-2.5 rounded-lg text-sm font-medium text-zinc-500 hover:text-white transition-colors"
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        handleDownload(selectedBlueprint.downloadUrl, selectedBlueprint.fileName, selectedBlueprint.id);
+                                        setSelectedBlueprint(null);
+                                    }}
+                                    className="order-1 sm:order-2 w-full sm:w-auto px-5 py-3.5 sm:py-2.5 rounded-xl sm:rounded-lg bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white text-sm font-bold sm:font-medium transition-all shadow-[0_0_15px_rgba(0,0,0,0.5)] flex items-center justify-center gap-2 active:scale-95 sm:active:scale-100"
+                                >
+                                    <Download className="w-5 h-5 sm:w-4 sm:h-4" />
+                                    Download Asset
+                                </button>
+                            </div>
+
+                        </motion.div>
                     </div>
-                </div>
-            )}
+                )}
+            </AnimatePresence>
         </div>
     );
 }

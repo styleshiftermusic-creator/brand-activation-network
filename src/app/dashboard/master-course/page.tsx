@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
 import { supabase } from "@/lib/supabase";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface QuizQuestion {
     question: string;
@@ -63,6 +64,19 @@ export default function MasterCoursePage() {
     const audioRef = useRef<HTMLAudioElement>(null);
     const isManualNavRef = useRef(false);
 
+    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW" | "QUIZ_COMPLETE", id?: string, metadata?: any) => {
+        try {
+            fetch("/api/activity", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ activity_type: type, target_id: id, metadata }),
+            });
+        } catch (err) {
+            console.error("Failed to log activity:", err);
+        }
+    };
+
+
     const togglePlay = () => {
         if (!audioRef.current) return;
         if (isPlaying) {
@@ -113,7 +127,12 @@ export default function MasterCoursePage() {
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
         }
+        // Log view
+        if (activeModuleId) {
+            logActivity("MODULE_VIEW", activeModuleId, { title: activeModule.title });
+        }
     }, [activeModuleId]);
+
 
     // Audio-Slide Sync: auto-advance slides based on audio position
     useEffect(() => {
@@ -226,6 +245,9 @@ export default function MasterCoursePage() {
                 }, { onConflict: 'user_id,module_id' });
             }
 
+            // Log completion
+            logActivity("MODULE_VIEW", activeModule.id, { completed: true });
+
             // Refresh UI
             await fetchProgress();
         } catch (err) {
@@ -302,6 +324,38 @@ export default function MasterCoursePage() {
                         </div>
                         <h1 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{activeModule.title}</h1>
                     </header>
+
+                    {/* Mobile Module Selector - Only visible on small screens */}
+                    <div className="lg:hidden mb-6">
+                        <div className="p-1 rounded-xl bg-white/5 border border-white/10 flex gap-1 overflow-x-auto no-scrollbar pb-1">
+                            {modules.map((m) => {
+                                const isSelected = activeModuleId === m.id;
+                                const isLocked = m.status === "LOCKED";
+                                const isCompleted = m.status === "COMPLETED";
+                                
+                                return (
+                                    <button
+                                        key={m.id}
+                                        onClick={() => !isLocked && setActiveModuleId(m.id)}
+                                        disabled={isLocked}
+                                        className={`flex-shrink-0 px-4 py-2.5 rounded-lg text-xs font-mono transition-all duration-300 flex items-center gap-2 ${
+                                            isSelected 
+                                                ? "bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)]" 
+                                                : isLocked 
+                                                    ? "opacity-30 grayscale cursor-not-allowed" 
+                                                    : "text-zinc-400 hover:text-white bg-white/5"
+                                        }`}
+                                    >
+                                        {isCompleted && <CheckCircle2 className="w-3 h-3" />}
+                                        {isLocked && <Lock className="w-3 h-3" />}
+                                        {!isCompleted && !isLocked && <Play className="w-3 h-3 fill-current" />}
+                                        {m.id}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
 
                     {/* Slide Viewer — Always Visible */}
                     <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center">
@@ -388,21 +442,22 @@ export default function MasterCoursePage() {
                             
                             {/* Custom Playback Timeline */}
                             <div 
-                                className="w-full h-1.5 bg-white/5 rounded-full cursor-pointer relative group/timeline"
+                                className="w-full h-2 md:h-1.5 bg-white/5 rounded-full cursor-pointer relative group/timeline"
                                 onClick={handleTimelineClick}
                             >
-                                {/* Hover background effect */}
-                                <div className="absolute -inset-y-2 left-0 right-0" />
+                                {/* Transparent expanded hit area for touch */}
+                                <div className="absolute -inset-y-4 left-0 right-0 z-10" />
                                 
                                 <div 
-                                    className="absolute top-0 left-0 h-full bg-emerald-500/80 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-100 ease-linear"
+                                    className="absolute top-0 left-0 h-full bg-emerald-500/80 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-100 ease-linear z-0"
                                     style={{ width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%` }}
                                 />
                                 <div 
-                                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-0 group-hover/timeline:opacity-100 transition-opacity ease-out pointer-events-none"
+                                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 md:w-3 md:h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-100 md:opacity-0 md:group-hover/timeline:opacity-100 transition-opacity ease-out pointer-events-none z-20"
                                     style={{ left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`, transform: 'translate(-50%, -50%)' }}
                                 />
                             </div>
+
 
                             <audio
                                 ref={audioRef}
@@ -422,110 +477,142 @@ export default function MasterCoursePage() {
                     <div className="flex flex-col gap-8">
 
                         {/* Interactive Tabs */}
-                        <div className="flex gap-6 md:gap-8 border-b border-white/10">
+                        <div className="flex gap-4 md:gap-8 border-b border-white/10 overflow-x-auto no-scrollbar">
                             <button
                                 onClick={() => setActiveTab('study')}
-                                className={`pb-4 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight ${activeTab === 'study'
-                                    ? 'border-emerald-500 text-white shadow-[0_20px_20px_-10px_rgba(16,185,129,0.3)]'
+                                className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'study'
+
+                                    ? 'text-white'
                                     : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
                                     }`}
                             >
                                 <BookOpen className="w-4 h-4 md:w-5 md:h-5" />
                                 Study Guide
+                                {activeTab === 'study' && (
+                                    <motion.div 
+                                        layoutId="tab-underline"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                    />
+                                )}
                             </button>
                             <button
                                 onClick={() => setActiveTab('quiz')}
-                                className={`pb-4 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight ${activeTab === 'quiz'
-                                    ? 'border-emerald-500 text-white shadow-[0_20px_20px_-10px_rgba(16,185,129,0.3)]'
+                                className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'quiz'
+
+                                    ? 'text-white'
                                     : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
                                     }`}
                             >
                                 <Brain className="w-4 h-4 md:w-5 md:h-5" />
                                 Knowledge Check
+                                {activeTab === 'quiz' && (
+                                    <motion.div 
+                                        layoutId="tab-underline"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                    />
+                                )}
                             </button>
                             <button
                                 onClick={() => setActiveTab('resources')}
-                                className={`pb-4 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight ${activeTab === 'resources'
-                                    ? 'border-emerald-500 text-white shadow-[0_20px_20px_-10px_rgba(16,185,129,0.3)]'
+                                className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'resources'
+
+                                    ? 'text-white'
                                     : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
                                     }`}
                             >
                                 <Download className="w-4 h-4 md:w-5 md:h-5" />
                                 Resources
+                                {activeTab === 'resources' && (
+                                    <motion.div 
+                                        layoutId="tab-underline"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                    />
+                                )}
                             </button>
                         </div>
 
                         {/* Content Viewer */}
-                        <div className="min-h-[400px]">
-                            {activeTab === 'study' && (
-                                <div className="animate-fade-in-up">
-                                    <div className="prose prose-invert prose-emerald prose-sm md:prose-base max-w-none text-zinc-300 leading-relaxed font-sans">
-                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                            {activeModule.description}
-                                        </ReactMarkdown>
-                                    </div>
-
-                                    {/* Mark Complete Button */}
-                                    {activeModule.status !== 'COMPLETED' && (
-                                        <div className="mt-10 mb-20 flex justify-center">
-                                            <button
-                                                onClick={markModuleComplete}
-                                                className="px-8 py-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-white font-medium tracking-wide transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-3 group"
-                                            >
-                                                <CheckCircle2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                                Mark Module Complete
-                                            </button>
-                                        </div>
-                                    )}
-                                    {activeModule.status === 'COMPLETED' && (
-                                        <div className="mt-10 mb-20 flex justify-center">
-                                            <div className="px-8 py-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-500/60 font-medium tracking-wide flex items-center gap-3">
-                                                <CheckCircle2 className="w-5 h-5" />
-                                                Module Completed
+                        <div className="min-h-[400px] relative">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeTab + activeModuleId}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    {activeTab === 'study' && (
+                                        <div>
+                                            <div className="prose prose-invert prose-emerald prose-sm md:prose-base max-w-none text-zinc-300 leading-relaxed font-sans">
+                                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                    {activeModule.description}
+                                                </ReactMarkdown>
                                             </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
 
-                            {activeTab === 'quiz' && (
-                                <div className="animate-fade-in-up pb-20">
-                                    <Quiz
-                                        key={activeModule.id}
-                                        moduleId={activeModule.id}
-                                        questions={activeModule.quiz || []}
-                                        onComplete={fetchProgress}
-                                    />
-                                </div>
-                            )}
-
-                            {activeTab === 'resources' && (
-                                <div className="animate-fade-in-up grid grid-cols-1 sm:grid-cols-2 gap-4 pb-20">
-                                    {activeModule.resources && activeModule.resources.length > 0 ? (
-                                        activeModule.resources.map((res, idx) => (
-                                            <button key={idx} className="w-full flex items-center justify-between p-4 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.2)] group text-left relative overflow-hidden">
-                                                <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
-                                                <div className="flex items-center gap-4 relative z-10">
-                                                    <div className="p-2 rounded-lg bg-black/60 border border-white/5 text-zinc-500 group-hover:text-emerald-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-all duration-500 group-hover:scale-110">
-                                                        {res.icon}
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm md:text-base font-medium text-zinc-300 group-hover:text-white transition-colors tracking-tight">{res.name}</div>
-                                                        <div className="text-[10px] font-mono text-zinc-500 uppercase">{res.type} Format</div>
+                                            {/* Mark Complete Button */}
+                                            {activeModule.status !== 'COMPLETED' && (
+                                                <div className="mt-10 mb-20 flex justify-center">
+                                                    <button
+                                                        onClick={markModuleComplete}
+                                                        className="px-8 py-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-white font-medium tracking-wide transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-3 group"
+                                                    >
+                                                        <CheckCircle2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                                        Mark Module Complete
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {activeModule.status === 'COMPLETED' && (
+                                                <div className="mt-10 mb-20 flex justify-center">
+                                                    <div className="px-8 py-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-500/60 font-medium tracking-wide flex items-center gap-3">
+                                                        <CheckCircle2 className="w-5 h-5" />
+                                                        Module Completed
                                                     </div>
                                                 </div>
-                                                <Download className="w-5 h-5 text-zinc-600 group-hover:text-emerald-400 group-hover:-translate-y-1 transition-all duration-500 relative z-10" />
-                                            </button>
-                                        ))
-                                    ) : (
-                                        <div className="col-span-full p-8 rounded-xl bg-black/40 border border-white/5 text-center text-zinc-500 flex flex-col items-center justify-center backdrop-blur-md border-dashed">
-                                            <Download className="w-8 h-8 mb-3 opacity-30" />
-                                            <p className="text-sm">Downloadable materials unlocking soon.</p>
+                                            )}
                                         </div>
                                     )}
-                                </div>
-                            )}
+
+                                    {activeTab === 'quiz' && (
+                                        <div className="pb-20">
+                                            <Quiz
+                                                key={activeModule.id}
+                                                moduleId={activeModule.id}
+                                                questions={activeModule.quiz || []}
+                                                onComplete={fetchProgress}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {activeTab === 'resources' && (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-20">
+                                            {activeModule.resources && activeModule.resources.length > 0 ? (
+                                                activeModule.resources.map((res, idx) => (
+                                                    <button key={idx} className="w-full flex items-center justify-between p-4 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.2)] group text-left relative overflow-hidden">
+                                                        <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
+                                                        <div className="flex items-center gap-4 relative z-10">
+                                                            <div className="p-2 rounded-lg bg-black/60 border border-white/5 text-zinc-500 group-hover:text-emerald-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-all duration-500 group-hover:scale-110">
+                                                                {res.icon}
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm md:text-base font-medium text-zinc-300 group-hover:text-white transition-colors tracking-tight">{res.name}</div>
+                                                                <div className="text-[10px] font-mono text-zinc-500 uppercase">{res.type} Format</div>
+                                                            </div>
+                                                        </div>
+                                                        <Download className="w-5 h-5 text-zinc-600 group-hover:text-emerald-400 group-hover:-translate-y-1 transition-all duration-500 relative z-10" />
+                                                    </button>
+                                                ))
+                                            ) : (
+                                                <div className="col-span-full p-8 rounded-xl bg-black/40 border border-white/5 text-center text-zinc-500 flex flex-col items-center justify-center backdrop-blur-md border-dashed">
+                                                    <Download className="w-8 h-8 mb-3 opacity-30" />
+                                                    <p className="text-sm">Downloadable materials unlocking soon.</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
+
                     </div>
 
                 </div>
@@ -536,14 +623,17 @@ export default function MasterCoursePage() {
                         <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-zinc-500 mb-6">Course Matrix</h2>
 
                         <div className="space-y-3">
-                            {modules.map((module) => {
+                            {modules.map((module, idx) => {
                                 const isSelected = activeModuleId === module.id;
                                 const isLocked = module.status === "LOCKED";
                                 const isCompleted = module.status === "COMPLETED";
 
                                 return (
-                                    <button
+                                    <motion.button
                                         key={module.id}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.2 + idx * 0.05 }}
                                         onClick={() => !isLocked && setActiveModuleId(module.id)}
                                         disabled={isLocked}
                                         className={`w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden group ${isLocked
@@ -556,10 +646,13 @@ export default function MasterCoursePage() {
                                         <div className="absolute inset-0 border border-white/[0.02] rounded-xl pointer-events-none" />
 
                                         {isSelected && (
-                                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" />
+                                            <motion.div 
+                                                layoutId="module-active-pill"
+                                                className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" 
+                                            />
                                         )}
 
-                                        <div className="flex gap-4">
+                                        <div className="flex gap-4 relative z-20">
                                             {/* Status Icon */}
                                             <div className="flex-shrink-0 mt-0.5">
                                                 {isCompleted ? (
@@ -585,7 +678,7 @@ export default function MasterCoursePage() {
                                                 </h4>
                                             </div>
                                         </div>
-                                    </button>
+                                    </motion.button>
                                 );
                             })}
                         </div>

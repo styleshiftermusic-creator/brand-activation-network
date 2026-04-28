@@ -5,6 +5,7 @@ import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X }
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname();
@@ -20,7 +21,11 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
     return (
         <>
-            <div className="mb-10 flex items-center gap-3">
+            <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="mb-10 flex items-center gap-3"
+            >
                 <div className="h-8 w-8 rounded bg-[var(--primary)]/20 border border-[var(--primary)]/50 flex items-center justify-center">
                     <Terminal className="h-4 w-4 text-[var(--primary)]" />
                 </div>
@@ -28,31 +33,44 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                     <div className="text-xs font-mono text-zinc-500 uppercase tracking-widest">Workspace</div>
                     <div className="font-semibold text-white tracking-tight">Mission Control</div>
                 </div>
-            </div>
+            </motion.div>
 
             <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-600 mb-4 pl-2">Directories</div>
             <nav className="flex flex-col gap-1 flex-grow font-mono text-sm">
-                {navItems.map((item) => {
+                {navItems.map((item, idx) => {
                     const isActive = pathname === item.path;
                     return (
-                        <Link
+                        <motion.div
                             key={item.path}
-                            href={item.path}
-                            onClick={onNavigate}
-                            className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 overflow-hidden ${isActive
-                                ? "bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30 shadow-[inset_0_0_20px_-5px_var(--primary)]"
-                                : "text-zinc-500 hover:text-zinc-200 border border-transparent hover:border-white/5"
-                                }`}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.05 }}
                         >
-                            {/* Animated pill background on hover */}
-                            {!isActive && (
-                                <div className="absolute inset-0 bg-gradient-to-r from-white/[0.08] to-transparent rounded-lg opacity-0 -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 pointer-events-none" />
-                            )}
-                            <div className="relative z-10 flex items-center gap-3 w-full">
-                                <span className={`transition-transform duration-300 ${!isActive && 'group-hover:text-white group-hover:scale-110'}`}>{item.icon}</span>
-                                <span>{item.label}</span>
-                            </div>
-                        </Link>
+                            <Link
+                                href={item.path}
+                                onClick={onNavigate}
+                                className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 overflow-hidden ${isActive
+                                    ? "bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30 shadow-[inset_0_0_20px_-5px_var(--primary)]"
+                                    : "text-zinc-500 hover:text-zinc-200 border border-transparent hover:border-white/5"
+                                    }`}
+                            >
+                                {isActive && (
+                                    <motion.div 
+                                        layoutId="active-pill"
+                                        className="absolute inset-0 border border-[var(--primary)]/50 rounded-lg pointer-events-none"
+                                        transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                                    />
+                                )}
+                                {/* Animated pill background on hover */}
+                                {!isActive && (
+                                    <div className="absolute inset-0 bg-gradient-to-r from-white/[0.08] to-transparent rounded-lg opacity-0 -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 pointer-events-none" />
+                                )}
+                                <div className="relative z-10 flex items-center gap-3 w-full">
+                                    <span className={`transition-transform duration-300 ${!isActive && 'group-hover:text-white group-hover:scale-110'}`}>{item.icon}</span>
+                                    <span>{item.label}</span>
+                                </div>
+                            </Link>
+                        </motion.div>
                     )
                 })}
             </nav>
@@ -90,26 +108,37 @@ export function Sidebar() {
             </button>
 
             {/* Mobile Overlay + Drawer */}
-            {mobileOpen && (
-                <div className="fixed inset-0 z-40 md:hidden">
-                    {/* Backdrop */}
-                    <div
-                        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-                        onClick={() => setMobileOpen(false)}
-                    />
-                    {/* Drawer */}
-                    <aside className="absolute left-0 top-0 w-72 h-full border-r border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl p-6 flex flex-col z-50 animate-fade-in-up">
-                        <button
+            <AnimatePresence>
+                {mobileOpen && (
+                    <div className="fixed inset-0 z-40 md:hidden">
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                             onClick={() => setMobileOpen(false)}
-                            className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-all"
-                            aria-label="Close navigation"
+                        />
+                        {/* Drawer */}
+                        <motion.aside 
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="absolute left-0 top-0 w-72 h-full border-r border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl p-6 flex flex-col z-50"
                         >
-                            <X className="h-5 w-5" />
-                        </button>
-                        <SidebarContent onNavigate={() => setMobileOpen(false)} />
-                    </aside>
-                </div>
-            )}
+                            <button
+                                onClick={() => setMobileOpen(false)}
+                                className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-all"
+                                aria-label="Close navigation"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                            <SidebarContent onNavigate={() => setMobileOpen(false)} />
+                        </motion.aside>
+                    </div>
+                )}
+            </AnimatePresence>
 
             {/* Desktop Sidebar (unchanged) */}
             <aside className="w-64 lg:w-72 border-r border-white/10 bg-black/20 backdrop-blur-xl p-6 flex-col hidden md:flex z-10 relative h-full min-h-screen">

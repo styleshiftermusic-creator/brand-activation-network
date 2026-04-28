@@ -4,6 +4,7 @@ import Script from "next/script";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { LeadMagnetForm } from "@/components/LeadMagnetForm";
 import { HeroCTA, ModuleCTA, FinalCTA } from "@/components/WaitlistCTA";
+import { SocialProofToast } from "@/components/SocialProofToast";
 import {
   Zap,
   TrendingUp,
@@ -17,9 +18,18 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Brand Activation Network | Master Business Funding & High-Ticket Sales",
+  title: "Master Business Funding & High-Ticket Sales",
   description:
-    "The Master Blueprint to secure business funding, automate high-ticket sales, and scale your brand using AI-powered systems. Join the Brand Activation Network.",
+    "The Master Blueprint: a 7-module system to secure business funding, automate high-ticket sales, and scale your brand using AI-powered systems. Join the Brand Activation Network today.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Brand Activation Network — The Master Blueprint",
+    description: "Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your life.",
+    url: "https://brandactivationnetwork.com",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
@@ -398,6 +408,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* ─── SOCIAL PROOF NOTIFICATIONS ─── */}
+      <SocialProofToast initialDelay={8000} interval={25000} displayDuration={6000} />
     </div>
   );
 }
