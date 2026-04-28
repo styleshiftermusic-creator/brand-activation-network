@@ -35,6 +35,8 @@ const ratelimit = redis ? new Ratelimit({
 
 const subscribeSchema = z.object({
     email: z.string().email("Invalid email address"),
+    name: z.string().optional(),
+    phone: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -60,14 +62,15 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 });
         }
 
-        const { email } = parsed.data;
+        const { email, name, phone } = parsed.data;
 
         // Save Lead to Supabase (Reusing the webinar_registrations table for leads)
         const { error } = await supabase.from('webinar_registrations').insert([
             {
-                full_name: 'Lead Magnet Download',
+                full_name: name || 'Lead Magnet Download',
                 email: email,
-                event_name: 'BAN Credit Sweep Download'
+                phone: phone || null,
+                event_name: 'BAN Waitlist / Download'
             }
         ]);
 

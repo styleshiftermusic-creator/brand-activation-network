@@ -9,7 +9,9 @@ interface WaitlistModalProps {
 }
 
 export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,7 +23,9 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
     } else {
       // Reset state when modal closes
       setTimeout(() => {
+        setName("");
         setEmail("");
+        setPhone("");
         setStatus("idle");
         setErrorMsg("");
       }, 300);
@@ -45,7 +49,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || status === "loading") return;
+    if (!name || !email || status === "loading") return;
     setStatus("loading");
     setErrorMsg("");
 
@@ -53,12 +57,14 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ name, email, phone }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || "Something went wrong.");
       setStatus("success");
+      setName("");
       setEmail("");
+      setPhone("");
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
@@ -137,17 +143,34 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                   <input
                     ref={inputRef}
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Full Name"
+                    disabled={status === "loading"}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[var(--primary)]/60 focus:bg-white/8 transition-all font-medium disabled:opacity-50 text-sm"
+                  />
+                  <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your best email..."
+                    placeholder="Email Address"
+                    disabled={status === "loading"}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[var(--primary)]/60 focus:bg-white/8 transition-all font-medium disabled:opacity-50 text-sm"
+                  />
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Phone Number (Optional)"
                     disabled={status === "loading"}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[var(--primary)]/60 focus:bg-white/8 transition-all font-medium disabled:opacity-50 text-sm"
                   />
                   <button
                     type="submit"
-                    disabled={status === "loading" || !email}
+                    disabled={status === "loading" || !name || !email}
                     className="w-full py-4 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold rounded-xl transition-all shadow-[0_0_30px_-8px_rgba(157,78,221,0.6)] hover:shadow-[0_0_50px_-8px_rgba(157,78,221,0.9)] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {status === "loading" ? (
