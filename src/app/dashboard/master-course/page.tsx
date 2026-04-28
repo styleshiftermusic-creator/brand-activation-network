@@ -128,10 +128,10 @@ export default function MasterCoursePage() {
             audioRef.current.currentTime = 0;
         }
         // Log view
-        if (activeModuleId) {
+        if (activeModuleId && activeModule) {
             logActivity("MODULE_VIEW", activeModuleId, { title: activeModule.title });
         }
-    }, [activeModuleId]);
+    }, [activeModuleId, modules]);
 
 
     // Audio-Slide Sync: auto-advance slides based on audio position
