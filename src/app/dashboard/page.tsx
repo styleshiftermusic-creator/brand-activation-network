@@ -8,15 +8,10 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { MetricChart } from "@/components/dashboard/MetricChart";
 import { MissionFeed } from "@/components/dashboard/MissionFeed";
 
-const DEFAULT_MISSIONS = [
-    { id: "M-01", status: "LOCKED", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: true, completed: false },
-    { id: "M-02", status: "LOCKED", title: "Transitioning to Business Funding", category: "[FINANCE]", time: "01:12:00", locked: true, completed: false },
-    { id: "M-03", status: "LOCKED", title: "The Investment Blueprint", category: "[WEALTH]", time: "00:55:00", locked: true, completed: false },
-    { id: "M-04", status: "LOCKED", title: "Marketing & Audience Leverage", category: "[BUSINESS]", time: "01:30:00", locked: true, completed: false },
-    { id: "M-05", status: "LOCKED", title: "High-Ticket Sales Philosophy", category: "[BUSINESS]", time: "00:42:00", locked: true, completed: false },
-    { id: "M-06", status: "LOCKED", title: "Scaling with One-to-Many", category: "[SCALE]", time: "01:05:00", locked: true, completed: false },
-    { id: "M-07", status: "LOCKED", title: "Mindset & Environment", category: "[FOUNDATION]", time: "00:38:00", locked: true, completed: false },
+const FALLBACK_MISSIONS = [
+    { id: "M-01", status: "ACTIVE", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: false, completed: false },
 ];
+
 
 const FALLBACK_PERFORMANCE_DATA = [
     { time: '00:00', load: 12, efficiency: 98 },
@@ -31,7 +26,7 @@ const FALLBACK_PERFORMANCE_DATA = [
 export default function MissionControl() {
     const [chartData, setChartData] = useState(FALLBACK_PERFORMANCE_DATA);
     const [chartLoading, setChartLoading] = useState(true);
-    const [missions, setMissions] = useState(DEFAULT_MISSIONS);
+    const [missions, setMissions] = useState(FALLBACK_MISSIONS);
 
     // Compute progress based on current mission state
     const completedCount = missions.filter(m => m.completed).length;
@@ -85,39 +80,51 @@ export default function MissionControl() {
         fetchTelemetry();
     }, []);
 
-    // Fetch dynamic course progress
+    // Fetch dynamic course progress and content
     useEffect(() => {
-
-        const fetchProgress = async () => {
+        const fetchDashboardData = async () => {
             try {
+                // 1. Fetch Course Content
+                const contentRes = await fetch("/api/course-content");
+                if (!contentRes.ok) throw new Error("Failed to load course content");
+                const courseData = await contentRes.json();
+
+                // 2. Fetch Progress
                 const { data: { user } } = await supabase.auth.getUser();
                 if (!user) return;
 
-                const { data, error } = await supabase
+                const { data: progressData, error } = await supabase
                     .from('course_progress')
                     .select('module_id, status')
                     .eq('user_id', user.id);
 
                 if (error) throw error;
 
-                if (data && data.length > 0) {
-                    const progressMap = new Map(data.map((p: { module_id: string; status: string }) => [p.module_id, p]));
-                    const updatedMissions = DEFAULT_MISSIONS.map((mission) => {
-                        const progress = progressMap.get(mission.id);
-                        if (progress) {
-                            return {
-                                ...mission,
-                                locked: progress.status === 'LOCKED',
-                                completed: progress.status === 'COMPLETED',
-                                status: progress.status
-                            };
-                        }
-                        // Default any unrecorded mission to LOCKED
-                        return mission;
-                    });
-                    setMissions(updatedMissions);
-                } else {
-                    // First time user, initialize M-01 in DB
+                const progressMap = new Map((progressData || []).map((p: { module_id: string; status: string }) => [p.module_id, p]));
+
+                // 3. Build Missions List
+                const builtMissions = Object.entries(courseData).map(([key, data]: [string, any]) => {
+                    const id = `M-0${key}`;
+                    const progress = progressMap.get(id);
+                    
+                    // Estimate duration based on word count (150 wpm)
+                    const wordCount = data.studyGuide.split(/\s+/).length;
+                    const totalMinutes = Math.ceil(wordCount / 150);
+                    const time = `${String(totalMinutes).padStart(2, '0')}:00`;
+
+                    return {
+                        id,
+                        title: data.title,
+                        category: data.category || "[MODULE]",
+                        time,
+                        locked: progress ? progress.status === 'LOCKED' : (id !== 'M-01'),
+                        completed: progress ? progress.status === 'COMPLETED' : false,
+                        status: progress ? progress.status : (id === 'M-01' ? 'ACTIVE' : 'LOCKED')
+                    };
+                });
+
+                // 4. Initialize M-01 if first time
+                if ((!progressData || progressData.length === 0) && user) {
                     try {
                         await supabase.from('course_progress').insert({
                             user_id: user.id,
@@ -125,19 +132,17 @@ export default function MissionControl() {
                             status: 'ACTIVE'
                         });
                     } catch (e) {
-                         console.info("Could not initialize telemetry database row.");
+                        console.info("Could not initialize telemetry database row.");
                     }
-                    const initialMissions = [...DEFAULT_MISSIONS];
-                    initialMissions[0].locked = false;
-                    initialMissions[0].status = "ACTIVE";
-                    setMissions(initialMissions);
                 }
+
+                setMissions(builtMissions);
             } catch (err) {
-                console.error("[PROGRESS_ERROR] Failed to fetch course progress:", err);
+                console.error("[DASHBOARD_DATA_ERROR] Failed to fetch data:", err);
             }
         };
 
-        fetchProgress();
+        fetchDashboardData();
     }, []);
 
     return (

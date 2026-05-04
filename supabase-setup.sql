@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS public.course_progress (
     completed boolean GENERATED ALWAYS AS (status = 'COMPLETED') STORED,
     unlocked boolean GENERATED ALWAYS AS (status != 'LOCKED') STORED,
     last_accessed timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
+    completed_at timestamp with time zone,
     UNIQUE(user_id, module_id),
     CONSTRAINT status_check CHECK (status IN ('LOCKED', 'ACTIVE', 'COMPLETED'))
 );
@@ -52,10 +53,33 @@ ON public.course_progress
 FOR UPDATE TO authenticated
 USING (auth.uid() = user_id);
 
--- 3. Optimization Pass (Data Architect)
+-- 3. Create the quiz_scores table
+CREATE TABLE IF NOT EXISTS public.quiz_scores (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+    module_id text NOT NULL,
+    score integer NOT NULL,
+    passed boolean NOT NULL,
+    created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.quiz_scores ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own quiz scores"
+ON public.quiz_scores
+FOR SELECT TO authenticated
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own quiz scores"
+ON public.quiz_scores
+FOR INSERT TO authenticated
+WITH CHECK (auth.uid() = user_id);
+
+-- 4. Optimization Pass (Data Architect)
 -- Explicit Indexes for Foreign Keys and High-Traffic Lookups
 CREATE INDEX IF NOT EXISTS idx_course_progress_user_id ON public.course_progress(user_id);
 CREATE INDEX IF NOT EXISTS idx_webinar_registrations_email ON public.webinar_registrations(email);
+CREATE INDEX IF NOT EXISTS idx_quiz_scores_user_id ON public.quiz_scores(user_id);
 
 -- Note from Data Architect: The missing SELECT policy on webinar_registrations
 -- is an intentional security design choice, preventing unauthenticated iteration
@@ -94,3 +118,7 @@ SET status = CASE
     ELSE 'LOCKED'
 END
 WHERE status = 'LOCKED';
+
+-- Add 'completed_at' column to course_progress if it doesn't already exist
+ALTER TABLE public.course_progress
+    ADD COLUMN IF NOT EXISTS completed_at timestamp with time zone;

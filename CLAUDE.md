@@ -24,6 +24,7 @@ A premium SaaS platform for financial education and business coaching. Built wit
 - `/dashboard/blueprints` — Blueprint library
 - `/dashboard/data-sources` — Financial data sources reference
 - `/dashboard/antigravity-system` — System overview
+- `/dashboard/gemma` — AI Lab (Gemma 4 Playground)
 
 ### Key Files
 
@@ -48,6 +49,9 @@ A premium SaaS platform for financial education and business coaching. Built wit
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anonymous key
 - `ELEVENLABS_API_KEY` — ElevenLabs TTS API key (for audio generation)
 - `ELEVENLABS_VOICE_ID` — Voice ID for narration
+- `GOOGLE_AI_API_KEY` — Google AI Studio API key (for Gemma 4 access)
+- `UPSTASH_REDIS_REST_URL` — Upstash Redis URL (for rate limiting)
+- `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis Token (for rate limiting)
 
 ## Design System
 
@@ -62,15 +66,14 @@ A premium SaaS platform for financial education and business coaching. Built wit
 - Script: `scripts/generate-audio.js`
 - Reads TED Talk scripts from artifact directory, strips markdown/stage directions
 - Calls ElevenLabs API, saves MP3s to `public/audio/`
-- Modules 1-3 already generated, 4-7 pending (quota limit)
+- All 7 modules (1-7) have been successfully generated as .mp3 files.
 
 ## Known Issues / Pending Work
 
-1. Study guides render as raw text — needs a markdown renderer component
-2. Module durations hardcoded — should be set when real videos are finalized
-3. Dashboard progress shows 0% — `course_progress` not wired to UI updates
-4. Modules 4-7 audio not generated yet (ElevenLabs quota)
-5. audioSrc for modules 4-7 still references .wav files (should be .mp3 after generation)
+1. Study guides styling — `ReactMarkdown` is implemented but needs verified styling pass in the UI.
+2. Dashboard progress wiring — `course_progress` table and logic are in place; needs verification on live dashboard.
+3. Database Schema Sync — `supabase-setup.sql` has been updated with missing `quiz_scores` table and `completed_at` column. Ensure these are migrated to the Supabase instance.
+4. Deployment — App needs to be verified on `localhost:3000`. (Currently showing conflicts with other projects like LIVEFREE SEARCH).
 
 ## Commands
 

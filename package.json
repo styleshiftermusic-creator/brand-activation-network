@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@marsidev/react-turnstile": "^1.4.2",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.61",
