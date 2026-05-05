@@ -149,11 +149,12 @@ export default function MasterCoursePage() {
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
         }
-        // Log view
-        if (activeModuleId && activeModule) {
-            logActivity("MODULE_VIEW", activeModuleId, { title: activeModule.title });
+        // Log view — only when the module ID actually changes, not on every render
+        if (activeModuleId) {
+            const mod = modules.find(m => m.id === activeModuleId);
+            if (mod) logActivity("MODULE_VIEW", activeModuleId, { title: mod.title });
         }
-    }, [activeModuleId, activeModule]);
+    }, [activeModuleId, modules]);
 
 
     // Audio-Slide Sync: auto-advance slides based on audio position

@@ -122,3 +122,32 @@ WHERE status = 'LOCKED';
 -- Add 'completed_at' column to course_progress if it doesn't already exist
 ALTER TABLE public.course_progress
     ADD COLUMN IF NOT EXISTS completed_at timestamp with time zone;
+
+-- =============================================================================
+-- 5. Create the user_activity table (used by /api/activity endpoint)
+--    PGRST205 errors = this table was missing. Run this to fix.
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.user_activity (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    activity_type text NOT NULL,
+    target_id text,
+    metadata jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.user_activity ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can insert their own activity"
+ON public.user_activity
+FOR INSERT TO authenticated
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can view their own activity"
+ON public.user_activity
+FOR SELECT TO authenticated
+USING (auth.uid() = user_id);
+
+CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON public.user_activity(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_activity_type ON public.user_activity(activity_type);
