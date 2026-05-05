@@ -254,6 +254,13 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
+      {/* ─── LEAD MAGNET ─── */}
+      <ScrollReveal delay={0.05}>
+        <div className="relative z-10 max-w-5xl mx-auto w-full">
+          <LeadMagnetForm />
+        </div>
+      </ScrollReveal>
+
       {/* ─── MASTER BLUEPRINT ─── */}
       <ScrollReveal delay={0.05}>
         <section id="modules" className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
@@ -346,13 +353,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-      </ScrollReveal>
-
-      {/* ─── LEAD MAGNET ─── */}
-      <ScrollReveal delay={0.05}>
-        <div className="relative z-10 max-w-5xl mx-auto w-full">
-          <LeadMagnetForm />
-        </div>
       </ScrollReveal>
 
       {/* ─── FINAL CTA ─── */}
