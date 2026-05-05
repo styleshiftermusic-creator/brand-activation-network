@@ -70,6 +70,21 @@ export default function GemmaPlayground({ initialPrompt }: { initialPrompt?: str
     setError(null);
     setResponse('');
 
+    // Log AI interaction activity
+    try {
+      fetch("/api/activity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+            activity_type: "AI_PROMPT", 
+            target_id: "GEMMA_4", 
+            metadata: { prompt: prompt.slice(0, 100) } 
+        }),
+      }).catch(e => console.warn("Activity logging failed:", e));
+    } catch (e) {
+      // Silently fail
+    }
+
     try {
       const res = await fetch('/api/ai/gemma', {
         method: 'POST',

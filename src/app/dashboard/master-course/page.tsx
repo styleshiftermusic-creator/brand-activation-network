@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap, Sparkles } from "lucide-react";
 
@@ -75,8 +75,19 @@ export default function MasterCoursePage() {
     const [audioError, setAudioError] = useState<string | null>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const isManualNavRef = useRef(false);
+    // Stable ref so effects don't need activeModule in dep array
+    const activeModuleRef = useRef<ModuleData | null>(null);
 
-    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW" | "QUIZ_COMPLETE", id?: string, metadata?: Record<string, unknown>) => {
+    // Memoize activeModule so its reference only changes when data changes
+    const activeModule = useMemo(
+        () => modules.find(m => m.id === activeModuleId) ?? modules[0],
+        [modules, activeModuleId]
+    );
+
+    // Keep ref in sync for use inside event listeners
+    useEffect(() => { activeModuleRef.current = activeModule ?? null; }, [activeModule]);
+
+    const logActivity = useCallback(async (type: "DOWNLOAD" | "MODULE_VIEW" | "QUIZ_COMPLETE", id?: string, metadata?: Record<string, unknown>) => {
         try {
             fetch("/api/activity", {
                 method: "POST",
@@ -86,36 +97,37 @@ export default function MasterCoursePage() {
         } catch (err) {
             console.error("Failed to log activity:", err);
         }
-    };
+    }, []);
 
-
-    const togglePlay = async () => {
-        if (!audioRef.current) {
+    // Read live truth from audioRef.current.paused — never stale React state
+    const togglePlay = useCallback(async () => {
+        const audio = audioRef.current;
+        if (!audio) {
             console.warn('[Audio] audioRef is null — element not mounted yet');
             return;
         }
         setAudioError(null);
-        if (isPlaying) {
-            audioRef.current.pause();
+        if (!audio.paused) {
+            audio.pause();
         } else {
             try {
-                await audioRef.current.play();
+                await audio.play();
             } catch (err) {
                 console.error('[Audio] play() failed:', err);
                 setAudioError('Audio could not play. Check your connection or try again.');
                 setIsPlaying(false);
             }
         }
-    };
+    }, []);
 
-    const handleTimelineClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!audioRef.current || !audioDuration) return;
+    const handleTimelineClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        const audio = audioRef.current;
+        if (!audio || !audio.duration) return;
         const rect = e.currentTarget.getBoundingClientRect();
         const clickPosition = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        const newTime = clickPosition * audioDuration;
-        audioRef.current.currentTime = newTime;
-        setAudioProgress(newTime);
-    };
+        audio.currentTime = clickPosition * audio.duration;
+        setAudioProgress(audio.currentTime);
+    }, []);
 
     const formatTime = (time: number) => {
         if (isNaN(time)) return "0:00";
@@ -123,8 +135,6 @@ export default function MasterCoursePage() {
         const secs = Math.floor(time % 60);
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
-
-    const activeModule = modules.find(m => m.id === activeModuleId) || modules[0];
 
     // Fetch course content from protected API
     useEffect(() => {
@@ -143,21 +153,27 @@ export default function MasterCoursePage() {
         loadCourseContent();
     }, []);
 
+    // Reset state ONLY when the active module ID changes — NOT when modules list refreshes
     useEffect(() => {
         setCurrentSlide(0);
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
+        setIsPlaying(false);
+        setAudioProgress(0);
+        setAudioError(null);
+        setAudioDuration(0);
+
+        const audio = audioRef.current;
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
         }
-        // Log view — only when the module ID actually changes, not on every render
+        // Activity log is fire-and-forget — won't affect playback
         if (activeModuleId) {
-            const mod = modules.find(m => m.id === activeModuleId);
+            const mod = activeModuleRef.current;
             if (mod) logActivity("MODULE_VIEW", activeModuleId, { title: mod.title });
         }
-    }, [activeModuleId, modules]);
+    }, [activeModuleId, logActivity]);
 
-
-    // Audio-Slide Sync: auto-advance slides based on audio position
+    // Audio-Slide Sync: reads from ref — NOT re-registered on every activeModule change
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
@@ -167,7 +183,7 @@ export default function MasterCoursePage() {
             const { currentTime, duration } = audio;
             if (!duration || duration === 0) return;
 
-            const slideCount = activeModule?.visuals?.length || 0;
+            const slideCount = activeModuleRef.current?.visuals?.length || 0;
             if (slideCount <= 1) return;
 
             const secondsPerSlide = duration / slideCount;
@@ -180,19 +196,19 @@ export default function MasterCoursePage() {
 
         audio.addEventListener('timeupdate', handleTimeUpdate);
         return () => audio.removeEventListener('timeupdate', handleTimeUpdate);
-    }, [activeModule]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeModuleId]); // Only re-register when module changes, not on every re-render
 
-    // Seek audio to the correct position when manually navigating slides
+    // Seek audio — reads visuals count from stable ref
     const seekToSlide = useCallback((slideIndex: number) => {
         const audio = audioRef.current;
         if (!audio || !audio.duration) return;
-        const slideCount = activeModule?.visuals?.length || 1;
+        const slideCount = activeModuleRef.current?.visuals?.length || 1;
         const secondsPerSlide = audio.duration / slideCount;
-        // Briefly suppress auto-advance to avoid fighting the manual nav
         isManualNavRef.current = true;
         audio.currentTime = slideIndex * secondsPerSlide;
         setTimeout(() => { isManualNavRef.current = false; }, 300);
-    }, [activeModule]);
+    }, []);
 
     const goToPrevSlide = useCallback(() => {
         setCurrentSlide(prev => {
@@ -203,15 +219,15 @@ export default function MasterCoursePage() {
     }, [seekToSlide]);
 
     const goToNextSlide = useCallback(() => {
-        const maxSlide = (activeModule?.visuals?.length || 1) - 1;
         setCurrentSlide(prev => {
+            const maxSlide = (activeModuleRef.current?.visuals?.length || 1) - 1;
             const next = Math.min(maxSlide, prev + 1);
             seekToSlide(next);
             return next;
         });
-    }, [seekToSlide, activeModule]);
+    }, [seekToSlide]);
 
-    const fetchProgress = async () => {
+    const fetchProgress = useCallback(async () => {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
@@ -221,66 +237,56 @@ export default function MasterCoursePage() {
                 .select('module_id, status')
                 .eq('user_id', user.id);
 
-            if (error) throw error; // If DB tables don't exist, this throws and we keep fallback ACTIVE
+            if (error) throw error;
 
             if (progressData && progressData.length > 0) {
                 setModules(prev => prev.map(m => {
                     const userProgress = progressData.find(p => p.module_id === m.id);
-                    if (userProgress) {
-                        return { ...m, status: userProgress.status };
-                    }
-                    return { ...m, status: "LOCKED" }; // Any module without a record is locked
+                    return userProgress ? { ...m, status: userProgress.status } : { ...m, status: "LOCKED" };
                 }));
             } else {
-                // First time user, initialize M-01, others locked
                 await supabase.from('course_progress').insert({
-                    user_id: user.id,
-                    module_id: 'M-01',
-                    status: 'ACTIVE'
+                    user_id: user.id, module_id: 'M-01', status: 'ACTIVE'
                 });
                 setModules(prev => prev.map(m => m.id === 'M-01' ? { ...m, status: 'ACTIVE' } : { ...m, status: 'LOCKED' }));
             }
         } catch {
             console.warn("Telemetry database not yet initialized. Falling back to Unlocked Mode.");
         }
-    };
+    }, []);
 
-    const markModuleComplete = async () => {
+    const markModuleComplete = useCallback(async () => {
+        const mod = activeModuleRef.current;
+        if (!mod) return;
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
 
-            // Mark current module as COMPLETED
             await supabase.from('course_progress').upsert({
-                user_id: user.id,
-                module_id: activeModule.id,
-                status: 'COMPLETED'
+                user_id: user.id, module_id: mod.id, status: 'COMPLETED'
             }, { onConflict: 'user_id,module_id' });
 
-            // Unlock next module
-            const currentIndex = modules.findIndex(m => m.id === activeModule.id);
-            if (currentIndex < modules.length - 1) {
-                const nextModule = modules[currentIndex + 1];
-                await supabase.from('course_progress').upsert({
-                    user_id: user.id,
-                    module_id: nextModule.id,
-                    status: 'ACTIVE'
-                }, { onConflict: 'user_id,module_id' });
-            }
+            setModules(prev => {
+                const idx = prev.findIndex(m => m.id === mod.id);
+                return prev.map((m, i) => {
+                    if (m.id === mod.id) return { ...m, status: 'COMPLETED' };
+                    if (i === idx + 1 && m.status === 'LOCKED') return { ...m, status: 'ACTIVE' };
+                    return m;
+                });
+            });
 
-            // Log completion
-            logActivity("MODULE_VIEW", activeModule.id, { completed: true });
-
-            // Refresh UI
-            await fetchProgress();
+            logActivity("MODULE_VIEW", mod.id, { completed: true });
+            // Sync with DB in background without blocking UI
+            fetchProgress();
         } catch (err) {
             console.error("Failed to save progress:", err);
         }
-    };
+    }, [fetchProgress, logActivity]);
 
+    // Run once after content loads — stable, no loop risk
     useEffect(() => {
-        if (modules.length > 0) fetchProgress();
-    }, [modules]);
+        if (!isLoadingContent) fetchProgress();
+    }, [isLoadingContent, fetchProgress]);
 
     if (isLoadingContent || modules.length === 0) {
         return (
@@ -449,18 +455,26 @@ export default function MasterCoursePage() {
                         <div className="flex items-center gap-4 p-4">
                             {/* Play Button with pulse ring */}
                             <div className="relative flex-shrink-0">
-                                {isPlaying && (
-                                    <span className="absolute inset-0 rounded-xl bg-emerald-500/20 animate-ping pointer-events-none" />
-                                )}
                                 <button
                                     onClick={togglePlay}
-                                    className="relative w-12 h-12 rounded-xl flex items-center justify-center group focus:outline-none transition-all duration-300"
-                                    style={{ background: isPlaying ? 'rgba(16,185,129,0.25)' : 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.4)', boxShadow: isPlaying ? '0 0 25px rgba(16,185,129,0.4)' : '0 0 15px rgba(16,185,129,0.15)' }}
+                                    className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 relative group/play ${isPlaying
+                                        ? 'bg-white text-black scale-105 shadow-[0_0_30px_rgba(255,255,255,0.3)]'
+                                        : 'bg-emerald-500 text-white hover:scale-110 shadow-[0_0_30px_rgba(16,185,129,0.3)]'
+                                        }`}
                                 >
+                                    {/* Seamless Pulsing Ring while playing */}
+                                    {isPlaying && (
+                                        <motion.div
+                                            initial={{ scale: 1, opacity: 0.5 }}
+                                            animate={{ scale: 1.5, opacity: 0 }}
+                                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+                                            className="absolute inset-0 rounded-full border-2 border-white pointer-events-none"
+                                        />
+                                    )}
                                     {isPlaying ? (
-                                        <Pause className="h-5 w-5 fill-emerald-400 text-emerald-400 group-hover:scale-110 transition-transform" />
+                                        <Pause className="w-6 h-6 md:w-7 md:h-7 fill-current relative z-10" />
                                     ) : (
-                                        <Play className="h-5 w-5 fill-emerald-400 text-emerald-400 ml-0.5 group-hover:scale-110 transition-transform" />
+                                        <Play className="w-6 h-6 md:w-7 md:h-7 fill-current ml-1 relative z-10" />
                                     )}
                                 </button>
                             </div>
@@ -532,20 +546,20 @@ export default function MasterCoursePage() {
                             </div>
                         </div>
 
-                        {/* Hidden audio element */}
+                        {/* Hidden audio element — key on activeModuleId ONLY so setModules never remounts it */}
                         <audio
                             ref={audioRef}
-                            key={activeModule.mediaSrc}
+                            key={activeModuleId}
                             src={activeModule.mediaSrc}
                             onTimeUpdate={(e) => setAudioProgress(e.currentTarget.currentTime)}
                             onLoadedMetadata={(e) => { setAudioDuration(e.currentTarget.duration); setAudioError(null); }}
                             onPlay={() => setIsPlaying(true)}
                             onPause={() => setIsPlaying(false)}
-                            onEnded={() => setIsPlaying(false)}
+                            onEnded={() => { setIsPlaying(false); setAudioProgress(0); }}
                             onError={(e) => {
                                 const audio = e.currentTarget;
                                 const code = audio.error?.code;
-                                const msg = code === 4 ? 'Audio file not found (404).' : `Audio error (code ${code}).`;
+                                const msg = code === 4 ? 'Audio file not found. Please contact support.' : `Audio error (code ${code}).`;
                                 console.error('[Audio] element error:', msg, audio.src);
                                 setAudioError(msg);
                                 setIsPlaying(false);
@@ -669,11 +683,24 @@ export default function MasterCoursePage() {
                                                 </div>
                                             )}
                                             {activeModule.status === 'COMPLETED' && (
-                                                <div className="mt-10 mb-20 flex justify-center">
+                                                <div className="mt-10 mb-20 flex flex-col items-center gap-6">
                                                     <div className="px-8 py-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-500/60 font-medium tracking-wide flex items-center gap-3">
                                                         <CheckCircle2 className="w-5 h-5" />
                                                         Module Completed
                                                     </div>
+                                                    
+                                                    {modules.findIndex(m => m.id === activeModuleId) < modules.length - 1 && (
+                                                        <button 
+                                                            onClick={() => {
+                                                                const nextIdx = modules.findIndex(m => m.id === activeModuleId) + 1;
+                                                                setActiveModuleId(modules[nextIdx].id);
+                                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                            }}
+                                                            className="flex items-center gap-2 text-sm font-mono text-zinc-400 hover:text-white transition-colors group"
+                                                        >
+                                                            Next Directive <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                                        </button>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>
