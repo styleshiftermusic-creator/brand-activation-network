@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Eye, Download, ClipboardCheck, Users } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
 
@@ -27,6 +28,9 @@ export default function MissionControl() {
     const [chartData, setChartData] = useState(FALLBACK_PERFORMANCE_DATA);
     const [chartLoading, setChartLoading] = useState(true);
     const [missions, setMissions] = useState(FALLBACK_MISSIONS);
+    const [totalMembers, setTotalMembers] = useState<number | null>(null);
+    const [activityCounts, setActivityCounts] = useState<Record<string, number>>({});
+    const [topModules, setTopModules] = useState<{ module_id: string; count: number }[]>([]);
 
     // Compute progress based on current mission state
     const completedCount = missions.filter(m => m.completed).length;
@@ -43,7 +47,13 @@ export default function MissionControl() {
                 const res = await fetch("/api/admin/telemetry");
                 if (!res.ok) throw new Error(`Telemetry fetch failed: ${res.status}`);
 
-                const { registrations } = await res.json();
+                const json = await res.json();
+                const { registrations, activityCounts: ac, topModules: tm, totalMembers: total } = json;
+
+                // Wire new fields
+                if (ac)  setActivityCounts(ac);
+                if (tm)  setTopModules(tm);
+                if (total != null) setTotalMembers(total);
 
                 if (registrations && registrations.length > 0) {
                     const grouped = registrations.reduce((acc: Record<string, number>, curr: { registered_at: string }) => {
@@ -223,6 +233,59 @@ export default function MissionControl() {
                                         <span className="text-xs font-mono text-zinc-500">{activeMission.time}</span>
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* ─── Activity Intel ─── */}
+                            <div className="bg-black/40 backdrop-blur-2xl border border-white/5 rounded-2xl p-6 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+
+                                <h3 className="text-xs font-mono text-zinc-400 uppercase tracking-widest mb-5 relative z-10">7-Day Activity</h3>
+
+                                {/* Stat chips */}
+                                <div className="grid grid-cols-3 gap-3 mb-4 relative z-10">
+                                    {[
+                                        { icon: <Users className="w-3.5 h-3.5" />, label: "Members", value: totalMembers ?? "—", color: "text-[var(--primary)]" },
+                                        { icon: <Eye className="w-3.5 h-3.5" />,     label: "Views",   value: activityCounts["MODULE_VIEW"] ?? 0, color: "text-blue-400" },
+                                        { icon: <Download className="w-3.5 h-3.5" />, label: "DLs",   value: activityCounts["DOWNLOAD"] ?? 0,     color: "text-amber-400" },
+                                    ].map((stat) => (
+                                        <div key={stat.label} className="flex flex-col items-center justify-center p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                                            <span className={`${stat.color} mb-1`}>{stat.icon}</span>
+                                            <span className="text-base font-bold text-white tabular-nums">{stat.value}</span>
+                                            <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-wider mt-0.5">{stat.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Quizzes */}
+                                <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 mb-4 relative z-10">
+                                    <div className="flex items-center gap-2 text-xs text-zinc-500">
+                                        <ClipboardCheck className="w-3.5 h-3.5 text-emerald-400" />
+                                        Quizzes Completed
+                                    </div>
+                                    <span className="text-sm font-bold text-white tabular-nums">{activityCounts["QUIZ_COMPLETE"] ?? 0}</span>
+                                </div>
+
+                                {/* Top Modules */}
+                                {topModules.length > 0 && (
+                                    <div className="relative z-10">
+                                        <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mb-2">Top Modules</p>
+                                        <div className="flex flex-col gap-1.5">
+                                            {topModules.map((m, i) => (
+                                                <div key={m.module_id} className="flex items-center gap-2">
+                                                    <span className="text-[10px] font-mono text-zinc-600 w-4">{i + 1}</span>
+                                                    <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                                                        <div
+                                                            className="h-full rounded-full bg-[var(--primary)] transition-all duration-700"
+                                                            style={{ width: `${Math.min((m.count / (topModules[0]?.count || 1)) * 100, 100)}%`, opacity: 1 - i * 0.15 }}
+                                                        />
+                                                    </div>
+                                                    <span className="text-[10px] font-mono text-zinc-500 w-8 text-right">{m.module_id}</span>
+                                                    <span className="text-[10px] font-mono text-zinc-600 tabular-nums w-3 text-right">{m.count}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* ─── Refer & Earn Card ─── */}
