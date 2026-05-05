@@ -428,62 +428,110 @@ export default function MasterCoursePage() {
                         )}
                     </div>
 
-                    {/* Audio Player Bar — Custom UI */}
-                    <div className="w-full mt-3 mb-6 p-4 bg-black/50 backdrop-blur-xl rounded-xl border border-white/10 flex items-center gap-4 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
-                        <button 
-                            onClick={togglePlay}
-                            className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:bg-emerald-500/25 transition-all text-emerald-400 group focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-                        >
-                            {isPlaying ? (
-                                <Pause className="h-5 w-5 fill-emerald-400 text-emerald-400 group-hover:scale-110 transition-transform" />
-                            ) : (
-                                <Play className="h-5 w-5 fill-emerald-400 text-emerald-400 ml-1 group-hover:scale-110 transition-transform" />
-                            )}
-                        </button>
-                        
-                        <div className="flex-1 flex flex-col gap-2.5 min-w-0 py-1">
-                            {/* Track Info & Time */}
-                            <div className="flex justify-between items-end text-[10px] font-mono tracking-wider uppercase">
-                                <span className="text-zinc-400 truncate pr-4">
-                                    <span className="text-emerald-500/80 mr-2">Module {activeModule.id.replace('M-0', '')}</span> 
-                                    {activeModule.title}
-                                </span>
-                                <span className="text-zinc-500 flex-shrink-0">
-                                    {formatTime(audioProgress)} / {formatTime(audioDuration || 0)}
-                                </span>
-                            </div>
-                            
-                            {/* Custom Playback Timeline */}
-                            <div 
-                                className="w-full h-2 md:h-1.5 bg-white/5 rounded-full cursor-pointer relative group/timeline"
-                                onClick={handleTimelineClick}
-                            >
-                                {/* Transparent expanded hit area for touch */}
-                                <div className="absolute -inset-y-4 left-0 right-0 z-10" />
-                                
-                                <div 
-                                    className="absolute top-0 left-0 h-full bg-emerald-500/80 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all duration-100 ease-linear z-0"
-                                    style={{ width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%` }}
-                                />
-                                <div 
-                                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 md:w-3 md:h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] opacity-100 md:opacity-0 md:group-hover/timeline:opacity-100 transition-opacity ease-out pointer-events-none z-20"
-                                    style={{ left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`, transform: 'translate(-50%, -50%)' }}
-                                />
+                    {/* Audio Player Bar — Premium UI */}
+                    <div className="w-full mt-3 mb-6 rounded-2xl overflow-hidden relative" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(16,185,129,0.04) 100%)', border: '1px solid rgba(16,185,129,0.15)', backdropFilter: 'blur(20px)', boxShadow: '0 0 40px -10px rgba(16,185,129,0.15), 0 20px 40px -15px rgba(0,0,0,0.6)' }}>
+
+                        {/* Subtle inner glow top edge */}
+                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent pointer-events-none" />
+
+                        <div className="flex items-center gap-4 p-4">
+                            {/* Play Button with pulse ring */}
+                            <div className="relative flex-shrink-0">
+                                {isPlaying && (
+                                    <span className="absolute inset-0 rounded-xl bg-emerald-500/20 animate-ping pointer-events-none" />
+                                )}
+                                <button
+                                    onClick={togglePlay}
+                                    className="relative w-12 h-12 rounded-xl flex items-center justify-center group focus:outline-none transition-all duration-300"
+                                    style={{ background: isPlaying ? 'rgba(16,185,129,0.25)' : 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.4)', boxShadow: isPlaying ? '0 0 25px rgba(16,185,129,0.4)' : '0 0 15px rgba(16,185,129,0.15)' }}
+                                >
+                                    {isPlaying ? (
+                                        <Pause className="h-5 w-5 fill-emerald-400 text-emerald-400 group-hover:scale-110 transition-transform" />
+                                    ) : (
+                                        <Play className="h-5 w-5 fill-emerald-400 text-emerald-400 ml-0.5 group-hover:scale-110 transition-transform" />
+                                    )}
+                                </button>
                             </div>
 
+                            {/* Animated waveform bars — only when playing */}
+                            <div className="flex items-center gap-[3px] flex-shrink-0">
+                                {[0.6, 1, 0.4, 0.8, 0.5, 0.9, 0.3].map((h, i) => (
+                                    <div
+                                        key={i}
+                                        className="w-[3px] rounded-full transition-all"
+                                        style={{
+                                            height: isPlaying ? `${Math.round(h * 20)}px` : '4px',
+                                            background: isPlaying
+                                                ? `rgba(16,185,129,${0.4 + h * 0.5})`
+                                                : 'rgba(255,255,255,0.08)',
+                                            animation: isPlaying ? `waveBar ${0.8 + i * 0.15}s ease-in-out infinite alternate` : 'none',
+                                            animationDelay: `${i * 0.07}s`,
+                                        }}
+                                    />
+                                ))}
+                            </div>
 
-                            <audio
-                                ref={audioRef}
-                                key={activeModule.mediaSrc}
-                                src={activeModule.mediaSrc}
-                                onTimeUpdate={(e) => setAudioProgress(e.currentTarget.currentTime)}
-                                onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration)}
-                                onPlay={() => setIsPlaying(true)}
-                                onPause={() => setIsPlaying(false)}
-                                onEnded={() => setIsPlaying(false)}
-                                className="hidden"
-                            />
+                            <div className="flex-1 flex flex-col gap-2 min-w-0">
+                                {/* Track Info & Time */}
+                                <div className="flex justify-between items-center text-[10px] font-mono tracking-wider uppercase">
+                                    <span className="text-zinc-400 truncate pr-3">
+                                        <span className="text-emerald-400 mr-1.5">M{activeModule.id.replace('M-0', '').replace('M-', '')}</span>
+                                        <span className="text-zinc-500">—</span>
+                                        <span className="ml-1.5">{activeModule.title}</span>
+                                    </span>
+                                    <span className="text-zinc-400 flex-shrink-0 tabular-nums">
+                                        {formatTime(audioProgress)}<span className="text-zinc-600 mx-0.5">/</span>{formatTime(audioDuration || 0)}
+                                    </span>
+                                </div>
+
+                                {/* Scrubber Track */}
+                                <div
+                                    className="w-full h-[5px] rounded-full cursor-pointer relative group/timeline"
+                                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.04)' }}
+                                    onClick={handleTimelineClick}
+                                >
+                                    {/* Expanded touch hit area */}
+                                    <div className="absolute -inset-y-3 left-0 right-0 z-10" />
+
+                                    {/* Filled progress — gradient + glow */}
+                                    <div
+                                        className="absolute top-0 left-0 h-full rounded-full z-0 transition-all duration-100 ease-linear"
+                                        style={{
+                                            width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
+                                            background: 'linear-gradient(90deg, #10b981, #34d399)',
+                                            boxShadow: '0 0 8px rgba(16,185,129,0.7)',
+                                        }}
+                                    />
+
+                                    {/* Scrubber dot — always visible, grows on hover */}
+                                    <div
+                                        className="absolute top-1/2 z-20 pointer-events-none transition-transform duration-150 group-hover/timeline:scale-150"
+                                        style={{
+                                            left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
+                                            transform: 'translate(-50%, -50%)',
+                                            width: '10px',
+                                            height: '10px',
+                                            borderRadius: '50%',
+                                            background: 'white',
+                                            boxShadow: '0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(16,185,129,0.5)',
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         </div>
+
+                        {/* Hidden audio element */}
+                        <audio
+                            ref={audioRef}
+                            key={activeModule.mediaSrc}
+                            src={activeModule.mediaSrc}
+                            onTimeUpdate={(e) => setAudioProgress(e.currentTarget.currentTime)}
+                            onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration)}
+                            onPlay={() => setIsPlaying(true)}
+                            onPause={() => setIsPlaying(false)}
+                            onEnded={() => setIsPlaying(false)}
+                            className="hidden"
+                        />
                     </div>
 
                     {/* Tab Navigation & Content Area */}
