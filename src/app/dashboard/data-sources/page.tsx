@@ -14,7 +14,8 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-emerald-400",
         hoverBorder: "group-hover:border-emerald-500/20",
         hoverBg: "group-hover:bg-emerald-500/10",
-        href: "/blueprints/pledge-loan-calculator.md"
+        href: "/blueprints/pledge-loan-calculator.md",
+        fileName: "Pledge-Loan-Calculator.md",
     },
     {
         id: "DS-02",
@@ -26,7 +27,8 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-blue-400",
         hoverBorder: "group-hover:border-blue-500/20",
         hoverBg: "group-hover:bg-blue-500/10",
-        href: "/blueprints/business-funding-checklist.md"
+        href: "/blueprints/business-funding-checklist.md",
+        fileName: "Business-Funding-Checklist.md",
     },
     {
         id: "DS-03",
@@ -38,7 +40,8 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-amber-400",
         hoverBorder: "group-hover:border-amber-500/20",
         hoverBg: "group-hover:bg-amber-500/10",
-        href: "/blueprints/opa-marketing-playbook.md"
+        href: "/blueprints/opa-marketing-playbook.md",
+        fileName: "OPA-Marketing-Playbook.md",
     },
     {
         id: "DS-04",
@@ -50,7 +53,8 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-purple-400",
         hoverBorder: "group-hover:border-purple-500/20",
         hoverBg: "group-hover:bg-purple-500/10",
-        href: "/blueprints/high-ticket-sales-scripts.md"
+        href: "/blueprints/high-ticket-sales-scripts.md",
+        fileName: "High-Ticket-Sales-Scripts.md",
     },
     {
         id: "DS-05",
@@ -62,7 +66,8 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-cyan-400",
         hoverBorder: "group-hover:border-cyan-500/20",
         hoverBg: "group-hover:bg-cyan-500/10",
-        href: "/blueprints/investment-blueprint-template.md"
+        href: "/blueprints/investment-blueprint-template.md",
+        fileName: "Investment-Blueprint-Template.md",
     },
     {
         id: "DS-06",
@@ -74,7 +79,8 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-rose-400",
         hoverBorder: "group-hover:border-rose-500/20",
         hoverBg: "group-hover:bg-rose-500/10",
-        href: "/blueprints/ai-agent-prompt-library.json"
+        href: "/blueprints/ai-agent-prompt-library.json",
+        fileName: "AI-Agent-Prompt-Library.json",
     },
     {
         id: "DS-07",
@@ -86,14 +92,23 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-emerald-400",
         hoverBorder: "group-hover:border-emerald-500/20",
         hoverBg: "group-hover:bg-emerald-500/10",
-        href: "/api/download/playbook"
+        href: "/api/download/playbook",
+        fileName: "BAN-Credit-Sweep-Blueprint.html",
     }
 ];
+
+function downloadFile(url: string, fileName: string) {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 export default function DataSourcesPage() {
     return (
         <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
-            {/* Deep Ambient Glows */}
             <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-[var(--primary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
             <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
@@ -104,21 +119,16 @@ export default function DataSourcesPage() {
                     <header className="mb-10 border-b border-white/10 pb-6">
                         <h1 className="text-3xl font-medium tracking-tight text-white mb-2">The Million Dollar File</h1>
                         <p className="text-zinc-500 font-mono text-sm max-w-2xl">
-                            Access premium assets, datasets, and foundational materials mapped directly to your
-                            Brand Activation Network account.
+                            Access premium assets, datasets, and foundational materials mapped directly to your Brand Activation Network account.
                         </p>
                     </header>
 
-                    {/* HERO ASSET: The Million Dollar File 2026 */}
+                    {/* HERO ASSET */}
                     <div className="mb-12 relative group rounded-2xl overflow-hidden border border-[var(--primary)]/30 bg-black/40 backdrop-blur-xl">
-                        {/* Shimmer Effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
-
-                        {/* Subtle Glow Background */}
                         <div className="absolute inset-0 bg-[var(--primary)]/10 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
                         <div className="relative z-10 flex flex-col md:flex-row gap-8 p-8 lg:p-12 items-center md:items-start">
-                            {/* Book Cover Mockup (CSS) */}
                             <div className="w-48 h-64 flex-shrink-0 rounded-lg shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8),0_0_20px_var(--primary)] border border-white/10 bg-gradient-to-br from-zinc-900 to-black relative overflow-hidden transform group-hover:-translate-y-2 group-hover:rotate-1 transition-all duration-500 flex flex-col justify-between p-6">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--primary)]/20 blur-[30px] rounded-full -translate-y-1/2 translate-x-1/2" />
                                 <div className="z-10 text-center space-y-2 mt-4">
@@ -130,7 +140,6 @@ export default function DataSourcesPage() {
                                 </div>
                             </div>
 
-                            {/* Hero Asset Details */}
                             <div className="flex-1 space-y-6 text-center md:text-left">
                                 <div>
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] text-[10px] font-mono uppercase tracking-widest mb-4">
@@ -141,11 +150,9 @@ export default function DataSourcesPage() {
                                         The Million Dollar File <span className="text-[var(--primary)] opacity-80 font-mono text-2xl">[&apos;26]</span>
                                     </h2>
                                     <p className="text-zinc-400 leading-relaxed max-w-xl">
-                                        The core architectural doctrine for scaling seven-figure agencies via autonomous AI networks.
-                                        This compendium contains the exact data models, prompts, and playbooks used in top-tier systems.
+                                        The core architectural doctrine for scaling seven-figure agencies via autonomous AI networks. This compendium contains the exact data models, prompts, and playbooks used in top-tier systems.
                                     </p>
                                 </div>
-
                                 <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-white/10">
                                     <button disabled className="w-full opacity-50 cursor-not-allowed sm:w-auto px-8 py-3 rounded-lg border border-[var(--primary)]/30 text-white font-medium flex items-center justify-center gap-2">
                                         <Lock className="w-4 h-4" />
@@ -160,9 +167,7 @@ export default function DataSourcesPage() {
                         </div>
                     </div>
 
-
-
-                    {/* Standard Vault Grid */}
+                    {/* Vault Grid */}
                     <div className="mb-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {DATA_SOURCES.map((source) => (
@@ -180,15 +185,17 @@ export default function DataSourcesPage() {
                                             <span>{source.format}</span>
                                             <span>{source.size}</span>
                                         </div>
-                                        <a href={source.href} target="_blank" rel="noopener noreferrer" className={`w-full mt-4 py-2 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 ${source.hoverText} ${source.hoverBorder} ${source.hoverBg}`}>
+                                        <button
+                                            onClick={() => downloadFile(source.href, source.fileName)}
+                                            className={`w-full mt-4 py-2.5 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 ${source.hoverText} ${source.hoverBorder} ${source.hoverBg}`}
+                                        >
                                             <Download className="w-3 h-3" /> Download
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
-
                 </div>
             </main>
         </div>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { WaitlistCTA } from "@/components/WaitlistCTA";
+import { WaitlistModal } from "@/components/WaitlistModal";
 import {
     ShieldCheck,
     Zap,
@@ -148,6 +148,7 @@ function FeatureCard({ icon, title, body, color, glow = "" }: {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function ChallengeConfirmation() {
   const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
+  const [modalOpen, setModalOpen] = useState(false);
     return (
         <div className="min-h-screen bg-[#080808] text-white flex flex-col relative overflow-hidden">
 
@@ -271,12 +272,25 @@ export default function ChallengeConfirmation() {
                             </p>
                         </div>
 
-                        <WaitlistCTA
-                            stripeLink={stripeLink}
-                            className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
-                        >
-                            {stripeLink ? "YES, UPGRADE MY ORDER NOW" : "JOIN THE WAITLIST"} →
-                        </WaitlistCTA>
+                        {stripeLink ? (
+                            <a
+                                href={stripeLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
+                            >
+                                YES, UPGRADE MY ORDER NOW →
+                            </a>
+                        ) : (
+                            <button
+                                onClick={() => setModalOpen(true)}
+                                className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
+                            >
+                                JOIN THE WAITLIST →
+                            </button>
+                        )}
+
+                        <WaitlistModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
 
                         <div className="flex flex-wrap items-center justify-center gap-5 text-xs text-zinc-600">
                             <span className="flex items-center gap-1.5">
