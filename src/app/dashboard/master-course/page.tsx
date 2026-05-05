@@ -72,6 +72,7 @@ export default function MasterCoursePage() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioProgress, setAudioProgress] = useState(0);
     const [audioDuration, setAudioDuration] = useState(0);
+    const [audioError, setAudioError] = useState<string | null>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const isManualNavRef = useRef(false);
 
@@ -88,12 +89,22 @@ export default function MasterCoursePage() {
     };
 
 
-    const togglePlay = () => {
-        if (!audioRef.current) return;
+    const togglePlay = async () => {
+        if (!audioRef.current) {
+            console.warn('[Audio] audioRef is null — element not mounted yet');
+            return;
+        }
+        setAudioError(null);
         if (isPlaying) {
             audioRef.current.pause();
         } else {
-            audioRef.current.play();
+            try {
+                await audioRef.current.play();
+            } catch (err) {
+                console.error('[Audio] play() failed:', err);
+                setAudioError('Audio could not play. Check your connection or try again.');
+                setIsPlaying(false);
+            }
         }
     };
 
@@ -526,12 +537,29 @@ export default function MasterCoursePage() {
                             key={activeModule.mediaSrc}
                             src={activeModule.mediaSrc}
                             onTimeUpdate={(e) => setAudioProgress(e.currentTarget.currentTime)}
-                            onLoadedMetadata={(e) => setAudioDuration(e.currentTarget.duration)}
+                            onLoadedMetadata={(e) => { setAudioDuration(e.currentTarget.duration); setAudioError(null); }}
                             onPlay={() => setIsPlaying(true)}
                             onPause={() => setIsPlaying(false)}
                             onEnded={() => setIsPlaying(false)}
+                            onError={(e) => {
+                                const audio = e.currentTarget;
+                                const code = audio.error?.code;
+                                const msg = code === 4 ? 'Audio file not found (404).' : `Audio error (code ${code}).`;
+                                console.error('[Audio] element error:', msg, audio.src);
+                                setAudioError(msg);
+                                setIsPlaying(false);
+                            }}
+                            preload="metadata"
                             className="hidden"
                         />
+
+                        {/* Error banner */}
+                        {audioError && (
+                            <div className="mx-4 mb-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-mono flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                                {audioError}
+                            </div>
+                        )}
                     </div>
 
                     {/* Tab Navigation & Content Area */}
@@ -540,7 +568,7 @@ export default function MasterCoursePage() {
                         {/* Interactive Tabs */}
                         <div className="flex gap-4 md:gap-8 border-b border-white/10 overflow-x-auto no-scrollbar">
                             <button
-                                onClick={() => { console.log('Setting tab to study'); setActiveTab('study'); }}
+                                onClick={() => setActiveTab('study')}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'study'
 
                                     ? 'text-white'
@@ -557,7 +585,7 @@ export default function MasterCoursePage() {
                                 )}
                             </button>
                             <button
-                                onClick={() => { console.log('Setting tab to ai'); setActiveTab('ai'); }}
+                                onClick={() => setActiveTab('ai')}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'ai'
 
                                     ? 'text-white'
@@ -574,7 +602,7 @@ export default function MasterCoursePage() {
                                 )}
                             </button>
                             <button
-                                onClick={() => { console.log('Setting tab to quiz'); setActiveTab('quiz'); }}
+                                onClick={() => setActiveTab('quiz')}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'quiz'
 
                                     ? 'text-white'
@@ -591,7 +619,7 @@ export default function MasterCoursePage() {
                                 )}
                             </button>
                             <button
-                                onClick={() => { console.log('Setting tab to resources'); setActiveTab('resources'); }}
+                                onClick={() => setActiveTab('resources')}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'resources'
 
                                     ? 'text-white'
