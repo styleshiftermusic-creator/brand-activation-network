@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       const readableStream = new ReadableStream({
         async start(controller) {
           try {
-            for await (const chunk of gemmaStream as any) {
+            for await (const chunk of gemmaStream as AsyncIterable<{ text: () => string }>) {
               const text = chunk.text();
               controller.enqueue(encoder.encode(text));
             }
@@ -93,10 +93,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, text: response });
     }
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed to process request with Gemma 4.";
     console.error("Gemma API Error:", error);
     return NextResponse.json({ 
-      error: error.message || "Failed to process request with Gemma 4." 
+      error: message 
     }, { status: 500 });
   }
 }

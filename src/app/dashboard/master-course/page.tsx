@@ -2,11 +2,13 @@
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image } from "lucide-react";
+import Image from "next/image";
+import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap, Sparkles } from "lucide-react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
+import GemmaPlayground from "@/components/GemmaPlayground";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -28,14 +30,25 @@ interface ModuleData {
     quiz: QuizQuestion[];
     mediaSrc: string;
     visuals: string[];
-    resources: { type: string; name: string; icon: React.ReactNode }[];
+    resources: { type: string; name: string; icon: React.ReactNode; url: string }[];
 }
 
-function buildModules(courseData: Record<string, { title: string; studyGuide: string; quiz: QuizQuestion[]; audioSrc: string; visuals?: string[] }>): ModuleData[] {
+function buildModules(courseData: Record<string, { title: string; studyGuide: string; quiz: QuizQuestion[]; audioSrc: string; visuals?: string[]; resources?: { type: string; name: string; url: string }[] }>): ModuleData[] {
     return Object.entries(courseData).map(([key, data]) => {
         const wordCount = data.studyGuide.split(/\s+/).length;
         const totalMinutes = Math.ceil(wordCount / 150);
         const mins = String(totalMinutes).padStart(2, '0');
+        
+        const mappedResources = (data.resources || []).map(r => ({
+            ...r,
+            icon: r.type === "PDF" ? <FileText className="w-4 h-4" /> : <Download className="w-4 h-4" />
+        }));
+
+        // Default resource if none provided
+        if (mappedResources.length === 0) {
+            mappedResources.push({ type: "PDF", name: "Module Blueprint", icon: <FileText className="w-4 h-4" />, url: "#" });
+        }
+
         return {
             id: `M-0${key}`,
             title: data.title,
@@ -45,16 +58,14 @@ function buildModules(courseData: Record<string, { title: string; studyGuide: st
             quiz: data.quiz,
             mediaSrc: data.audioSrc,
             visuals: data.visuals || [],
-            resources: [
-                { type: "PDF", name: "Module Blueprint", icon: <FileText className="w-4 h-4" /> }
-            ]
+            resources: mappedResources
         };
     });
 }
 
 export default function MasterCoursePage() {
     const [activeModuleId, setActiveModuleId] = useState("M-01");
-    const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources'>('study');
+    const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources' | 'ai'>('study');
     const [modules, setModules] = useState<ModuleData[]>([]);
     const [isLoadingContent, setIsLoadingContent] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -64,7 +75,7 @@ export default function MasterCoursePage() {
     const audioRef = useRef<HTMLAudioElement>(null);
     const isManualNavRef = useRef(false);
 
-    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW" | "QUIZ_COMPLETE", id?: string, metadata?: any) => {
+    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW" | "QUIZ_COMPLETE", id?: string, metadata?: Record<string, unknown>) => {
         try {
             fetch("/api/activity", {
                 method: "POST",
@@ -131,7 +142,7 @@ export default function MasterCoursePage() {
         if (activeModuleId && activeModule) {
             logActivity("MODULE_VIEW", activeModuleId, { title: activeModule.title });
         }
-    }, [activeModuleId, modules]);
+    }, [activeModuleId, activeModule]);
 
 
     // Audio-Slide Sync: auto-advance slides based on audio position
@@ -366,11 +377,13 @@ export default function MasterCoursePage() {
                         {/* Slide Visual or Fallback */}
                         {activeModule.visuals && activeModule.visuals.length > 0 ? (
                             <>
-                                <img
+                                <Image
                                     key={`${activeModule.id}-${currentSlide}`}
                                     src={activeModule.visuals[currentSlide]}
                                     alt={`${activeModule.title} — Slide ${currentSlide + 1}`}
-                                    className="absolute inset-0 w-full h-full object-contain z-0 animate-fade-in"
+                                    fill
+                                    className="object-contain z-0 animate-fade-in"
+                                    priority
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 z-10 pointer-events-none" />
 
@@ -398,7 +411,7 @@ export default function MasterCoursePage() {
                                 {activeModule.visuals.length > 1 && (
                                     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30">
                                         <span className="bg-black/70 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10 text-xs font-mono text-zinc-400 flex items-center gap-1.5">
-                                            <Image className="w-3 h-3" />
+                                            <ImageIcon className="w-3 h-3" />
                                             {currentSlide + 1} / {activeModule.visuals.length}
                                         </span>
                                     </div>
@@ -408,7 +421,7 @@ export default function MasterCoursePage() {
                             <>
                                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-black z-0" />
                                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 gap-3">
-                                    <Image className="w-12 h-12 text-emerald-500/30" />
+                                    <ImageIcon className="w-12 h-12 text-emerald-500/30" />
                                     <p className="text-xs font-mono text-zinc-600 tracking-wider uppercase">Slide visuals loading</p>
                                 </div>
                             </>
@@ -479,7 +492,7 @@ export default function MasterCoursePage() {
                         {/* Interactive Tabs */}
                         <div className="flex gap-4 md:gap-8 border-b border-white/10 overflow-x-auto no-scrollbar">
                             <button
-                                onClick={() => setActiveTab('study')}
+                                onClick={() => { console.log('Setting tab to study'); setActiveTab('study'); }}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'study'
 
                                     ? 'text-white'
@@ -496,7 +509,24 @@ export default function MasterCoursePage() {
                                 )}
                             </button>
                             <button
-                                onClick={() => setActiveTab('quiz')}
+                                onClick={() => { console.log('Setting tab to ai'); setActiveTab('ai'); }}
+                                className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'ai'
+
+                                    ? 'text-white'
+                                    : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
+                                    }`}
+                            >
+                                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
+                                AI Intelligence
+                                {activeTab === 'ai' && (
+                                    <motion.div 
+                                        layoutId="tab-underline"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                    />
+                                )}
+                            </button>
+                            <button
+                                onClick={() => { console.log('Setting tab to quiz'); setActiveTab('quiz'); }}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'quiz'
 
                                     ? 'text-white'
@@ -513,7 +543,7 @@ export default function MasterCoursePage() {
                                 )}
                             </button>
                             <button
-                                onClick={() => setActiveTab('resources')}
+                                onClick={() => { console.log('Setting tab to resources'); setActiveTab('resources'); }}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'resources'
 
                                     ? 'text-white'
@@ -587,7 +617,13 @@ export default function MasterCoursePage() {
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-20">
                                             {activeModule.resources && activeModule.resources.length > 0 ? (
                                                 activeModule.resources.map((res, idx) => (
-                                                    <button key={idx} className="w-full flex items-center justify-between p-4 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.2)] group text-left relative overflow-hidden">
+                                                    <a 
+                                                        key={idx} 
+                                                        href={res.url}
+                                                        download
+                                                        onClick={() => logActivity("DOWNLOAD", activeModule.id, { resource: res.name })}
+                                                        className="w-full flex items-center justify-between p-4 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.2)] group text-left relative overflow-hidden"
+                                                    >
                                                         <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
                                                         <div className="flex items-center gap-4 relative z-10">
                                                             <div className="p-2 rounded-lg bg-black/60 border border-white/5 text-zinc-500 group-hover:text-emerald-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-all duration-500 group-hover:scale-110">
@@ -599,7 +635,7 @@ export default function MasterCoursePage() {
                                                             </div>
                                                         </div>
                                                         <Download className="w-5 h-5 text-zinc-600 group-hover:text-emerald-400 group-hover:-translate-y-1 transition-all duration-500 relative z-10" />
-                                                    </button>
+                                                    </a>
                                                 ))
                                             ) : (
                                                 <div className="col-span-full p-8 rounded-xl bg-black/40 border border-white/5 text-center text-zinc-500 flex flex-col items-center justify-center backdrop-blur-md border-dashed">
@@ -607,6 +643,19 @@ export default function MasterCoursePage() {
                                                     <p className="text-sm">Downloadable materials unlocking soon.</p>
                                                 </div>
                                             )}
+                                        </div>
+                                    )}
+
+                                    {activeTab === 'ai' && (
+                                        <div className="pb-20">
+                                            <GemmaPlayground 
+                                                initialPrompt={`I am currently studying Module ${activeModule.id.replace('M-0', '')}: "${activeModule.title}". 
+
+Based on this curriculum:
+${activeModule.description.slice(0, 500)}...
+
+Can you help me understand the core strategic advantages of this module or how to implement it specifically for a new business?`}
+                                            />
                                         </div>
                                     )}
                                 </motion.div>
@@ -620,7 +669,21 @@ export default function MasterCoursePage() {
                 {/* RIGHT PANE: Module Navigation Matrix */}
                 <div className="w-full lg:w-80 xl:w-96 flex-shrink-0 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
                     <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-5 sticky top-10 h-[calc(100vh-80px)] overflow-y-auto hidden-scrollbar">
-                        <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-zinc-500 mb-6">Course Matrix</h2>
+                        <div className="mb-8">
+                            <div className="flex justify-between items-end mb-2">
+                                <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-zinc-500">Course Matrix</h2>
+                                <span className="text-xs font-mono text-emerald-500">
+                                    {Math.round((modules.filter(m => m.status === 'COMPLETED').length / modules.length) * 100)}%
+                                </span>
+                            </div>
+                            <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                <motion.div 
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${(modules.filter(m => m.status === 'COMPLETED').length / modules.length) * 100}%` }}
+                                    className="h-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                                />
+                            </div>
+                        </div>
 
                         <div className="space-y-3">
                             {modules.map((module, idx) => {

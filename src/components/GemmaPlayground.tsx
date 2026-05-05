@@ -20,12 +20,19 @@ const MODELS = [
   { id: 'gemma-4-7b', name: 'Gemma 4 Flash (7B)', description: 'Ultra-Fast Low Latency' },
 ];
 
-export default function GemmaPlayground() {
-  const [prompt, setPrompt] = useState('');
+export default function GemmaPlayground({ initialPrompt }: { initialPrompt?: string }) {
+  const [prompt, setPrompt] = useState(initialPrompt || '');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
+
+  // Auto-fill prompt when initialPrompt changes
+  useEffect(() => {
+    if (initialPrompt) {
+      setPrompt(initialPrompt);
+    }
+  }, [initialPrompt]);
   const [copied, setCopied] = useState(false);
   const responseEndRef = useRef<HTMLDivElement>(null);
 
@@ -97,13 +104,14 @@ export default function GemmaPlayground() {
                 setResponse((prev) => prev + data.response);
               }
             }
-          } catch (e) {
+          } catch {
             setResponse((prev) => prev + rawChunk);
           }
         }
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Neural link failed.";
+      setError(message);
     } finally {
       setLoading(false);
     }

@@ -7,10 +7,7 @@ import { Cpu, Globe, Zap } from 'lucide-react';
 
 export function GemmaLabClient() {
   return (
-    <div className="min-h-screen bg-black pt-24 pb-20 px-6 relative overflow-hidden">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+    <div className="p-6 lg:p-10 lg:pl-12 relative overflow-hidden">
 
       <div className="max-w-7xl mx-auto space-y-12 relative z-10">
         <motion.div 

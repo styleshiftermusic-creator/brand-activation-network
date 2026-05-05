@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { WaitlistCTA } from "@/components/WaitlistCTA";
 import {
-    ArrowRight,
     ShieldCheck,
     Zap,
     TrendingUp,
@@ -182,7 +181,7 @@ export default function ChallengeConfirmation() {
                     <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4">
                         Unlock The{" "}
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#c77dff] via-[#9d4edd] to-[#7b2cbf]">
-                            &quot;Master Accelerator&quot;
+                            &quot;Brand Activation&quot;
                         </span>{" "}
                         System
                     </h1>

@@ -103,7 +103,13 @@ export default function MissionControl() {
                 const progressMap = new Map((progressData || []).map((p: { module_id: string; status: string }) => [p.module_id, p]));
 
                 // 3. Build Missions List
-                const builtMissions = Object.entries(courseData).map(([key, data]: [string, any]) => {
+                interface CourseModule {
+                    title: string;
+                    category?: string;
+                    studyGuide: string;
+                }
+
+                const builtMissions = Object.entries(courseData as Record<string, CourseModule>).map(([key, data]) => {
                     const id = `M-0${key}`;
                     const progress = progressMap.get(id);
                     
@@ -131,7 +137,7 @@ export default function MissionControl() {
                             module_id: 'M-01',
                             status: 'ACTIVE'
                         });
-                    } catch (e) {
+                    } catch {
                         console.info("Could not initialize telemetry database row.");
                     }
                 }

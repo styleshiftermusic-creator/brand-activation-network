@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey = process.env.GOOGLE_AI_API_KEY;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
@@ -48,7 +48,7 @@ export const GemmaService = {
 
       const data = await response.json();
       return data.response;
-    } catch (error) {
+    } catch {
       throw new Error("Gemma 4 is not available. Please provide a GOOGLE_AI_API_KEY or start 'ollama serve' locally.");
     }
   },
@@ -87,7 +87,7 @@ export const GemmaService = {
       });
 
       return response.body; // Return raw stream for the API route to handle
-    } catch (error) {
+    } catch {
       throw new Error("Local Ollama stream failed. Is the service running?");
     }
   }

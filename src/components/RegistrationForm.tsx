@@ -4,7 +4,8 @@ import { ArrowRight, ShieldCheck, Loader2, AlertCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { z } from "zod";
+// import { z } from "zod";
+
 
 import { registerSchema } from "@/lib/schemas";
 
@@ -14,7 +15,6 @@ export default function RegistrationForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [turnstileToken, setTurnstileToken] = useState("");
-    const [turnstileReady, setTurnstileReady] = useState(false);
     const turnstileTimedOut = useRef(false);
 
     // If Turnstile doesn't resolve within 8 seconds, allow submission without it
@@ -23,7 +23,6 @@ export default function RegistrationForm() {
         const timer = setTimeout(() => {
             console.warn("Turnstile timed out — allowing submission without token.");
             turnstileTimedOut.current = true;
-            setTurnstileReady(true);
         }, 8000);
         return () => clearTimeout(timer);
     }, []);
@@ -119,12 +118,10 @@ export default function RegistrationForm() {
                             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
                             onSuccess={(token) => {
                                 setTurnstileToken(token);
-                                setTurnstileReady(true);
                             }}
                             onError={() => {
                                 console.warn("Turnstile error — allowing submission without token.");
                                 turnstileTimedOut.current = true;
-                                setTurnstileReady(true);
                             }}
                             options={{ theme: 'dark' }}
                         />

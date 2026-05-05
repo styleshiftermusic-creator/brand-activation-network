@@ -156,7 +156,7 @@ function downloadAllBlueprints() {
 export default function BlueprintsPage() {
     const [selectedBlueprint, setSelectedBlueprint] = useState<typeof BLUEPRINTS[0] | null>(null);
 
-    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW", id?: string, metadata?: any) => {
+    const logActivity = async (type: "DOWNLOAD" | "MODULE_VIEW", id?: string, metadata?: Record<string, unknown>) => {
         try {
             fetch("/api/activity", {
                 method: "POST",
