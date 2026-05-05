@@ -10,6 +10,7 @@ import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
+import { CertificateModal } from "@/components/dashboard/CertificateModal";
 
 interface QuizQuestion {
     question: string;
@@ -52,7 +53,7 @@ function buildModules(courseData: Record<string, { title: string; studyGuide: st
             id: `M-0${key}`,
             title: data.title,
             duration: `${mins}:00`,
-            status: "ACTIVE",
+            status: key === "1" ? "ACTIVE" : "LOCKED",
             description: data.studyGuide,
             quiz: data.quiz,
             mediaSrc: data.audioSrc,
@@ -64,6 +65,8 @@ function buildModules(courseData: Record<string, { title: string; studyGuide: st
 
 export default function MasterCoursePage() {
     const [activeModuleId, setActiveModuleId] = useState("M-01");
+    const [isCertOpen, setIsCertOpen] = useState(false);
+    const [studentName, setStudentName] = useState("Master Student");
     const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources'>('study');
     const [modules, setModules] = useState<ModuleData[]>([]);
     const [isLoadingContent, setIsLoadingContent] = useState(true);
@@ -230,6 +233,7 @@ export default function MasterCoursePage() {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
+            setStudentName(user.user_metadata?.full_name || user.email?.split('@')[0] || "Master Student");
 
             const { data: progressData, error } = await supabase
                 .from('course_progress')
@@ -779,6 +783,19 @@ export default function MasterCoursePage() {
                             </div>
                         </div>
 
+                        {modules.filter(m => m.status === 'COMPLETED').length === modules.length && modules.length > 0 && (
+                            <div 
+                                onClick={() => setIsCertOpen(true)}
+                                className="mb-6 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-emerald-500/20 transition-all shadow-[0_0_20px_rgba(16,185,129,0.1)]"
+                            >
+                                <CheckCircle2 className="w-8 h-8 text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
+                                <h3 className="text-sm font-bold text-white tracking-tight">Curriculum Complete</h3>
+                                <p className="text-[10px] text-emerald-400/80 font-mono mt-1 uppercase tracking-widest flex items-center justify-center gap-1 group-hover:text-emerald-300">
+                                    <Download className="w-3 h-3" /> Claim Certificate
+                                </p>
+                            </div>
+                        )}
+
                         <div className="space-y-3">
                             {modules.map((module, idx) => {
                                 const isSelected = activeModuleId === module.id;
@@ -843,6 +860,12 @@ export default function MasterCoursePage() {
                 </div>
 
             </main>
+            
+            <CertificateModal 
+                isOpen={isCertOpen} 
+                onClose={() => setIsCertOpen(false)} 
+                studentName={studentName} 
+            />
         </div>
     );
 }

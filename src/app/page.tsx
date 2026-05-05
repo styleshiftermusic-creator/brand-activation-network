@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Script from "next/script";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { SiteNav } from "@/components/SiteNav";
 import { LeadMagnetForm } from "@/components/LeadMagnetForm";
 import { HeroCTA, ModuleCTA, FinalCTA } from "@/components/WaitlistCTA";
 import { SocialProofToast } from "@/components/SocialProofToast";
@@ -129,31 +130,7 @@ export default function Home() {
       </div>
 
       {/* ─── NAV ─── */}
-      <nav className="relative z-50 w-full border-b border-white/[0.06] bg-[#080808]/80 backdrop-blur-xl sticky top-0">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center">
-          {/* Left: Logo */}
-          <div className="flex-1">
-            <Link href="/" className="flex items-center gap-3 w-fit">
-              <Image src="/logo.png" alt="Brand Activation Network" width={160} height={50} className="h-9 w-auto object-contain" priority />
-            </Link>
-          </div>
-          {/* Center: Nav links — perfectly centered */}
-          <div className="hidden md:flex items-center gap-8 text-sm text-zinc-400">
-            <a href="#modules" className="hover:text-white transition-colors">Curriculum</a>
-            <a href="#proof" className="hover:text-white transition-colors">Results</a>
-            <Link href="/challenge" className="hover:text-white transition-colors">Challenge</Link>
-          </div>
-          {/* Right: Member Login */}
-          <div className="flex-1 flex justify-end">
-            <Link
-              href="/dashboard"
-              className="hidden md:block text-xs text-zinc-400 hover:text-white transition-colors px-6 py-2.5 border border-white/10 rounded-full hover:border-white/30 hover:bg-white/5"
-            >
-              Member Login
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <SiteNav />
 
       {/* ─── HERO ─── */}
       <section className="relative z-10 flex flex-col items-center text-center px-6 pt-20 pb-10 max-w-5xl mx-auto w-full">
