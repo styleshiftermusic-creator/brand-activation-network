@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X } from "lucide-react";
+import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X, Settings } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -76,10 +76,24 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             </nav>
 
             <div className="mt-auto border-t border-white/5 pt-4">
-                <div className="flex items-center gap-3 mb-6 px-2">
+                <div className="flex items-center gap-3 mb-4 px-2">
                     <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
                     <span className="text-xs font-mono text-green-500 uppercase tracking-widest">Uplink Stable</span>
                 </div>
+                {/* Settings Link */}
+                <Link
+                    href="/dashboard/settings"
+                    onClick={onNavigate}
+                    className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 overflow-hidden mb-1 ${
+                        pathname === '/dashboard/settings'
+                            ? 'bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30'
+                            : 'text-zinc-500 hover:text-zinc-200 border border-transparent hover:border-white/5'
+                    } font-mono text-sm`}
+                >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/[0.08] to-transparent rounded-lg opacity-0 -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 pointer-events-none" />
+                    <Settings className="h-4 w-4 relative z-10 group-hover:rotate-45 transition-transform duration-300" />
+                    <span className="relative z-10">Settings</span>
+                </Link>
                 <button
                     onClick={async () => { await supabase.auth.signOut(); router.push('/'); }}
                     className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-500/10 text-zinc-600 hover:text-red-400 border border-transparent hover:border-red-500/20 hover:shadow-[0_0_15px_-3px_rgba(239,68,68,0.2)] transition-all duration-300 w-full text-left font-mono text-sm overflow-hidden"

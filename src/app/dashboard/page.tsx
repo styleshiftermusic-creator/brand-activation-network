@@ -224,6 +224,38 @@ export default function MissionControl() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* ─── Refer & Earn Card ─── */}
+                            <div className="bg-black/40 backdrop-blur-2xl border border-emerald-500/20 rounded-2xl p-6 relative overflow-hidden group hover:border-emerald-500/40 transition-colors duration-500">
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-[40px] rounded-full pointer-events-none" />
+
+                                <div className="relative z-10">
+                                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase tracking-widest mb-4">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                        Member Benefit
+                                    </div>
+                                    <h3 className="text-base font-semibold text-white tracking-tight mb-2">Refer &amp; Earn</h3>
+                                    <p className="text-xs text-zinc-500 leading-relaxed mb-5">
+                                        Know someone who needs this? Share your link — every referral that joins strengthens the network and earns you credit.
+                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            const url = "https://brandactivationnetwork.com";
+                                            if (navigator.share) {
+                                                navigator.share({ title: "Brand Activation Network", url });
+                                            } else {
+                                                navigator.clipboard.writeText(url);
+                                                alert("Link copied to clipboard!");
+                                            }
+                                        }}
+                                        className="w-full py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] font-semibold"
+                                    >
+                                        Share My Link →
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
