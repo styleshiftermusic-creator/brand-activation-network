@@ -3,12 +3,11 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
-import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap, Sparkles } from "lucide-react";
+import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap } from "lucide-react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
-import GemmaPlayground from "@/components/GemmaPlayground";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -65,7 +64,7 @@ function buildModules(courseData: Record<string, { title: string; studyGuide: st
 
 export default function MasterCoursePage() {
     const [activeModuleId, setActiveModuleId] = useState("M-01");
-    const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources' | 'ai'>('study');
+    const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources'>('study');
     const [modules, setModules] = useState<ModuleData[]>([]);
     const [isLoadingContent, setIsLoadingContent] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -600,23 +599,6 @@ export default function MasterCoursePage() {
                                 )}
                             </button>
                             <button
-                                onClick={() => setActiveTab('ai')}
-                                className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'ai'
-
-                                    ? 'text-white'
-                                    : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
-                                    }`}
-                            >
-                                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
-                                AI Intelligence
-                                {activeTab === 'ai' && (
-                                    <motion.div 
-                                        layoutId="tab-underline"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
-                                    />
-                                )}
-                            </button>
-                            <button
                                 onClick={() => setActiveTab('quiz')}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'quiz'
 
@@ -750,18 +732,6 @@ export default function MasterCoursePage() {
                                         </div>
                                     )}
 
-                                    {activeTab === 'ai' && (
-                                        <div className="pb-20">
-                                            <GemmaPlayground 
-                                                initialPrompt={`I am currently studying Module ${activeModule.id.replace('M-0', '')}: "${activeModule.title}". 
-
-Based on this curriculum:
-${activeModule.description.slice(0, 500)}...
-
-Can you help me understand the core strategic advantages of this module or how to implement it specifically for a new business?`}
-                                            />
-                                        </div>
-                                    )}
                                 </motion.div>
                             </AnimatePresence>
                         </div>

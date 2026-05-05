@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X, Sparkles } from "lucide-react";
+import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -17,7 +17,6 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         { path: "/dashboard/data-sources", label: "The Million Dollar File", icon: <Database className="h-4 w-4" /> },
         { path: "/dashboard/blueprints", label: "Brand Blueprints", icon: <FolderDot className="h-4 w-4" /> },
         { path: "/dashboard/antigravity-system", label: "AntiGravity System", icon: <Terminal className="h-4 w-4" /> },
-        { path: "/dashboard/gemma", label: "AI Lab", icon: <Sparkles className="h-4 w-4" /> },
     ];
 
     return (
