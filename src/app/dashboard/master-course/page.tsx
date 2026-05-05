@@ -344,11 +344,35 @@ export default function MasterCoursePage() {
                 {/* LEFT PANE: Cinematic Main Viewer */}
                 <div className="flex-1 flex flex-col animate-fade-in-up">
                     <header className="mb-6 border-b border-white/10 pb-4">
-                        <div className="flex items-center gap-3 mb-2">
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 tracking-widest uppercase shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]">
-                                Module {activeModule.id.replace('M-', '')}
-                            </span>
-                            <span className="text-xs font-mono text-zinc-500 tracking-wider hidden sm:block">| FOUNDATIONAL PROTOCOL</span>
+                        <div className="flex items-center justify-between gap-3 mb-2">
+                            <div className="flex items-center gap-3">
+                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 tracking-widest uppercase shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]">
+                                    Module {activeModule.id.replace('M-', '')}
+                                </span>
+                                <span className="text-xs font-mono text-zinc-500 tracking-wider hidden sm:block">| FOUNDATIONAL PROTOCOL</span>
+                            </div>
+                            {/* Module Progress Indicator */}
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                                <div className="hidden sm:flex gap-1">
+                                    {modules.map((m) => (
+                                        <div
+                                            key={m.id}
+                                            title={m.title}
+                                            className={`h-1.5 w-4 rounded-full transition-all duration-500 ${
+                                                m.status === 'COMPLETED'
+                                                    ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]'
+                                                    : m.id === activeModuleId
+                                                        ? 'bg-emerald-500/40 w-6'
+                                                        : 'bg-white/10'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-[10px] font-mono text-zinc-500 tabular-nums">
+                                    <span className="text-emerald-400 font-bold">{modules.filter(m => m.status === 'COMPLETED').length}</span>
+                                    <span className="text-zinc-600"> / {modules.length}</span>
+                                </span>
+                            </div>
                         </div>
                         <h1 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{activeModule.title}</h1>
                     </header>
@@ -451,96 +475,92 @@ export default function MasterCoursePage() {
                         {/* Subtle inner glow top edge */}
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent pointer-events-none" />
 
-                        <div className="flex items-center gap-4 p-4">
-                            {/* Play Button with pulse ring */}
-                            <div className="relative flex-shrink-0">
-                                <button
-                                    onClick={togglePlay}
-                                    className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 relative group/play ${isPlaying
-                                        ? 'bg-white text-black scale-105 shadow-[0_0_30px_rgba(255,255,255,0.3)]'
-                                        : 'bg-emerald-500 text-white hover:scale-110 shadow-[0_0_30px_rgba(16,185,129,0.3)]'
-                                        }`}
-                                >
-                                    {/* Seamless Pulsing Ring while playing */}
-                                    {isPlaying && (
-                                        <motion.div
-                                            initial={{ scale: 1, opacity: 0.5 }}
-                                            animate={{ scale: 1.5, opacity: 0 }}
-                                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-                                            className="absolute inset-0 rounded-full border-2 border-white pointer-events-none"
-                                        />
-                                    )}
-                                    {isPlaying ? (
-                                        <Pause className="w-6 h-6 md:w-7 md:h-7 fill-current relative z-10" />
-                                    ) : (
-                                        <Play className="w-6 h-6 md:w-7 md:h-7 fill-current ml-1 relative z-10" />
-                                    )}
-                                </button>
-                            </div>
-
-                            {/* Animated waveform bars — only when playing */}
-                            <div className="flex items-center gap-[3px] flex-shrink-0">
-                                {[0.6, 1, 0.4, 0.8, 0.5, 0.9, 0.3].map((h, i) => (
-                                    <div
-                                        key={i}
-                                        className="w-[3px] rounded-full transition-all"
-                                        style={{
-                                            height: isPlaying ? `${Math.round(h * 20)}px` : '4px',
-                                            background: isPlaying
-                                                ? `rgba(16,185,129,${0.4 + h * 0.5})`
-                                                : 'rgba(255,255,255,0.08)',
-                                            animation: isPlaying ? `waveBar ${0.8 + i * 0.15}s ease-in-out infinite alternate` : 'none',
-                                            animationDelay: `${i * 0.07}s`,
-                                        }}
-                                    />
-                                ))}
-                            </div>
-
-                            <div className="flex-1 flex flex-col gap-2 min-w-0">
-                                {/* Track Info & Time */}
-                                <div className="flex justify-between items-center text-[10px] font-mono tracking-wider uppercase">
-                                    <span className="text-zinc-400 truncate pr-3">
-                                        <span className="text-emerald-400 mr-1.5">M{activeModule.id.replace('M-0', '').replace('M-', '')}</span>
-                                        <span className="text-zinc-500">—</span>
-                                        <span className="ml-1.5">{activeModule.title}</span>
-                                    </span>
-                                    <span className="text-zinc-400 flex-shrink-0 tabular-nums">
-                                        {formatTime(audioProgress)}<span className="text-zinc-600 mx-0.5">/</span>{formatTime(audioDuration || 0)}
-                                    </span>
+                        <div className="p-3 md:p-4">
+                            {/* Row 1: Play button + Waveform + Track info + Time */}
+                            <div className="flex items-center gap-3">
+                                {/* Play Button */}
+                                <div className="relative flex-shrink-0">
+                                    <button
+                                        onClick={togglePlay}
+                                        className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-500 relative group/play ${isPlaying
+                                            ? 'bg-white text-black scale-105 shadow-[0_0_30px_rgba(255,255,255,0.3)]'
+                                            : 'bg-emerald-500 text-white hover:scale-110 shadow-[0_0_30px_rgba(16,185,129,0.3)]'
+                                            }`}
+                                    >
+                                        {isPlaying && (
+                                            <motion.div
+                                                initial={{ scale: 1, opacity: 0.5 }}
+                                                animate={{ scale: 1.5, opacity: 0 }}
+                                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+                                                className="absolute inset-0 rounded-full border-2 border-white pointer-events-none"
+                                            />
+                                        )}
+                                        {isPlaying ? (
+                                            <Pause className="w-5 h-5 md:w-6 md:h-6 fill-current relative z-10" />
+                                        ) : (
+                                            <Play className="w-5 h-5 md:w-6 md:h-6 fill-current ml-0.5 relative z-10" />
+                                        )}
+                                    </button>
                                 </div>
 
-                                {/* Scrubber Track */}
-                                <div
-                                    className="w-full h-[5px] rounded-full cursor-pointer relative group/timeline"
-                                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.04)' }}
-                                    onClick={handleTimelineClick}
-                                >
-                                    {/* Expanded touch hit area */}
-                                    <div className="absolute -inset-y-3 left-0 right-0 z-10" />
+                                {/* Waveform — hidden on xs to save space */}
+                                <div className="hidden sm:flex items-center gap-[3px] flex-shrink-0">
+                                    {[0.6, 1, 0.4, 0.8, 0.5].map((h, i) => (
+                                        <div
+                                            key={i}
+                                            className="w-[3px] rounded-full transition-all"
+                                            style={{
+                                                height: isPlaying ? `${Math.round(h * 18)}px` : '3px',
+                                                background: isPlaying
+                                                    ? `rgba(16,185,129,${0.4 + h * 0.5})`
+                                                    : 'rgba(255,255,255,0.08)',
+                                                animation: isPlaying ? `waveBar ${0.8 + i * 0.15}s ease-in-out infinite alternate` : 'none',
+                                                animationDelay: `${i * 0.07}s`,
+                                            }}
+                                        />
+                                    ))}
+                                </div>
 
-                                    {/* Filled progress — gradient + glow */}
-                                    <div
-                                        className="absolute top-0 left-0 h-full rounded-full z-0 transition-all duration-100 ease-linear"
-                                        style={{
-                                            width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
-                                            background: 'linear-gradient(90deg, #10b981, #34d399)',
-                                            boxShadow: '0 0 8px rgba(16,185,129,0.7)',
-                                        }}
-                                    />
+                                {/* Track info + time — takes remaining space */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex justify-between items-center text-[10px] font-mono tracking-wider uppercase mb-2">
+                                        <span className="text-zinc-400 truncate pr-2">
+                                            <span className="text-emerald-400 mr-1">M{activeModule.id.replace('M-0', '').replace('M-', '')}</span>
+                                            <span className="hidden sm:inline text-zinc-500">— {activeModule.title}</span>
+                                        </span>
+                                        <span className="text-zinc-400 flex-shrink-0 tabular-nums">
+                                            {formatTime(audioProgress)}<span className="text-zinc-600 mx-0.5">/</span>{formatTime(audioDuration || 0)}
+                                        </span>
+                                    </div>
 
-                                    {/* Scrubber dot — always visible, grows on hover */}
+                                    {/* Scrubber */}
                                     <div
-                                        className="absolute top-1/2 z-20 pointer-events-none transition-transform duration-150 group-hover/timeline:scale-150"
-                                        style={{
-                                            left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
-                                            transform: 'translate(-50%, -50%)',
-                                            width: '10px',
-                                            height: '10px',
-                                            borderRadius: '50%',
-                                            background: 'white',
-                                            boxShadow: '0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(16,185,129,0.5)',
-                                        }}
-                                    />
+                                        className="w-full h-[5px] rounded-full cursor-pointer relative group/timeline"
+                                        style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.04)' }}
+                                        onClick={handleTimelineClick}
+                                    >
+                                        <div className="absolute -inset-y-3 left-0 right-0 z-10" />
+                                        <div
+                                            className="absolute top-0 left-0 h-full rounded-full z-0 transition-all duration-100 ease-linear"
+                                            style={{
+                                                width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
+                                                background: 'linear-gradient(90deg, #10b981, #34d399)',
+                                                boxShadow: '0 0 8px rgba(16,185,129,0.7)',
+                                            }}
+                                        />
+                                        <div
+                                            className="absolute top-1/2 z-20 pointer-events-none transition-transform duration-150 group-hover/timeline:scale-150"
+                                            style={{
+                                                left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
+                                                transform: 'translate(-50%, -50%)',
+                                                width: '10px',
+                                                height: '10px',
+                                                borderRadius: '50%',
+                                                background: 'white',
+                                                boxShadow: '0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(16,185,129,0.5)',
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
