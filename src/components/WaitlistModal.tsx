@@ -6,9 +6,11 @@ import { X, ArrowRight, CheckCircle2, Loader2, Zap } from "lucide-react";
 interface WaitlistModalProps {
   isOpen: boolean;
   onClose: () => void;
+  variant?: "waitlist" | "blueprint";
 }
 
-export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
+export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: WaitlistModalProps) {
+  const isBlueprint = variant === "blueprint";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -109,7 +111,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-mono uppercase tracking-widest mb-5">
               <Zap className="w-3 h-3 fill-current" />
-              Waitlist Open
+              {isBlueprint ? "Free Blueprint" : "Waitlist Open"}
             </div>
 
             {status === "success" ? (
@@ -117,9 +119,12 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                 <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
                   <CheckCircle2 className="w-8 h-8 text-emerald-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white tracking-tight">You&apos;re on the list.</h3>
+                <h3 className="text-2xl font-bold text-white tracking-tight">You&apos;re in.</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
-                  You&apos;ll be the first to know when enrollment opens. We&apos;ll also send you the <strong className="text-white">BAN Credit Sweep Blueprint</strong> as a free gift.
+                  {isBlueprint
+                    ? <>Check your inbox for the <strong className="text-white">BAN Credit Sweep Blueprint</strong>. Start with Method 1 — you can call today.</>
+                    : <>You&apos;ll be the first to know when enrollment opens. We&apos;ll also send you the <strong className="text-white">BAN Credit Sweep Blueprint</strong> as a free gift.</>
+                  }
                 </p>
                 <button
                   onClick={onClose}
@@ -131,13 +136,17 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
             ) : (
               <>
                 <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-3 leading-tight">
-                  Enrollment Opens{" "}
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e0aaff] to-[#9d4edd]">
-                    Soon.
-                  </span>
+                  {isBlueprint ? (
+                    <>Get the <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-300">Free Blueprint</span></>
+                  ) : (
+                    <>Enrollment Opens{" "}<span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e0aaff] to-[#9d4edd]">Soon.</span></>
+                  )}
                 </h2>
                 <p className="text-zinc-400 text-sm leading-relaxed mb-7">
-                  We&apos;re finalizing the launch. Join the priority waitlist and we&apos;ll notify you the moment the doors open — plus you&apos;ll receive the <strong className="text-zinc-300">BAN Credit Sweep Blueprint</strong> for free.
+                  {isBlueprint
+                    ? <>Enter your info below and we&apos;ll send you the <strong className="text-zinc-300">BAN Credit Sweep Blueprint</strong> — the exact scripts our members use to remove hard inquiries in 24 hours.</>
+                    : <>We&apos;re finalizing the launch. Join the priority waitlist and we&apos;ll notify you the moment the doors open — plus you&apos;ll receive the <strong className="text-zinc-300">BAN Credit Sweep Blueprint</strong> for free.</>
+                  }
                 </p>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -177,7 +186,7 @@ export function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
                       <>
-                        Reserve My Spot <ArrowRight className="w-4 h-4" />
+                        {isBlueprint ? "Send Me the Blueprint" : "Reserve My Spot"} <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
