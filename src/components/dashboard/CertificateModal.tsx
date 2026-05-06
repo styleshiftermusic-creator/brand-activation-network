@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Award, Download, Share2 } from "lucide-react";
 
@@ -12,6 +13,11 @@ interface CertificateModalProps {
 
 export function CertificateModal({ isOpen, onClose, studentName = "Master Student" }: CertificateModalProps) {
     const [date, setDate] = useState("");
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         // Set the current date when the modal opens
@@ -49,7 +55,9 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
         }
     };
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
@@ -175,6 +183,7 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                     </motion.div>
                 </div>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }

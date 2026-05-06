@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, ArrowRight, CheckCircle2, Loader2, Zap } from "lucide-react";
 
 interface WaitlistModalProps {
@@ -16,7 +17,12 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Focus input when modal opens
   useEffect(() => {
@@ -73,7 +79,9 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
       className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-all duration-300 ${
         isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -204,6 +212,7 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
