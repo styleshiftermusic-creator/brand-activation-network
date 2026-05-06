@@ -37,6 +37,7 @@ const subscribeSchema = z.object({
     email: z.string().email("Invalid email address"),
     name: z.string().optional(),
     phone: z.string().optional(),
+    referredBy: z.string().optional().nullable(),
 });
 
 export async function POST(req: Request) {
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 });
         }
 
-        const { email, name, phone } = parsed.data;
+        const { email, name, phone, referredBy } = parsed.data;
 
         // Save Lead to Supabase (Reusing the webinar_registrations table for leads)
         const { error } = await supabase.from('webinar_registrations').insert([
@@ -81,6 +82,20 @@ export async function POST(req: Request) {
         }
 
         console.log("LIVE BACKEND: Successfully registered new lead magnet download:", email);
+
+        // Track Referral if present
+        if (referredBy && !error) { // Only track if Supabase insert was successful
+            const { error: referralError } = await supabase.from('user_activity').insert({
+                user_id: referredBy,
+                activity_type: 'REFERRAL_SIGNUP',
+                metadata: { referred_email: email, referred_name: name || '' }
+            });
+            if (referralError) {
+                console.error("Failed to track referral:", referralError);
+            } else {
+                console.log("Successfully tracked referral for user:", referredBy);
+            }
+        }
 
         // Attempt to send emails
         if (process.env.RESEND_API_KEY) {

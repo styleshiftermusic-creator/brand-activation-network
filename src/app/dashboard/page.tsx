@@ -31,6 +31,8 @@ export default function MissionControl() {
     const [totalMembers, setTotalMembers] = useState<number | null>(null);
     const [activityCounts, setActivityCounts] = useState<Record<string, number>>({});
     const [topModules, setTopModules] = useState<{ module_id: string; count: number }[]>([]);
+    const [userId, setUserId] = useState<string | null>(null);
+    const [referralCount, setReferralCount] = useState<number>(0);
 
     // Compute progress based on current mission state
     const completedCount = missions.filter(m => m.completed).length;
@@ -102,6 +104,7 @@ export default function MissionControl() {
                 // 2. Fetch Progress
                 const { data: { user } } = await supabase.auth.getUser();
                 if (!user) return;
+                setUserId(user.id);
 
                 const { data: progressData, error } = await supabase
                     .from('course_progress')
@@ -151,6 +154,17 @@ export default function MissionControl() {
                         console.info("Could not initialize telemetry database row.");
                     }
                 }
+
+                // 5. Fetch Referrals Count
+                try {
+                    const { count, error: refError } = await supabase
+                        .from('user_activity')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', user.id)
+                        .eq('activity_type', 'REFERRAL_SIGNUP');
+                    
+                    if (!refError && count !== null) setReferralCount(count);
+                } catch(e) { console.error(e) }
 
                 setMissions(builtMissions);
             } catch (err) {
@@ -298,13 +312,20 @@ export default function MissionControl() {
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                                         Member Benefit
                                     </div>
-                                    <h3 className="text-base font-semibold text-white tracking-tight mb-2">Refer &amp; Earn</h3>
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h3 className="text-base font-semibold text-white tracking-tight">Refer &amp; Earn</h3>
+                                        {referralCount > 0 && (
+                                            <span className="text-xs font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                                                {referralCount} Referred
+                                            </span>
+                                        )}
+                                    </div>
                                     <p className="text-xs text-zinc-500 leading-relaxed mb-5">
                                         Know someone who needs this? Share your link — every referral that joins strengthens the network and earns you credit.
                                     </p>
                                     <button
                                         onClick={() => {
-                                            const url = "https://brandactivationnetwork.com";
+                                            const url = userId ? `https://brandactivationnetwork.com?ref=${userId}` : "https://brandactivationnetwork.com";
                                             if (navigator.share) {
                                                 navigator.share({ title: "Brand Activation Network", url });
                                             } else {

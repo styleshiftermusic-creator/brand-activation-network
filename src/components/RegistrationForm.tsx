@@ -46,6 +46,7 @@ export default function RegistrationForm() {
                 body: JSON.stringify({
                     ...formData,
                     turnstileToken: turnstileToken || "TURNSTILE_BYPASSED",
+                    referredBy: typeof window !== "undefined" ? localStorage.getItem("ban_ref") : null,
                 }),
             });
 

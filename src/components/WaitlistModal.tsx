@@ -65,7 +65,12 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone }),
+        body: JSON.stringify({ 
+          name, 
+          email, 
+          phone,
+          referredBy: typeof window !== "undefined" ? localStorage.getItem("ban_ref") : null 
+        }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || "Something went wrong.");

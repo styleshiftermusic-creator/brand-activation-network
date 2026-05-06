@@ -57,7 +57,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 });
         }
 
-        const { name, email, phone, turnstileToken } = parsed.data;
+        const { name, email, phone, turnstileToken, referredBy } = parsed.data;
 
         // Turnstile Token Verification (skip if widget failed on frontend)
         const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
@@ -99,6 +99,20 @@ export async function POST(req: Request) {
         }
 
         console.log("LIVE BACKEND: Successfully registered new lead into Supabase:", email);
+
+        // Track Referral if present
+        if (referredBy) {
+            const { error: referralError } = await supabase.from('user_activity').insert({
+                user_id: referredBy,
+                activity_type: 'REFERRAL_SIGNUP',
+                metadata: { referred_email: email, referred_name: name }
+            });
+            if (referralError) {
+                console.error("Failed to track referral:", referralError);
+            } else {
+                console.log("Successfully tracked referral for user:", referredBy);
+            }
+        }
 
         // Attempt to send emails
         if (process.env.RESEND_API_KEY) {

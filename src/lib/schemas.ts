@@ -6,6 +6,7 @@ export const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().optional(),
   turnstileToken: z.string().min(1, "Bot protection token missing").optional(),
+  referredBy: z.string().optional().nullable(),
 });
 
 // Shared Authentication Schema
