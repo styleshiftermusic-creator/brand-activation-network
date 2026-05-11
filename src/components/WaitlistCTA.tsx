@@ -41,7 +41,7 @@ export function HeroCTA({ stripeLink }: { stripeLink?: string }) {
         href={stripeLink}
         className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
       >
-        Activate Network Access <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+        Apply Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
         <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
       </a>
     );
@@ -53,7 +53,7 @@ export function HeroCTA({ stripeLink }: { stripeLink?: string }) {
         onClick={() => setIsOpen(true)}
         className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
       >
-        Join the Waitlist <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+        Apply Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
         <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
       </button>
       <WaitlistModal isOpen={isOpen} onClose={() => setIsOpen(false)} />

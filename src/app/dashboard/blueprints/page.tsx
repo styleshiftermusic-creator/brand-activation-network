@@ -98,7 +98,7 @@ const BLUEPRINTS = [
         format: "JSON / TXT",
         category: "AI Systems",
         icon: <Bot className="w-5 h-5" />,
-        color: "cyan",
+        color: "indigo",
         downloadUrl: "/blueprints/ai-agent-prompt-library.json",
         fileName: "AI-Agent-Prompt-Library.json",
         howToUse: [
@@ -132,7 +132,7 @@ const COLOR_MAP: Record<string, { bg: string; text: string; border: string; glow
     blue: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/30", glow: "shadow-[0_0_20px_rgba(59,130,246,0.15)]" },
     amber: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/30", glow: "shadow-[0_0_20px_rgba(245,158,11,0.15)]" },
     purple: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/30", glow: "shadow-[0_0_20px_rgba(168,85,247,0.15)]" },
-    cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/30", glow: "shadow-[0_0_20px_rgba(6,182,212,0.15)]" },
+    indigo: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/30", glow: "shadow-[0_0_20px_rgba(99,102,241,0.15)]" },
 };
 
 function downloadFile(url: string, fileName: string) {

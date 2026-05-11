@@ -17,10 +17,6 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
 
     useEffect(() => {
         setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        // Set the current date when the modal opens
         if (isOpen) {
             setDate(new Date().toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }));
         }

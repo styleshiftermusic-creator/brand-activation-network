@@ -413,82 +413,79 @@ export default function MasterCoursePage() {
                     </div>
 
 
-                    {/* Slide Viewer — Always Visible */}
-                    <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center">
+                    {/* Unified Media Player (Slide Viewer + Audio Controls) */}
+                    <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl relative group overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col justify-between">
                         {/* Outer Glass Border */}
                         <div className="absolute inset-0 border border-white/10 rounded-xl pointer-events-none z-20" />
                         <div className="absolute inset-0 border border-white/[0.02] m-[1px] rounded-xl pointer-events-none z-20" />
 
                         {/* Slide Visual or Fallback */}
-                        {activeModule.visuals && activeModule.visuals.length > 0 ? (
-                            <>
-                                <Image
-                                    key={`${activeModule.id}-${currentSlide}`}
-                                    src={activeModule.visuals[currentSlide]}
-                                    alt={`${activeModule.title} — Slide ${currentSlide + 1}`}
-                                    fill
-                                    className="object-contain z-0 animate-fade-in"
-                                    priority
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 z-10 pointer-events-none" />
+                        <div className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden">
+                            {activeModule.visuals && activeModule.visuals.length > 0 ? (
+                                <>
+                                    <Image
+                                        key={`${activeModule.id}-${currentSlide}`}
+                                        src={activeModule.visuals[currentSlide]}
+                                        alt={`${activeModule.title} — Slide ${currentSlide + 1}`}
+                                        fill
+                                        className="object-contain z-0 animate-fade-in pb-16"
+                                        priority
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
 
-                                {/* Slide Navigation — Always Active */}
-                                {activeModule.visuals.length > 1 && (
-                                    <>
-                                        <button
-                                            onClick={goToPrevSlide}
-                                            disabled={currentSlide === 0}
-                                            className="absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/60 border border-white/10 text-white/70 hover:text-white hover:bg-black/80 disabled:opacity-20 disabled:cursor-not-allowed transition-all backdrop-blur-md"
-                                        >
-                                            <ChevronLeft className="w-5 h-5" />
-                                        </button>
-                                        <button
-                                            onClick={goToNextSlide}
-                                            disabled={currentSlide === activeModule.visuals.length - 1}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/60 border border-white/10 text-white/70 hover:text-white hover:bg-black/80 disabled:opacity-20 disabled:cursor-not-allowed transition-all backdrop-blur-md"
-                                        >
-                                            <ChevronRight className="w-5 h-5" />
-                                        </button>
-                                    </>
-                                )}
+                                    {/* Slide Navigation — Always Active */}
+                                    {activeModule.visuals.length > 1 && (
+                                        <>
+                                            <button
+                                                onClick={goToPrevSlide}
+                                                disabled={currentSlide === 0}
+                                                className="absolute left-3 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/60 border border-white/10 text-white/70 hover:text-white hover:bg-black/80 disabled:opacity-20 disabled:cursor-not-allowed transition-all backdrop-blur-md"
+                                            >
+                                                <ChevronLeft className="w-5 h-5" />
+                                            </button>
+                                            <button
+                                                onClick={goToNextSlide}
+                                                disabled={currentSlide === activeModule.visuals.length - 1}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/60 border border-white/10 text-white/70 hover:text-white hover:bg-black/80 disabled:opacity-20 disabled:cursor-not-allowed transition-all backdrop-blur-md"
+                                            >
+                                                <ChevronRight className="w-5 h-5" />
+                                            </button>
+                                        </>
+                                    )}
 
-                                {/* Slide Counter Badge */}
-                                {activeModule.visuals.length > 1 && (
-                                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30">
-                                        <span className="bg-black/70 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10 text-xs font-mono text-zinc-400 flex items-center gap-1.5">
-                                            <ImageIcon className="w-3 h-3" />
-                                            {currentSlide + 1} / {activeModule.visuals.length}
-                                        </span>
+                                    {/* Slide Counter Badge */}
+                                    {activeModule.visuals.length > 1 && (
+                                        <div className="absolute top-4 right-4 z-30">
+                                            <span className="bg-black/70 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/10 text-xs font-mono text-zinc-400 flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                                                <ImageIcon className="w-3 h-3" />
+                                                {currentSlide + 1} / {activeModule.visuals.length}
+                                            </span>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-black z-0" />
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center z-10 gap-3">
+                                        <ImageIcon className="w-12 h-12 text-emerald-500/30" />
+                                        <p className="text-xs font-mono text-zinc-600 tracking-wider uppercase">Slide visuals loading</p>
                                     </div>
-                                )}
-                            </>
-                        ) : (
-                            <>
-                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-black z-0" />
-                                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 gap-3">
-                                    <ImageIcon className="w-12 h-12 text-emerald-500/30" />
-                                    <p className="text-xs font-mono text-zinc-600 tracking-wider uppercase">Slide visuals loading</p>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                                </>
+                            )}
+                        </div>
 
-                    {/* Audio Player Bar — Premium UI */}
-                    <div className="w-full mt-3 mb-6 rounded-2xl overflow-hidden relative" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(16,185,129,0.04) 100%)', border: '1px solid rgba(16,185,129,0.15)', backdropFilter: 'blur(20px)', boxShadow: '0 0 40px -10px rgba(16,185,129,0.15), 0 20px 40px -15px rgba(0,0,0,0.6)' }}>
+                        {/* Integrated Audio Player Controls */}
+                        <div className="absolute bottom-0 left-0 right-0 z-30 bg-black/60 backdrop-blur-xl border-t border-white/10 p-3 md:p-4">
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent pointer-events-none" />
 
-                        {/* Subtle inner glow top edge */}
-                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent pointer-events-none" />
-
-                        <div className="p-3 md:p-4">
-                            {/* Row 1: Play button + Waveform + Track info + Time */}
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-4">
                                 {/* Play Button */}
                                 <div className="relative flex-shrink-0">
                                     <button
                                         onClick={togglePlay}
-                                        className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-500 relative group/play ${isPlaying
-                                            ? 'bg-white text-black scale-105 shadow-[0_0_30px_rgba(255,255,255,0.3)]'
-                                            : 'bg-emerald-500 text-white hover:scale-110 shadow-[0_0_30px_rgba(16,185,129,0.3)]'
+                                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-500 relative group/play ${isPlaying
+                                            ? 'bg-white text-black scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)]'
+                                            : 'bg-emerald-500 text-white hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
                                             }`}
                                     >
                                         {isPlaying && (
@@ -496,80 +493,71 @@ export default function MasterCoursePage() {
                                                 initial={{ scale: 1, opacity: 0.5 }}
                                                 animate={{ scale: 1.5, opacity: 0 }}
                                                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-                                                className="absolute inset-0 rounded-full border-2 border-white pointer-events-none"
+                                                className="absolute inset-0 rounded-full border border-white pointer-events-none"
                                             />
                                         )}
                                         {isPlaying ? (
-                                            <Pause className="w-5 h-5 md:w-6 md:h-6 fill-current relative z-10" />
+                                            <Pause className="w-4 h-4 md:w-5 md:h-5 fill-current relative z-10" />
                                         ) : (
-                                            <Play className="w-5 h-5 md:w-6 md:h-6 fill-current ml-0.5 relative z-10" />
+                                            <Play className="w-4 h-4 md:w-5 md:h-5 fill-current ml-0.5 relative z-10" />
                                         )}
                                     </button>
                                 </div>
 
-                                {/* Waveform — hidden on xs to save space */}
-                                <div className="hidden sm:flex items-center gap-[3px] flex-shrink-0">
-                                    {[0.6, 1, 0.4, 0.8, 0.5].map((h, i) => (
-                                        <div
-                                            key={i}
-                                            className="w-[3px] rounded-full transition-all"
-                                            style={{
-                                                height: isPlaying ? `${Math.round(h * 18)}px` : '3px',
-                                                background: isPlaying
-                                                    ? `rgba(16,185,129,${0.4 + h * 0.5})`
-                                                    : 'rgba(255,255,255,0.08)',
-                                                animation: isPlaying ? `waveBar ${0.8 + i * 0.15}s ease-in-out infinite alternate` : 'none',
-                                                animationDelay: `${i * 0.07}s`,
-                                            }}
-                                        />
-                                    ))}
-                                </div>
-
-                                {/* Track info + time — takes remaining space */}
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex justify-between items-center text-[10px] font-mono tracking-wider uppercase mb-2">
-                                        <span className="text-zinc-400 truncate pr-2">
-                                            <span className="text-emerald-400 mr-1">M{activeModule.id.replace('M-0', '').replace('M-', '')}</span>
-                                            <span className="hidden sm:inline text-zinc-500">— {activeModule.title}</span>
+                                {/* Track info + time + Scrubber */}
+                                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                    <div className="flex justify-between items-center text-[10px] md:text-xs font-mono tracking-wider uppercase mb-2">
+                                        <span className="text-zinc-300 truncate pr-2 font-medium">
+                                            {activeModule.title}
                                         </span>
                                         <span className="text-zinc-400 flex-shrink-0 tabular-nums">
-                                            {formatTime(audioProgress)}<span className="text-zinc-600 mx-0.5">/</span>{formatTime(audioDuration || 0)}
+                                            <span className="text-emerald-400">{formatTime(audioProgress)}</span>
+                                            <span className="text-zinc-600 mx-1">/</span>
+                                            {formatTime(audioDuration || 0)}
                                         </span>
                                     </div>
 
                                     {/* Scrubber */}
                                     <div
-                                        className="w-full h-[5px] rounded-full cursor-pointer relative group/timeline"
-                                        style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.04)' }}
+                                        className="w-full h-1.5 md:h-2 rounded-full cursor-pointer relative group/timeline"
+                                        style={{ background: 'rgba(255,255,255,0.1)' }}
                                         onClick={handleTimelineClick}
                                     >
-                                        <div className="absolute -inset-y-3 left-0 right-0 z-10" />
+                                        <div className="absolute -inset-y-2 left-0 right-0 z-10" />
                                         <div
                                             className="absolute top-0 left-0 h-full rounded-full z-0 transition-all duration-100 ease-linear"
                                             style={{
                                                 width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
                                                 background: 'linear-gradient(90deg, #10b981, #34d399)',
-                                                boxShadow: '0 0 8px rgba(16,185,129,0.7)',
+                                                boxShadow: '0 0 10px rgba(16,185,129,0.5)',
                                             }}
                                         />
                                         <div
-                                            className="absolute top-1/2 z-20 pointer-events-none transition-transform duration-150 group-hover/timeline:scale-150"
+                                            className="absolute top-1/2 z-20 pointer-events-none transition-transform duration-150 scale-0 group-hover/timeline:scale-100"
                                             style={{
                                                 left: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
                                                 transform: 'translate(-50%, -50%)',
-                                                width: '10px',
-                                                height: '10px',
+                                                width: '12px',
+                                                height: '12px',
                                                 borderRadius: '50%',
                                                 background: 'white',
-                                                boxShadow: '0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(16,185,129,0.5)',
+                                                boxShadow: '0 0 10px rgba(0,0,0,0.5)',
                                             }}
                                         />
                                     </div>
                                 </div>
                             </div>
+                            
+                            {/* Error banner */}
+                            {audioError && (
+                                <div className="mt-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-mono flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                                    {audioError}
+                                </div>
+                            )}
                         </div>
 
-                        {/* Hidden audio element — key on activeModuleId ONLY so setModules never remounts it */}
+                        {/* Hidden audio element */}
                         <audio
                             ref={audioRef}
                             key={activeModuleId}
@@ -590,18 +578,10 @@ export default function MasterCoursePage() {
                             preload="metadata"
                             className="hidden"
                         />
-
-                        {/* Error banner */}
-                        {audioError && (
-                            <div className="mx-4 mb-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-mono flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                                {audioError}
-                            </div>
-                        )}
                     </div>
 
                     {/* Tab Navigation & Content Area */}
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-8 mt-2">
 
                         {/* Interactive Tabs */}
                         <div className="flex gap-4 md:gap-8 border-b border-white/10 overflow-x-auto no-scrollbar">

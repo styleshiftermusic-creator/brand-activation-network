@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Eye, Download, ClipboardCheck, Users } from "lucide-react";
+import { Eye, Download, ClipboardCheck, Users, Copy, Check, Share2 } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
 
@@ -33,6 +33,7 @@ export default function MissionControl() {
     const [topModules, setTopModules] = useState<{ module_id: string; count: number }[]>([]);
     const [userId, setUserId] = useState<string | null>(null);
     const [referralCount, setReferralCount] = useState<number>(0);
+    const [copied, setCopied] = useState(false);
 
     // Compute progress based on current mission state
     const completedCount = missions.filter(m => m.completed).length;
@@ -155,16 +156,19 @@ export default function MissionControl() {
                     }
                 }
 
-                // 5. Fetch Referrals Count
+                // 5. Fetch Referrals Count via secure server-side route (avoids RLS issues)
                 try {
-                    const { count, error: refError } = await supabase
-                        .from('user_activity')
-                        .select('*', { count: 'exact', head: true })
-                        .eq('user_id', user.id)
-                        .eq('activity_type', 'REFERRAL_SIGNUP');
-                    
-                    if (!refError && count !== null) setReferralCount(count);
-                } catch(e) { console.error(e) }
+                    const activityRes = await fetch('/api/activity');
+                    if (activityRes.ok) {
+                        const activityData = await activityRes.json();
+                        if (activityData.success && Array.isArray(activityData.activities)) {
+                            const refCount = activityData.activities.filter(
+                                (a: { activity_type: string }) => a.activity_type === 'REFERRAL_SIGNUP'
+                            ).length;
+                            setReferralCount(refCount);
+                        }
+                    }
+                } catch(e) { console.error('[REFERRAL_COUNT_ERROR]', e); }
 
                 setMissions(builtMissions);
             } catch (err) {
@@ -308,35 +312,70 @@ export default function MissionControl() {
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-[40px] rounded-full pointer-events-none" />
 
                                 <div className="relative z-10">
-                                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase tracking-widest mb-4">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                        Member Benefit
-                                    </div>
-                                    <div className="flex justify-between items-center mb-2">
-                                        <h3 className="text-base font-semibold text-white tracking-tight">Refer &amp; Earn</h3>
+                                    <div className="flex items-start justify-between mb-3">
+                                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase tracking-widest">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                            Member Benefit
+                                        </div>
                                         {referralCount > 0 && (
                                             <span className="text-xs font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                                                 {referralCount} Referred
                                             </span>
                                         )}
                                     </div>
-                                    <p className="text-xs text-zinc-500 leading-relaxed mb-5">
-                                        Know someone who needs this? Share your link — every referral that joins strengthens the network and earns you credit.
+
+                                    <h3 className="text-base font-semibold text-white tracking-tight mb-1">Refer &amp; Earn</h3>
+                                    <p className="text-xs text-zinc-500 leading-relaxed mb-4">
+                                        Share your unique link. Every member you bring in earns you network credit.
                                     </p>
-                                    <button
-                                        onClick={() => {
-                                            const url = userId ? `https://brandactivationnetwork.com?ref=${userId}` : "https://brandactivationnetwork.com";
-                                            if (navigator.share) {
-                                                navigator.share({ title: "Brand Activation Network", url });
-                                            } else {
-                                                navigator.clipboard.writeText(url);
-                                                alert("Link copied to clipboard!");
-                                            }
-                                        }}
-                                        className="w-full py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] font-semibold"
-                                    >
-                                        Share My Link →
-                                    </button>
+
+                                    {/* Referral Link Display */}
+                                    {userId && (
+                                        <div className="flex items-center gap-2 mb-4 bg-white/[0.03] border border-white/10 rounded-xl px-3 py-2.5 group/link">
+                                            <p className="flex-1 text-[10px] font-mono text-zinc-400 truncate">
+                                                brandactivationnetwork.com<span className="text-emerald-400">?ref={userId.slice(0, 8)}…</span>
+                                            </p>
+                                            <button
+                                                onClick={async () => {
+                                                    const url = `https://brandactivationnetwork.com?ref=${userId}`;
+                                                    await navigator.clipboard.writeText(url);
+                                                    setCopied(true);
+                                                    setTimeout(() => setCopied(false), 2500);
+                                                }}
+                                                title="Copy referral link"
+                                                className="text-zinc-600 hover:text-emerald-400 transition-colors flex-shrink-0"
+                                            >
+                                                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {/* Action Buttons */}
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={async () => {
+                                                const url = userId ? `https://brandactivationnetwork.com?ref=${userId}` : "https://brandactivationnetwork.com";
+                                                await navigator.clipboard.writeText(url);
+                                                setCopied(true);
+                                                setTimeout(() => setCopied(false), 2500);
+                                            }}
+                                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] font-semibold"
+                                        >
+                                            {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
+                                        </button>
+                                        {typeof navigator !== 'undefined' && 'share' in navigator && (
+                                            <button
+                                                onClick={() => {
+                                                    const url = userId ? `https://brandactivationnetwork.com?ref=${userId}` : "https://brandactivationnetwork.com";
+                                                    navigator.share({ title: "Brand Activation Network", text: "Check out the Brand Activation Network — the exact blueprint to secure funding, close deals, and scale with AI.", url });
+                                                }}
+                                                className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-zinc-500 hover:text-white hover:border-white/20 transition-all duration-300"
+                                                title="Share via apps"
+                                            >
+                                                <Share2 className="w-3.5 h-3.5" />
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 

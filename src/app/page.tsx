@@ -16,6 +16,11 @@ import {
   BarChart2,
   Layers,
   Brain,
+  XCircle,
+  ArrowRight,
+  DollarSign,
+  Target,
+  Settings,
 } from "lucide-react";
 
 export const metadata = {
@@ -138,7 +143,7 @@ export default function Home() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/5 text-xs font-mono tracking-widest text-[var(--primary)] uppercase mb-8 hover:border-[var(--primary)]/50 transition-colors">
           <Zap className="w-3 h-3 fill-current" />
-          The Master Blueprint · Now Available
+          High-Ticket Systems & Capital
         </div>
 
         {/* Logo */}
@@ -154,22 +159,20 @@ export default function Home() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-6 uppercase leading-[0.96]">
-          <span className="text-white">Brand </span>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-6 uppercase leading-[0.96] font-heading">
+          <span className="text-white">Scale </span>
           <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[#e0aaff] via-[#c77dff] to-[#9d4edd]">
-            Activation
+            Without Chaos
             <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/60 to-transparent" />
           </span>
-          <br />
-          <span className="text-white">Network</span>
         </h1>
 
         <p className="text-lg md:text-2xl text-zinc-400 mb-12 max-w-2xl font-light leading-relaxed">
-          Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your life.
+          Brand Activation Network gives founders a clear blueprint to secure business funding, automate sales, and build a scalable business model with high-ticket offers.
         </p>
 
         {/* Unified Singular CTA */}
-        <div className="flex flex-col items-center gap-5 w-full mb-16">
+        <div className="flex flex-col items-center gap-5 w-full mb-12">
           <HeroCTA stripeLink={stripeLink} />
           <div className="flex items-center gap-2 text-sm text-zinc-500 font-medium">
             Not ready? <Link href="/challenge" className="text-[var(--primary)] hover:text-[#c77dff] transition-colors underline underline-offset-4 decoration-[var(--primary)]/30 hover:decoration-[#c77dff]/80">Join the free 5-day challenge</Link>
@@ -206,27 +209,77 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
-      {/* ─── VALUE PROPS ─── */}
+      {/* ─── THE PROBLEM VS THE SOLUTION ─── */}
       <ScrollReveal>
         <section className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {VALUE_PROPS.map((vp) => (
-              <div
-                key={vp.title}
-                className="group relative p-8 rounded-2xl border border-white/[0.07] bg-black/30 backdrop-blur-md hover:border-white/15 hover:-translate-y-1.5 transition-all duration-400 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/0 to-[var(--primary)]/0 group-hover:from-[var(--primary)]/5 transition-all duration-500 pointer-events-none" />
-                <div className="absolute inset-0 border border-white/[0.03] rounded-2xl pointer-events-none" />
-                <div
-                  className="h-12 w-12 rounded-xl mb-6 flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: `${vp.accent}18`, border: `1px solid ${vp.accent}30`, color: vp.accent, boxShadow: `0 0 20px -8px ${vp.accent}` }}
-                >
-                  {vp.icon}
-                </div>
-                <h3 className="text-lg font-semibold mb-3 text-white tracking-tight">{vp.title}</h3>
-                <p className="text-zinc-500 leading-relaxed text-sm">{vp.desc}</p>
+          <div className="text-center mb-14">
+            <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">The Broken Model</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4 font-heading">Why Scaling Feels Like Chaos</h2>
+            <p className="text-zinc-500 max-w-xl mx-auto font-light">
+              Most service businesses and agencies hit a revenue ceiling because their underlying model is fundamentally flawed.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* The Problem */}
+            <ScrollReveal delay={0.1}>
+              <div className="p-10 h-full rounded-2xl border border-red-500/10 bg-red-500/5 backdrop-blur-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-5">
+                <XCircle className="w-32 h-32 text-red-500" />
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-red-400 mb-8 flex items-center gap-3">
+                <XCircle className="w-6 h-6" /> The Old Way
+              </h3>
+              <ul className="space-y-6 text-zinc-400">
+                <li className="flex items-start gap-4">
+                  <span className="text-red-500 mt-0.5 opacity-80">✗</span> 
+                  <span><strong className="text-red-200">Unpredictable Revenue:</strong> Relying heavily on word-of-mouth referrals and low-ticket clients.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-red-500 mt-0.5 opacity-80">✗</span> 
+                  <span><strong className="text-red-200">Capital Starved:</strong> Bootstrapping with personal cash flow and draining your savings.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-red-500 mt-0.5 opacity-80">✗</span> 
+                  <span><strong className="text-red-200">Time Traded for Dollars:</strong> Stuck in 1-on-1 service delivery, effectively buying yourself a job.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-red-500 mt-0.5 opacity-80">✗</span> 
+                  <span><strong className="text-red-200">Manual Sales:</strong> Endless follow-ups, unqualified leads, and broken funnels.</span>
+                </li>
+              </ul>
+              </div>
+            </ScrollReveal>
+            
+            {/* The Solution */}
+            <ScrollReveal delay={0.2}>
+              <div className="p-10 h-full rounded-2xl border border-[var(--primary)]/30 bg-[var(--primary)]/5 backdrop-blur-md relative overflow-hidden shadow-[0_0_40px_-15px_rgba(157,78,221,0.2)]">
+              <div className="absolute top-0 right-0 p-4 opacity-5">
+                <CheckCircle className="w-32 h-32 text-[var(--primary)]" />
+              </div>
+              <h3 className="text-xl font-bold text-[var(--primary)] mb-8 flex items-center gap-3">
+                <CheckCircle className="w-6 h-6" /> The BAN System
+              </h3>
+              <ul className="space-y-6 text-zinc-300">
+                <li className="flex items-start gap-4">
+                  <span className="text-[var(--primary)] mt-0.5">✓</span> 
+                  <span><strong className="text-white">Predictable Pipelines:</strong> Automated, high-ticket sales machines that run 24/7.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-[var(--primary)] mt-0.5">✓</span> 
+                  <span><strong className="text-white">Unlimited Capital:</strong> Securing $50K–$250K in 0% interest business funding to scale rapidly.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-[var(--primary)] mt-0.5">✓</span> 
+                  <span><strong className="text-white">One-to-Many Scale:</strong> Replacing 1-on-1 work with digital products, cohorts, and group models.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-[var(--primary)] mt-0.5">✓</span> 
+                  <span><strong className="text-white">Systems & AI:</strong> Deploying AI agents to handle outreach, operations, and fulfillment.</span>
+                </li>
+              </ul>
+            </div>
+            </ScrollReveal>
           </div>
         </section>
       </ScrollReveal>
@@ -296,6 +349,59 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
+      {/* ─── THE PROCESS (PATH TO ROI) ─── */}
+      <ScrollReveal delay={0.05}>
+        <section className="relative z-10 max-w-5xl mx-auto px-6 py-20 w-full border-t border-white/[0.06]">
+          <div className="text-center mb-16">
+            <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">The Process</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4 font-heading">Your Path to Scale</h2>
+            <p className="text-zinc-500 max-w-xl mx-auto font-light">
+              We don't do theory. This is a sequential, actionable blueprint designed to systematically remove bottlenecks from your business.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            {/* Connecting Line (Desktop) */}
+            <div className="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-transparent via-[var(--primary)]/30 to-transparent -z-10" />
+
+            {[
+              {
+                step: "01",
+                icon: <DollarSign className="w-6 h-6" />,
+                title: "Secure Capital",
+                desc: "Manufacture credit and pull $50K–$250K in 0% interest business funding to eliminate cash flow constraints.",
+              },
+              {
+                step: "02",
+                icon: <Target className="w-6 h-6" />,
+                title: "Build the Funnel",
+                desc: "Construct a high-ticket webinar-to-application sales machine that works 24/7 to qualify premium leads.",
+              },
+              {
+                step: "03",
+                icon: <Settings className="w-6 h-6" />,
+                title: "Automate & Scale",
+                desc: "Deploy AI agents and systemize your fulfillment, transitioning from 1-on-1 labor to a 'One-to-Many' empire.",
+              },
+            ].map((item, i) => (
+              <div key={i} className="relative flex flex-col items-center text-center">
+                <div className="w-24 h-24 rounded-full bg-black border border-white/10 flex items-center justify-center mb-6 relative group shadow-[0_0_30px_-10px_rgba(157,78,221,0.1)]">
+                  <div className="absolute inset-2 rounded-full border border-[var(--primary)]/20 group-hover:border-[var(--primary)]/50 transition-colors" />
+                  <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-[var(--primary)] text-black font-bold flex items-center justify-center text-sm shadow-[0_0_15px_var(--primary)]">
+                    {item.step}
+                  </div>
+                  <div className="text-[var(--primary)] group-hover:scale-110 transition-transform">
+                    {item.icon}
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed max-w-xs">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* ─── TESTIMONIALS ─── */}
       <ScrollReveal delay={0.05}>
         <section id="proof" className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
@@ -326,6 +432,82 @@ export default function Home() {
                     <div className="text-xs text-zinc-500">{t.role}</div>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* ─── FOUNDER CREDIBILITY ─── */}
+      <ScrollReveal delay={0.05}>
+        <section className="relative z-10 max-w-5xl mx-auto px-6 py-20 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 md:p-12 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--primary)]/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="relative z-10 space-y-6">
+              <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] block">The Architect</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white font-heading">
+                Built by founders who actually scaled.
+              </h2>
+              <p className="text-zinc-400 leading-relaxed text-sm md:text-base">
+                Brand Activation Network wasn&apos;t built on theory. It was engineered after spending years in the trenches, trading hours for dollars, and hitting revenue ceilings. 
+                <br /><br />
+                We realized that the difference between a struggling freelancer and a scaling enterprise isn&apos;t hard work—it&apos;s leverage. You need capital to move fast, and systems to reclaim your time. We built the exact blueprint we wish we had on day one.
+              </p>
+              <div className="pt-4 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[#c77dff] p-0.5">
+                  <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-bold text-[var(--primary)]">BAN</div>
+                </div>
+                <div>
+                  <div className="font-bold text-white tracking-tight">The BAN Collective</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-widest font-mono">Founders & Engineers</div>
+                </div>
+              </div>
+            </div>
+            <div className="relative w-full h-full min-h-[300px] rounded-2xl overflow-hidden border border-white/10 bg-black/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#c77dff]/20 to-transparent mix-blend-overlay z-10 pointer-events-none" />
+              {/* Using a placeholder aesthetic graphic for the founder/credibility section since we don't have a specific founder image */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full border border-[var(--primary)]/30 flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full border border-[var(--primary)]/10 animate-[spin_10s_linear_infinite]" />
+                  <div className="absolute w-full h-full rounded-full border-t-2 border-[var(--primary)]/50 animate-[spin_4s_linear_infinite]" />
+                  <Layers className="w-10 h-10 md:w-16 md:h-16 text-[var(--primary)]/80" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* ─── FAQ ─── */}
+      <ScrollReveal delay={0.05}>
+        <section className="relative z-10 max-w-4xl mx-auto px-6 py-16 w-full mb-10">
+          <div className="text-center mb-14">
+            <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">Clarity</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4 font-heading">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                q: "Do I need good personal credit to start?",
+                a: "No. The first module is the Pledge Loan Credit Hack, specifically designed to repair and build a perfect internal credit profile from scratch in 60-90 days."
+              },
+              {
+                q: "Is this only for specific industries?",
+                a: "The blueprint works for any service-based business, agency, coach, or consultant looking to secure capital and productize their services into high-ticket offers."
+              },
+              {
+                q: "How fast can I get business funding?",
+                a: "If your personal credit is already optimized, you can pull $50K+ in 0% interest business capital within 30 days. If you are starting from zero, the timeline is 90-120 days."
+              },
+              {
+                q: "Is the AI Prompt Library included?",
+                a: "Yes. Once accepted into the network, you receive lifetime access to the curriculum, the community, and the ever-updating AI Prompt Library."
+              }
+            ].map((faq, i) => (
+              <div key={i} className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                <h4 className="font-bold text-white mb-3 text-lg leading-snug">{faq.q}</h4>
+                <p className="text-zinc-400 text-sm leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>

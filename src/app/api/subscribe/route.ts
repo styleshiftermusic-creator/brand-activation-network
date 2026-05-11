@@ -37,6 +37,7 @@ const subscribeSchema = z.object({
     email: z.string().email("Invalid email address"),
     name: z.string().optional(),
     phone: z.string().optional(),
+    revenue: z.string().optional(),
     referredBy: z.string().optional().nullable(),
 });
 
@@ -63,37 +64,34 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 });
         }
 
-        const { email, name, phone, referredBy } = parsed.data;
+        const { email, name, phone, revenue, referredBy } = parsed.data;
 
-        // Save Lead to Supabase (Reusing the webinar_registrations table for leads)
+        // Save Lead to Supabase
         const { error } = await supabase.from('webinar_registrations').insert([
             {
                 full_name: name || 'Lead Magnet Download',
                 email: email,
                 phone: phone || null,
-                event_name: 'BAN Waitlist / Download'
+                event_name: 'BAN Waitlist / Download',
+                metadata: { revenue_bracket: revenue || 'unspecified' } // Using JSONB metadata column for flexibility
             }
         ]);
 
         if (error) {
             console.error("Supabase Insertion Error:", error);
-            // Even if Supabase fails (e.g. duplicate email), we can proceed to send the email if desired,
-            // or return error. Usually for lead magnets, we want to deliver it even if they already exist.
         }
 
         console.log("LIVE BACKEND: Successfully registered new lead magnet download:", email);
 
         // Track Referral if present
-        if (referredBy && !error) { // Only track if Supabase insert was successful
+        if (referredBy && !error) {
             const { error: referralError } = await supabase.from('user_activity').insert({
                 user_id: referredBy,
                 activity_type: 'REFERRAL_SIGNUP',
-                metadata: { referred_email: email, referred_name: name || '' }
+                metadata: { referred_email: email, referred_name: name || '', revenue_bracket: revenue || 'unspecified' }
             });
             if (referralError) {
                 console.error("Failed to track referral:", referralError);
-            } else {
-                console.log("Successfully tracked referral for user:", referredBy);
             }
         }
 
@@ -101,8 +99,12 @@ export async function POST(req: Request) {
         if (process.env.RESEND_API_KEY) {
             try {
                 const resend = new Resend(process.env.RESEND_API_KEY);
-
                 const emailPromises = [];
+
+                // Lead Scoring for Subject Line
+                let leadScore = "New Lead";
+                if (revenue === "50k+") leadScore = "🔥 HIGH VALUE LEAD";
+                else if (revenue === "10k-50k") leadScore = "⭐ Qualified Lead";
 
                 // 1. Admin Alert
                 if (process.env.ADMIN_EMAIL) {
@@ -110,11 +112,16 @@ export async function POST(req: Request) {
                         resend.emails.send({
                             from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
                             to: process.env.ADMIN_EMAIL,
-                            subject: '🎉 New Credit Sweep Lead!',
+                            subject: `${leadScore}: ${name || email}`,
                             html: `
-                                <div style="font-family: sans-serif; padding: 20px;">
-                                    <h2>New BAN Credit Sweep Download</h2>
+                                <div style="font-family: sans-serif; padding: 20px; color: #111;">
+                                    <h2 style="color: #6366f1;">New Master Blueprint Applicant</h2>
+                                    <p><strong>Name:</strong> ${name || 'N/A'}</p>
                                     <p><strong>Email:</strong> ${email}</p>
+                                    <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+                                    <p><strong>Monthly Revenue:</strong> <span style="background: #f3f4f6; padding: 2px 8px; border-radius: 4px; font-weight: bold;">${revenue || 'Not Provided'}</span></p>
+                                    <hr style="border: 1px solid #eee; margin: 20px 0;" />
+                                    <p style="font-size: 12px; color: #666;">This lead has been saved to your Supabase <code>webinar_registrations</code> table.</p>
                                 </div>
                             `
                         })

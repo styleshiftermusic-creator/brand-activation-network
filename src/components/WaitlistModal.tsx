@@ -15,6 +15,7 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [revenue, setRevenue] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -34,6 +35,7 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
         setName("");
         setEmail("");
         setPhone("");
+        setRevenue("");
         setStatus("idle");
         setErrorMsg("");
       }, 300);
@@ -69,6 +71,7 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
           name, 
           email, 
           phone,
+          revenue,
           referredBy: typeof window !== "undefined" ? localStorage.getItem("ban_ref") : null 
         }),
       });
@@ -124,7 +127,7 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-mono uppercase tracking-widest mb-5">
               <Zap className="w-3 h-3 fill-current" />
-              {isBlueprint ? "Free Blueprint" : "Waitlist Open"}
+              {isBlueprint ? "Free Blueprint" : "Application Active"}
             </div>
 
             {status === "success" ? (
@@ -148,17 +151,17 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
               </div>
             ) : (
               <>
-                <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-3 leading-tight">
+                <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-3 leading-tight font-heading">
                   {isBlueprint ? (
                     <>Get the <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-300">Free Blueprint</span></>
                   ) : (
-                    <>Enrollment Opens{" "}<span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e0aaff] to-[#9d4edd]">Soon.</span></>
+                    <>Apply For <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e0aaff] to-[#9d4edd]">Network Access.</span></>
                   )}
                 </h2>
                 <p className="text-zinc-400 text-sm leading-relaxed mb-7">
                   {isBlueprint
                     ? <>Enter your info below and we&apos;ll send you the <strong className="text-zinc-300">BAN Credit Sweep Blueprint</strong> — the exact scripts our members use to remove hard inquiries in 24 hours.</>
-                    : <>We&apos;re finalizing the launch. Join the priority waitlist and we&apos;ll notify you the moment the doors open — plus you&apos;ll receive the <strong className="text-zinc-300">BAN Credit Sweep Blueprint</strong> for free.</>
+                    : <>The Master Blueprint is restricted to serious founders. Submit your application below. If approved, you will receive an immediate invitation link.</>
                   }
                 </p>
 
@@ -190,16 +193,28 @@ export function WaitlistModal({ isOpen, onClose, variant = "waitlist" }: Waitlis
                     disabled={status === "loading"}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[var(--primary)]/60 focus:bg-white/8 transition-all font-medium disabled:opacity-50 text-sm"
                   />
+                  <select
+                    required
+                    value={revenue}
+                    onChange={(e) => setRevenue(e.target.value)}
+                    disabled={status === "loading"}
+                    className={`w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[var(--primary)]/60 focus:bg-white/8 transition-all font-medium disabled:opacity-50 appearance-none ${revenue ? "text-white" : "text-zinc-600"}`}
+                  >
+                    <option value="" disabled>Current Monthly Revenue</option>
+                    <option value="0-10k" className="text-black">$0 - $10,000 / mo</option>
+                    <option value="10k-50k" className="text-black">$10,000 - $50,000 / mo</option>
+                    <option value="50k+" className="text-black">$50,000+ / mo</option>
+                  </select>
                   <button
                     type="submit"
-                    disabled={status === "loading" || !name || !email}
-                    className="w-full py-4 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold rounded-xl transition-all shadow-[0_0_30px_-8px_rgba(157,78,221,0.6)] hover:shadow-[0_0_50px_-8px_rgba(157,78,221,0.9)] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={status === "loading" || !name || !email || !revenue}
+                    className="w-full py-4 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold rounded-xl transition-all shadow-[0_0_30px_-8px_rgba(157,78,221,0.6)] hover:shadow-[0_0_50px_-8px_rgba(157,78,221,0.9)] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                   >
                     {status === "loading" ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
                     ) : (
                       <>
-                        {isBlueprint ? "Send Me the Blueprint" : "Reserve My Spot"} <ArrowRight className="w-4 h-4" />
+                        {isBlueprint ? "Send Me the Blueprint" : "Submit Application"} <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
