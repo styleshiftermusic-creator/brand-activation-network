@@ -1,21 +1,52 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 
-export function ScrollReveal({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
+export function ScrollReveal({
+    children,
+    delay = 0,
+}: {
+    children: React.ReactNode;
+    delay?: number;
+}) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+
+        // If IntersectionObserver isn't available, just show everything
+        if (typeof IntersectionObserver === "undefined") {
+            setIsVisible(true);
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.unobserve(el);
+                }
+            },
+            { rootMargin: "-60px" }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1], // easeOutExpo for a premium feel
-                delay: delay
-            }}
+        <div
+            ref={ref}
             className="w-full"
+            style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? "translateY(0)" : "translateY(30px)",
+                transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+            }}
         >
             {children}
-        </motion.div>
+        </div>
     );
 }
