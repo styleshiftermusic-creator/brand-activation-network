@@ -3,21 +3,16 @@ import Image from "next/image";
 import Script from "next/script";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SiteNav } from "@/components/SiteNav";
-import { LeadMagnetForm } from "@/components/LeadMagnetForm";
-import { HeroCTA, ModuleCTA, FinalCTA } from "@/components/WaitlistCTA";
-import { SocialProofToast } from "@/components/SocialProofToast";
+import { HeroCTA, FinalCTA } from "@/components/WaitlistCTA";
+
 import {
   Zap,
   TrendingUp,
-  Users,
   ShieldCheck,
   CheckCircle,
   Star,
   BarChart2,
-  Layers,
-  Brain,
   XCircle,
-  ArrowRight,
   DollarSign,
   Target,
   Settings,
@@ -45,27 +40,6 @@ const STATS = [
   { value: "$0", label: "Ad Spend Required" },
   { value: "100%", label: "Automated Systems" },
   { value: "1", label: "Private Network" },
-];
-
-const VALUE_PROPS = [
-  {
-    icon: <Layers className="w-6 h-6" />,
-    title: "Credit & Capital Hacks",
-    desc: "Learn the Pledge Loan Credit Hack and exactly how to transition into pulling immediate Business Funding.",
-    accent: "var(--primary)",
-  },
-  {
-    icon: <Users className="w-6 h-6" />,
-    title: "Audience & Leverage",
-    desc: "Build unparalleled authority. Master the high-ticket sales philosophy to close massive deals organically.",
-    accent: "#10b981",
-  },
-  {
-    icon: <Brain className="w-6 h-6" />,
-    title: "Scale 'One-to-Many'",
-    desc: "Stop trading time for money. Build automated systems and environments that collapse decades into days.",
-    accent: "#f59e0b",
-  },
 ];
 
 const MODULES = [
@@ -284,13 +258,6 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
-      {/* ─── LEAD MAGNET ─── */}
-      <ScrollReveal delay={0.05}>
-        <div className="relative z-10 max-w-5xl mx-auto w-full">
-          <LeadMagnetForm />
-        </div>
-      </ScrollReveal>
-
       {/* ─── MASTER BLUEPRINT ─── */}
       <ScrollReveal delay={0.05}>
         <section id="modules" className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
@@ -335,16 +302,6 @@ export default function Home() {
               <h4 className="font-semibold text-amber-300 mb-2 tracking-tight leading-snug">AI Agent Prompt Library</h4>
               <p className="text-xs text-zinc-500 leading-relaxed">200+ battle-tested prompts to automate your content, outreach and fulfillment pipeline.</p>
             </div>
-          </div>
-
-          <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <ModuleCTA stripeLink={stripeLink} />
-            <Link
-              href="/challenge"
-              className="flex items-center gap-2 px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300 rounded-xl font-medium transition-all duration-300 hover:-translate-y-1"
-            >
-              Try the Free Challenge First →
-            </Link>
           </div>
         </section>
       </ScrollReveal>
@@ -440,38 +397,35 @@ export default function Home() {
 
       {/* ─── FOUNDER CREDIBILITY ─── */}
       <ScrollReveal delay={0.05}>
-        <section className="relative z-10 max-w-5xl mx-auto px-6 py-20 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 md:p-12 overflow-hidden relative">
+        <section className="relative z-10 max-w-4xl mx-auto px-6 py-20 w-full">
+          <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 md:p-14 overflow-hidden relative">
             <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--primary)]/5 rounded-full blur-[100px] pointer-events-none" />
-            <div className="relative z-10 space-y-6">
-              <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] block">The Architect</span>
+            <div className="relative z-10 space-y-8 text-center max-w-2xl mx-auto">
+              <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] block">Why This Exists</span>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white font-heading">
-                Built by founders who actually scaled.
+                Built from the trenches, not a textbook.
               </h2>
-              <p className="text-zinc-400 leading-relaxed text-sm md:text-base">
-                Brand Activation Network wasn&apos;t built on theory. It was engineered after spending years in the trenches, trading hours for dollars, and hitting revenue ceilings. 
-                <br /><br />
-                We realized that the difference between a struggling freelancer and a scaling enterprise isn&apos;t hard work—it&apos;s leverage. You need capital to move fast, and systems to reclaim your time. We built the exact blueprint we wish we had on day one.
-              </p>
-              <div className="pt-4 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[#c77dff] p-0.5">
-                  <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-bold text-[var(--primary)]">BAN</div>
-                </div>
-                <div>
-                  <div className="font-bold text-white tracking-tight">The BAN Collective</div>
-                  <div className="text-xs text-zinc-500 uppercase tracking-widest font-mono">Founders & Engineers</div>
-                </div>
+              <div className="space-y-4 text-zinc-400 leading-relaxed text-sm md:text-base text-left">
+                <p>
+                  Brand Activation Network was born out of frustration. We spent years trading hours for dollars, hitting revenue ceilings, and watching competitors scale past us — not because they worked harder, but because they had better systems and access to capital.
+                </p>
+                <p>
+                  So we reverse-engineered the entire playbook: how to manufacture credit, pull six figures in 0% business funding, build high-ticket funnels that close while you sleep, and replace yourself with AI-powered operations. Then we packaged the whole thing into 7 modules so you don&apos;t have to spend years figuring it out.
+                </p>
               </div>
-            </div>
-            <div className="relative w-full h-full min-h-[300px] rounded-2xl overflow-hidden border border-white/10 bg-black/50 shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#c77dff]/20 to-transparent mix-blend-overlay z-10 pointer-events-none" />
-              {/* Using a placeholder aesthetic graphic for the founder/credibility section since we don't have a specific founder image */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full border border-[var(--primary)]/30 flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border border-[var(--primary)]/10 animate-[spin_10s_linear_infinite]" />
-                  <div className="absolute w-full h-full rounded-full border-t-2 border-[var(--primary)]/50 animate-[spin_4s_linear_infinite]" />
-                  <Layers className="w-10 h-10 md:w-16 md:h-16 text-[var(--primary)]/80" />
-                </div>
+
+              {/* Proof points */}
+              <div className="grid grid-cols-3 gap-4 pt-4">
+                {[
+                  { value: "7", label: "Modules" },
+                  { value: "$250K+", label: "Funding Blueprint" },
+                  { value: "200+", label: "AI Prompts" },
+                ].map((stat) => (
+                  <div key={stat.label} className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
+                    <div className="text-xl md:text-2xl font-extrabold text-[var(--primary)] tracking-tighter">{stat.value}</div>
+                    <div className="text-[10px] md:text-xs text-zinc-500 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -553,8 +507,7 @@ export default function Home() {
 
 
 
-      {/* ─── SOCIAL PROOF NOTIFICATIONS ─── */}
-      <SocialProofToast initialDelay={8000} interval={25000} displayDuration={6000} />
+      {/* ─── SOCIAL PROOF NOTIFICATIONS ─── removed: hardcoded fake activity hurts trust */}
     </div>
   );
 }
