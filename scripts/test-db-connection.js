@@ -45,7 +45,9 @@ async function testConnection() {
         'webinar_registrations',
         'course_progress',
         'quiz_scores',
-        'user_activity'
+        'user_activity',
+        'profiles',
+        'course_modules'
     ];
 
     for (const table of tables) {

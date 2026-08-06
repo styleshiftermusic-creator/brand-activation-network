@@ -11,6 +11,7 @@ export default function OnboardingPage() {
     const [step, setStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [user, setUser] = useState<{ id: string, email: string, name: string } | null>(null);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const [formData, setFormData] = useState({
         revenue_bracket: "",
@@ -38,6 +39,7 @@ export default function OnboardingPage() {
     const handleSubmit = async () => {
         if (!user) return;
         setIsLoading(true);
+        setErrorMsg("");
 
         try {
             const res = await fetch("/api/onboarding", {
@@ -55,11 +57,13 @@ export default function OnboardingPage() {
                 router.push("/dashboard/master-course");
                 router.refresh();
             } else {
-                console.error("Onboarding failed");
+                const errData = await res.json().catch(() => ({ error: "Onboarding failed on the server." }));
+                setErrorMsg(`[ONBOARDING_ERROR] ${errData.error || "Failed to process onboarding."}`);
                 setIsLoading(false);
             }
         } catch (error) {
             console.error("Error during onboarding:", error);
+            setErrorMsg(`[ONBOARDING_ERROR] ${error instanceof Error ? error.message : "Connection failed."}`);
             setIsLoading(false);
         }
     };
@@ -190,6 +194,12 @@ export default function OnboardingPage() {
                                     </button>
                                 ))}
                             </div>
+                        </div>
+                    )}
+
+                    {errorMsg && (
+                        <div className="mt-6 text-xs font-mono text-red-500 border border-red-500/20 bg-red-500/10 p-3.5 rounded-xl text-center">
+                            {errorMsg}
                         </div>
                     )}
 
