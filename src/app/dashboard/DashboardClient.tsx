@@ -39,8 +39,8 @@ export default function DashboardClient() {
     const [copied, setCopied] = useState(false);
 
     const completedCount = missions.filter(m => m.completed).length;
-    const activeMission = missions.find(m => !m.completed && !m.locked) || missions[0];
-    const progressPercentage = Math.round((completedCount / missions.length) * 100);
+    const activeMission = missions.find(m => !m.completed && !m.locked) || missions[0] || { id: "M-01", status: "ACTIVE", title: "The Pledge Loan Hack", category: "[FINANCE]", time: "00:45:00", locked: false, completed: false };
+    const progressPercentage = missions.length > 0 ? Math.round((completedCount / missions.length) * 100) : 0;
 
     useEffect(() => {
         const fetchTelemetry = async () => {
