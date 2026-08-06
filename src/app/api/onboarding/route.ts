@@ -1,18 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { createSupabaseServerClient } from "@/lib/supabase-server";
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-        auth: {
-            autoRefreshToken: false,
-            persistSession: false,
-        },
-    }
-);
 
 export async function POST(req: Request) {
     try {
@@ -50,7 +38,7 @@ export async function POST(req: Request) {
             try {
                 const resend = new Resend(process.env.RESEND_API_KEY);
                 
-                await resend.emails.send({
+                const result = await resend.emails.send({
                     from: 'Brand Activation Network <onboarding@brandactivationnetwork.com>',
                     to: userEmail,
                     subject: 'Welcome to the Private Network. Your Next Steps.',
@@ -77,8 +65,14 @@ export async function POST(req: Request) {
                     `
                 });
                 console.log('VIP Welcome email sent to:', userEmail);
-            } catch (emailError) {
-                console.error('Failed to send welcome email:', emailError);
+                if (result.error) {
+                    console.error('Resend returned error:', result.error.name, result.error.message);
+                } else {
+                    console.log('Resend email id:', result.data?.id);
+                }
+            } catch (emailError: unknown) {
+                const msg = emailError instanceof Error ? emailError.message : String(emailError);
+                console.error('Failed to send welcome email:', msg, emailError);
             }
         }
 

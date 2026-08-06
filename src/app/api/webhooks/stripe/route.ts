@@ -102,10 +102,18 @@ export async function POST(req: Request) {
                         );
                     }
 
-                    await Promise.all(emailPromises);
+                    const results = await Promise.all(emailPromises);
                     console.log("Purchase emails sent successfully (Welcome + Admin Alert).");
-                } catch (emailErr) {
-                    console.error("Failed to send purchase emails:", emailErr);
+                    results.forEach((r, i) => {
+                        if (r.error) {
+                            console.error(`Resend email ${i} failed:`, r.error.name, r.error.message);
+                        } else {
+                            console.log(`Resend email ${i} sent, id:`, r.data?.id);
+                        }
+                    });
+                } catch (emailErr: unknown) {
+                    const msg = emailErr instanceof Error ? emailErr.message : String(emailErr);
+                    console.error("Failed to send purchase emails:", msg, emailErr);
                 }
             } else {
                 console.warn("RESEND_API_KEY missing. Emails were not sent.");

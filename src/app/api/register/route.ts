@@ -7,16 +7,18 @@ import { Redis } from '@upstash/redis';
 
 export const dynamic = "force-dynamic";
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-        auth: {
-            autoRefreshToken: false,
-            persistSession: false,
-        },
-    }
-);
+function getSupabaseAdmin() {
+    return createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false,
+            },
+        }
+    );
+}
 
 // Rate limiting setup (5 requests per 15 minutes per IP)
 const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
@@ -36,6 +38,8 @@ const ratelimit = redis ? new Ratelimit({
 
 export async function POST(req: Request) {
     try {
+        const supabase = getSupabaseAdmin();
+
         // IP Rate Limiting (degrades gracefully if Redis is unavailable)
         const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
         if (ratelimit) {
@@ -171,10 +175,18 @@ export async function POST(req: Request) {
                     })
                 );
 
-                await Promise.all(emailPromises);
+                const results = await Promise.all(emailPromises);
                 console.log("Welcome email and admin alert dispatched successfully.");
-            } catch (emailErr) {
-                console.error("Failed to send welcome email / alert:", emailErr);
+                results.forEach((r, i) => {
+                    if (r.error) {
+                        console.error(`Resend email ${i} failed:`, r.error.name, r.error.message);
+                    } else {
+                        console.log(`Resend email ${i} sent, id:`, r.data?.id);
+                    }
+                });
+            } catch (emailErr: unknown) {
+                const msg = emailErr instanceof Error ? emailErr.message : String(emailErr);
+                console.error("Failed to send welcome email / alert:", msg, emailErr);
             }
         } else {
             console.log("Resend API Key not configured, skipping email dispatch.");
