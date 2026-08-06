@@ -123,9 +123,9 @@ export default function ChallengeConfirmation() {
                 </div>
                 <div className="flex items-center gap-4">
                     <span className="text-xs font-mono text-zinc-500 hidden md:block">Step 2 of 3 · Special Offer</span>
-                    <button className="text-xs px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-zinc-300">
+                    <a href="mailto:support@brandactivationnetwork.com" className="text-xs px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-zinc-300">
                         Support
-                    </button>
+                    </a>
                 </div>
             </header>
 
@@ -134,14 +134,10 @@ export default function ChallengeConfirmation() {
                 {/* Headline Section */}
                 <div className="text-center max-w-2xl">
                     <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4">
-                        Unlock The{" "}
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#c77dff] via-[#9d4edd] to-[#7b2cbf]">
-                            &quot;Brand Activation&quot;
-                        </span>{" "}
-                        System
+                        <span className="text-emerald-400">Wait!</span> Upgrade to VIP &amp; Skip The Line
                     </h1>
                     <p className="text-zinc-400 text-base md:text-lg leading-relaxed">
-                        Watch this short video to see how to 10x your activation speed with our proprietary framework.
+                        Watch this short video to see how to instantly unlock <strong>Lifetime Access</strong> to the complete Master Blueprint system today for just $497.
                     </p>
                 </div>
 
@@ -217,12 +213,12 @@ export default function ChallengeConfirmation() {
 
                     <div className="relative z-10 flex flex-col items-center gap-5">
                         <div className="flex flex-col items-center gap-1">
-                            <span className="text-xs font-mono tracking-[0.2em] text-zinc-500 uppercase mb-1">One-Time Offer</span>
+                            <span className="text-xs font-mono tracking-[0.2em] text-emerald-500 uppercase mb-1">One-Time Offer ($497)</span>
                             <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
-                                Limited Time Opportunity
+                                VIP Lifetime Access
                             </h2>
                             <p className="text-zinc-400 text-sm max-w-sm leading-relaxed mt-2">
-                                This upgrade will never be offered again at this price. Join the elite top 1% of the Brand Activation Network today.
+                                Skip the 3-day wait. Get instant, lifetime access to the entire Brand Activation Network and all future updates.
                             </p>
                         </div>
 

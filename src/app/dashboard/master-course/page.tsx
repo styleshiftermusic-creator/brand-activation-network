@@ -269,6 +269,13 @@ export default function MasterCoursePage() {
                 user_id: user.id, module_id: mod.id, status: 'COMPLETED'
             }, { onConflict: 'user_id,module_id' });
 
+            // Grant Gamification Credits
+            await fetch("/api/gamification/reward", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId: user.id, type: "MODULE_COMPLETE" })
+            }).catch(e => console.error("Reward error:", e));
+
             setModules(prev => {
                 const idx = prev.findIndex(m => m.id === mod.id);
                 return prev.map((m, i) => {
@@ -285,6 +292,21 @@ export default function MasterCoursePage() {
             console.error("Failed to save progress:", err);
         }
     }, [fetchProgress, logActivity]);
+
+    const handleClaimCertificate = async () => {
+        setIsCertOpen(true);
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+            await fetch("/api/gamification/reward", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId: user.id, type: "COURSE_COMPLETE" })
+            }).catch(e => console.error(e));
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     // Run once after content loads — stable, no loop risk
     useEffect(() => {
@@ -765,7 +787,7 @@ export default function MasterCoursePage() {
 
                         {modules.filter(m => m.status === 'COMPLETED').length === modules.length && modules.length > 0 && (
                             <div 
-                                onClick={() => setIsCertOpen(true)}
+                                onClick={handleClaimCertificate}
                                 className="mb-6 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-emerald-500/20 transition-all shadow-[0_0_20px_rgba(16,185,129,0.1)]"
                             >
                                 <CheckCircle2 className="w-8 h-8 text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />

@@ -21,9 +21,11 @@ export function SiteNav() {
   }, []);
 
   // Close mobile menu on route change
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setIsOpen(false);
-  }, [pathname]);
+  }
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -61,9 +63,7 @@ export function SiteNav() {
             <Link href="/results" className="hover:text-white transition-colors">
               Results
             </Link>
-            <Link href="/challenge" className="hover:text-white transition-colors">
-              Challenge
-            </Link>
+
           </div>
 
           {/* Right: Desktop Member Login */}
@@ -106,13 +106,6 @@ export function SiteNav() {
           onClick={() => setIsOpen(false)}
         >
           Results
-        </Link>
-        <Link
-          href="/challenge"
-          className="text-2xl font-medium tracking-tight text-zinc-300 hover:text-white transition-colors"
-          onClick={() => setIsOpen(false)}
-        >
-          Challenge
         </Link>
         <div className="w-16 h-px bg-white/10 my-4" />
         <Link

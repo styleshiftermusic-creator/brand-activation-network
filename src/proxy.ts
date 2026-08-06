@@ -6,9 +6,16 @@ export async function proxy(request: NextRequest) {
         request,
     });
 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+        return supabaseResponse;
+    }
+
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        supabaseAnonKey,
         {
             cookies: {
                 getAll() {
@@ -36,21 +43,46 @@ export async function proxy(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
-    // Protect /audio/* and /blueprints/* files — block with 401 if not authenticated
+    // 1. Protect /audio/* and /blueprints/* files — block with 401 if not authenticated
     // These are the actual course assets that must never leak
     if ((pathname.startsWith("/audio") || pathname.startsWith("/blueprints")) && !user) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // Protect /api/course-content — block with 401 if not authenticated
+    // 2. Protect /api/course-content — block with 401 if not authenticated
     // Study guides + quiz answers must stay server-side only
     if (pathname.startsWith("/api/course-content") && !user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // NOTE: /dashboard/* pages are NOT blocked here.
-    // The ProtectedRoute component handles showing the AuthScreen (login form)
-    // for unauthenticated users. Middleware only protects raw data access.
+    // 3. Protect /dashboard/* UI pages — redirect to /login if not authenticated
+    if (pathname.startsWith("/dashboard") && !user) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        url.searchParams.set("next", pathname);
+        return NextResponse.redirect(url);
+    }
+
+    // 4. Protect /admin/* UI pages — restrict to admin users
+    if (pathname.startsWith("/admin")) {
+        if (!user) {
+            const url = request.nextUrl.clone();
+            url.pathname = "/login";
+            return NextResponse.redirect(url);
+        }
+
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+        if (profile?.role !== "admin") {
+            const url = request.nextUrl.clone();
+            url.pathname = "/dashboard";
+            return NextResponse.redirect(url);
+        }
+    }
 
     return supabaseResponse;
 }
@@ -60,5 +92,7 @@ export const config = {
         "/audio/:path*",
         "/blueprints/:path*",
         "/api/course-content/:path*",
+        "/dashboard/:path*",
+        "/admin/:path*",
     ],
 };

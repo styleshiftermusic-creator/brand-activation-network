@@ -32,11 +32,25 @@ export function AuthScreen() {
             }
         }, 400);
 
-        // Check if we arrived via a password reset link
+        // Check if we arrived via a password reset link or with an error
         const hash = window.location.hash;
-        if (hash && hash.includes("type=recovery")) {
-            setIsUpdatingPassword(true);
-            setAuthMessage("RECOVERY TOKEN VERIFIED. ENTER NEW CLEARANCE LEVEL.");
+        if (hash) {
+            if (hash.includes("type=recovery")) {
+                setIsUpdatingPassword(true);
+                setAuthMessage("RECOVERY TOKEN VERIFIED. ENTER NEW CLEARANCE LEVEL.");
+            } else if (hash.includes("error=")) {
+                // Parse error details from the hash
+                const params = new URLSearchParams(hash.substring(1)); // strip leading '#'
+                const errorDesc = params.get("error_description");
+                if (errorDesc) {
+                    setAuthError(`[AUTH_ERROR] ${decodeURIComponent(errorDesc).replace(/\+/g, " ")}`);
+                } else {
+                    const errorCode = params.get("error_code");
+                    if (errorCode) {
+                        setAuthError(`[AUTH_ERROR] ${errorCode}`);
+                    }
+                }
+            }
         }
 
         return () => clearInterval(interval);

@@ -1,3 +1,5 @@
+"use client";
+
 import { Loader2, Activity } from "lucide-react";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 

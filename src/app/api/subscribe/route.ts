@@ -79,6 +79,7 @@ export async function POST(req: Request) {
 
         if (error) {
             console.error("Supabase Insertion Error:", error);
+            return NextResponse.json({ success: false, error: "Registration failed. Please try again." }, { status: 500 });
         }
 
         console.log("LIVE BACKEND: Successfully registered new lead magnet download:", email);

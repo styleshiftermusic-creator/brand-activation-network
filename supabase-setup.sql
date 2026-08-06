@@ -151,3 +151,31 @@ USING (auth.uid() = user_id);
 
 CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON public.user_activity(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_activity_type ON public.user_activity(activity_type);
+
+-- =============================================================================
+-- 6. Create the course_modules table for dynamic curriculum
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.course_modules (
+    id text PRIMARY KEY,
+    title text NOT NULL,
+    category text,
+    audio_src text NOT NULL,
+    visuals jsonb DEFAULT '[]'::jsonb,
+    study_guide text NOT NULL,
+    resources jsonb DEFAULT '[]'::jsonb,
+    quiz jsonb DEFAULT '[]'::jsonb,
+    order_index integer NOT NULL,
+    created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.course_modules ENABLE ROW LEVEL SECURITY;
+
+-- Allow authenticated users to view modules
+CREATE POLICY "Authenticated users can read course_modules"
+ON public.course_modules
+FOR SELECT TO authenticated
+USING (true);
+
+-- Allow admins to insert/update (via service role or if we add an admin policy later)
+-- For now, Service Role overrides RLS, so the seed script will work.

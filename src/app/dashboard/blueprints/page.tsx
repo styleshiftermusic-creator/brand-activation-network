@@ -14,7 +14,7 @@ const BLUEPRINTS = [
         category: "Finance",
         icon: <FileSpreadsheet className="w-5 h-5" />,
         color: "emerald",
-        downloadUrl: "/blueprints/pledge-loan-calculator.md",
+        downloadUrl: "/api/download/blueprint/pledge-loan-calculator.md",
         fileName: "Pledge-Loan-Calculator.md",
         howToUse: [
             "Download the spreadsheet file and open it in Google Sheets or Excel.",
@@ -31,7 +31,7 @@ const BLUEPRINTS = [
         category: "Finance",
         icon: <FileText className="w-5 h-5" />,
         color: "emerald",
-        downloadUrl: "/blueprints/business-funding-checklist.md",
+        downloadUrl: "/api/download/blueprint/business-funding-checklist.md",
         fileName: "Business-Funding-Checklist.md",
         howToUse: [
             "Download and print this PDF (or keep it on your tablet).",
@@ -48,7 +48,7 @@ const BLUEPRINTS = [
         category: "Finance",
         icon: <Briefcase className="w-5 h-5" />,
         color: "blue",
-        downloadUrl: "/blueprints/investment-blueprint-template.md",
+        downloadUrl: "/api/download/blueprint/investment-blueprint-template.md",
         fileName: "Investment-Blueprint-Template.md",
         howToUse: [
             "Download the document to access the private Notion template link.",
@@ -65,7 +65,7 @@ const BLUEPRINTS = [
         category: "Marketing",
         icon: <Target className="w-5 h-5" />,
         color: "amber",
-        downloadUrl: "/blueprints/opa-marketing-playbook.md",
+        downloadUrl: "/api/download/blueprint/opa-marketing-playbook.md",
         fileName: "OPA-Marketing-Playbook.md",
         howToUse: [
             "Duplicate the Notion workspace into your account.",
@@ -82,7 +82,7 @@ const BLUEPRINTS = [
         category: "Sales",
         icon: <Presentation className="w-5 h-5" />,
         color: "purple",
-        downloadUrl: "/blueprints/high-ticket-sales-scripts.md",
+        downloadUrl: "/api/download/blueprint/high-ticket-sales-scripts.md",
         fileName: "High-Ticket-Sales-Scripts.md",
         howToUse: [
             "Download the PDF and keep it open during your sales calls.",
@@ -99,7 +99,7 @@ const BLUEPRINTS = [
         category: "AI Systems",
         icon: <Bot className="w-5 h-5" />,
         color: "indigo",
-        downloadUrl: "/blueprints/ai-agent-prompt-library.json",
+        downloadUrl: "/api/download/blueprint/ai-agent-prompt-library.json",
         fileName: "AI-Agent-Prompt-Library.json",
         howToUse: [
             "Download the Prompt Library file.",
@@ -241,7 +241,7 @@ export default function BlueprintsPage() {
                                     </button>
                                     <div className="text-[10px] sm:text-xs font-mono text-zinc-500 uppercase flex gap-6 sm:gap-4 tracking-widest">
                                         <span>7 Assets</span>
-                                        <span>Format: ZIP</span>
+                                        <span>Format: 7 Individual Files</span>
                                     </div>
                                 </div>
 

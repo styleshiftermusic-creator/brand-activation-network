@@ -188,7 +188,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <span><span className="text-white font-semibold flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 fill-current text-[var(--primary)] text-emerald-400" />Private Network</span> Access Open</span>
+          <span><span className="text-white font-semibold flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 fill-current text-emerald-400" />Private Network</span> Access Open</span>
           <span className="hidden md:flex items-center gap-1 text-amber-400">
             {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
           </span>
@@ -356,7 +356,7 @@ export default function Home() {
             <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">The Process</span>
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4 font-heading">Your Path to Scale</h2>
             <p className="text-zinc-500 max-w-xl mx-auto font-light">
-              We don't do theory. This is a sequential, actionable blueprint designed to systematically remove bottlenecks from your business.
+              We don&apos;t do theory. This is a sequential, actionable blueprint designed to systematically remove bottlenecks from your business.
             </p>
           </div>
 
@@ -480,7 +480,7 @@ export default function Home() {
 
       {/* ─── FAQ ─── */}
       <ScrollReveal delay={0.05}>
-        <section className="relative z-10 max-w-4xl mx-auto px-6 py-16 w-full mb-10">
+        <section id="faq" className="relative z-10 max-w-4xl mx-auto px-6 py-16 w-full mb-10">
           <div className="text-center mb-14">
             <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">Clarity</span>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4 font-heading">Frequently Asked Questions</h2>
@@ -516,7 +516,7 @@ export default function Home() {
 
       {/* ─── FINAL CTA ─── */}
       <ScrollReveal delay={0.05}>
-        <section className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
+        <section id="apply" className="relative z-10 max-w-5xl mx-auto px-6 py-16 w-full">
           <div className="relative rounded-2xl overflow-hidden border border-emerald-500/20 bg-black/50 backdrop-blur-xl p-12 md:p-20 text-center">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 via-transparent to-[var(--primary)]/8 pointer-events-none" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-emerald-500/8 rounded-full blur-[100px] pointer-events-none" />
@@ -551,22 +551,7 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
-      {/* ─── FOOTER ─── */}
-      <footer className="relative z-10 border-t border-white/[0.06] mt-8">
-        <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="BAN" width={100} height={32} className="h-7 w-auto opacity-60 hover:opacity-100 transition-opacity" />
-          </div>
-          <div className="flex items-center gap-6 text-xs text-zinc-600">
-            <Link href="/challenge" className="hover:text-zinc-400 transition-colors">Challenge</Link>
-            <Link href="/dashboard" className="hover:text-zinc-400 transition-colors">Dashboard</Link>
-            <a href="mailto:support@brandactivationnetwork.com" className="hover:text-zinc-400 transition-colors">Support</a>
-          </div>
-          <div className="text-xs text-zinc-700 font-mono">
-            © {new Date().getFullYear()} Brand Activation Network · Architecture Mode: Active
-          </div>
-        </div>
-      </footer>
+
 
       {/* ─── SOCIAL PROOF NOTIFICATIONS ─── */}
       <SocialProofToast initialDelay={8000} interval={25000} displayDuration={6000} />

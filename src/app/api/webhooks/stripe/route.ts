@@ -66,7 +66,8 @@ export async function POST(req: Request) {
 
             if (error) {
                 console.error("Error provisioning user via Supabase Admin:", error);
-                return NextResponse.json({ success: false, message: 'Provider Error', details: error.message }, { status: 500 });
+                // Acknowledge event receipt to Stripe even if provisioning fails to prevent retry loop
+                return NextResponse.json({ received: true, error: "Provider Error", details: error.message });
             } else {
                 console.log("Successfully provisioned and sent invite to:", customerEmail);
             }

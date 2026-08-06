@@ -59,22 +59,29 @@ export async function POST(req: Request) {
 
         const { name, email, phone, turnstileToken, referredBy } = parsed.data;
 
-        // Turnstile Token Verification (skip if widget failed on frontend)
+        const isProd = process.env.NODE_ENV === "production";
         const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-        if (turnstileSecret && turnstileSecret !== "" && turnstileToken !== "TURNSTILE_BYPASSED") {
-            const formData = new URLSearchParams();
-            formData.append('secret', turnstileSecret);
-            formData.append('response', turnstileToken || "");
-            if (ip) formData.append('remoteip', ip);
+        
+        if (turnstileSecret && turnstileSecret !== "") {
+            if (isProd && (!turnstileToken || turnstileToken === "TURNSTILE_BYPASSED")) {
+                return NextResponse.json({ success: false, error: "Bot protection token is required." }, { status: 400 });
+            }
+            
+            if (turnstileToken !== "TURNSTILE_BYPASSED") {
+                const formData = new URLSearchParams();
+                formData.append('secret', turnstileSecret);
+                formData.append('response', turnstileToken || "");
+                if (ip) formData.append('remoteip', ip);
 
-            const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-                body: formData,
-                method: 'POST',
-            });
-            const outcome = await result.json();
-            if (!outcome.success) {
-                console.error('Turnstile verification failed:', outcome);
-                return NextResponse.json({ success: false, error: "Bot protection verification failed." }, { status: 403 });
+                const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+                    body: formData,
+                    method: 'POST',
+                });
+                const outcome = await result.json();
+                if (!outcome.success) {
+                    console.error('Turnstile verification failed:', outcome);
+                    return NextResponse.json({ success: false, error: "Bot protection verification failed." }, { status: 403 });
+                }
             }
         }
 

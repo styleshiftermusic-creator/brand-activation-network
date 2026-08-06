@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { ReferralTracker } from "@/components/ReferralTracker";
+import { AuthRedirect } from "@/components/AuthRedirect";
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
@@ -105,6 +106,7 @@ export default function RootLayout({
       >
         <Suspense fallback={null}>
           <ReferralTracker />
+          <AuthRedirect />
         </Suspense>
         <Analytics />
         {children}

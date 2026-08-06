@@ -34,7 +34,7 @@ export function Footer() {
               <a href="#" className="hover:text-white transition-colors"><Twitter className="w-4 h-4" /></a>
               <a href="#" className="hover:text-white transition-colors"><Instagram className="w-4 h-4" /></a>
               <a href="#" className="hover:text-white transition-colors"><Linkedin className="w-4 h-4" /></a>
-              <a href="mailto:hello@brandactivationnetwork.com" className="hover:text-white transition-colors"><Mail className="w-4 h-4" /></a>
+              <a href="mailto:support@brandactivationnetwork.com" className="hover:text-white transition-colors"><Mail className="w-4 h-4" /></a>
             </div>
           </div>
 
@@ -42,7 +42,7 @@ export function Footer() {
           <div>
             <h4 className="text-white font-bold text-sm mb-6 uppercase tracking-widest">Funnels</h4>
             <ul className="space-y-4 text-zinc-500 text-sm">
-              <li><Link href="/challenge" className="hover:text-white transition-colors">The 5-Day Challenge</Link></li>
+              
               <li><Link href="/#apply" className="hover:text-white transition-colors">Master Blueprint Application</Link></li>
               <li><Link href="/results" className="hover:text-white transition-colors">Success Stories</Link></li>
             </ul>

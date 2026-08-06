@@ -22,7 +22,7 @@ export async function GET() {
     // Get recent activities for the user
     const { data, error: dbError } = await supabase
       .from("user_activity")
-      .select("*")
+      .select("id, activity_type, target_id, metadata, created_at")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20);

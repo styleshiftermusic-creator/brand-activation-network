@@ -38,7 +38,7 @@ export default function ChallengeFunnel() {
             </nav>
 
             {/* Main Container */}
-            <main className="z-10 flex flex-col items-center px-6 max-w-5xl w-full mt-12 mb-24 grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <main className="z-10 px-6 max-w-5xl w-full mt-12 mb-24 grid grid-cols-1 lg:grid-cols-2 gap-16">
 
                 {/* Left Column: Value Prop */}
                 <div className="flex flex-col text-left">

@@ -16,10 +16,15 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-        if (isOpen) {
-            setDate(new Date().toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }));
-        }
+        let active = true;
+        Promise.resolve().then(() => {
+            if (!active) return;
+            setMounted(true);
+            if (isOpen) {
+                setDate(new Date().toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' }));
+            }
+        });
+        return () => { active = false; };
     }, [isOpen]);
 
     // Handle ESC key

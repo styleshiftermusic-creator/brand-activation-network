@@ -39,6 +39,7 @@ const TESTIMONIALS = [
 
 export default function ResultsPage() {
   const [currentRevenue, setCurrentRevenue] = useState(10000);
+  const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
   // Simple calculator logic
   const potentialFunding = Math.max(50000, currentRevenue * 3);
@@ -149,13 +150,8 @@ export default function ResultsPage() {
 
       {/* Footer CTA */}
       <section className="py-20 px-6">
-        <FinalCTA />
+        <FinalCTA stripeLink={stripeLink} />
       </section>
-      
-      {/* Footer */}
-      <footer className="py-8 border-t border-white/10 text-center text-xs text-zinc-600 font-mono">
-        <p>© {new Date().getFullYear()} Brand Activation Network. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

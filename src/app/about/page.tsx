@@ -8,6 +8,8 @@ export const metadata = {
 };
 
 export default function AboutPage() {
+  const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
+  
   return (
     <div className="min-h-screen bg-[var(--background)] flex flex-col font-sans overflow-x-hidden selection:bg-[var(--primary)] selection:text-white">
       <SiteNav />
@@ -36,13 +38,13 @@ export default function AboutPage() {
               Born from necessity, <br/> built for scale.
             </h2>
             <p className="text-zinc-400 leading-relaxed">
-              Years ago, our founders hit the dreaded revenue ceiling. No matter how many hours we worked, we couldn't break past the limitations of 1-on-1 fulfillment. The cash flow was inconsistent, and scaling felt like chaos.
+              Years ago, our founders hit the dreaded revenue ceiling. No matter how many hours we worked, we couldn&apos;t break past the limitations of 1-on-1 fulfillment. The cash flow was inconsistent, and scaling felt like chaos.
             </p>
             <p className="text-zinc-400 leading-relaxed">
-              We realized that successful enterprises don't work harder—they use leverage. They use Other People's Money (OPM) to fund growth, and they use automated funnels and AI to separate their income from their time.
+              We realized that successful enterprises don&apos;t work harder—they use leverage. They use Other People&apos;s Money (OPM) to fund growth, and they use automated funnels and AI to separate their income from their time.
             </p>
             <p className="text-zinc-400 leading-relaxed">
-              We spent years reverse-engineering the credit system and building automated sales pipelines. Once we perfected the system, we packaged it into the Master Blueprint. That's how the Brand Activation Network was born.
+              We spent years reverse-engineering the credit system and building automated sales pipelines. Once we perfected the system, we packaged it into the Master Blueprint. That&apos;s how the Brand Activation Network was born.
             </p>
           </div>
           
@@ -100,13 +102,8 @@ export default function AboutPage() {
 
       {/* Footer CTA */}
       <section className="py-20 px-6">
-        <FinalCTA />
+        <FinalCTA stripeLink={stripeLink} />
       </section>
-      
-      {/* Footer */}
-      <footer className="py-8 border-t border-white/10 text-center text-xs text-zinc-600 font-mono">
-        <p>© {new Date().getFullYear()} Brand Activation Network. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

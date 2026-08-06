@@ -14,7 +14,7 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-emerald-400",
         hoverBorder: "group-hover:border-emerald-500/20",
         hoverBg: "group-hover:bg-emerald-500/10",
-        href: "/blueprints/pledge-loan-calculator.md",
+        href: "/api/download/blueprint/pledge-loan-calculator.md",
         fileName: "Pledge-Loan-Calculator.md",
     },
     {
@@ -27,7 +27,7 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-blue-400",
         hoverBorder: "group-hover:border-blue-500/20",
         hoverBg: "group-hover:bg-blue-500/10",
-        href: "/blueprints/business-funding-checklist.md",
+        href: "/api/download/blueprint/business-funding-checklist.md",
         fileName: "Business-Funding-Checklist.md",
     },
     {
@@ -40,7 +40,7 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-amber-400",
         hoverBorder: "group-hover:border-amber-500/20",
         hoverBg: "group-hover:bg-amber-500/10",
-        href: "/blueprints/opa-marketing-playbook.md",
+        href: "/api/download/blueprint/opa-marketing-playbook.md",
         fileName: "OPA-Marketing-Playbook.md",
     },
     {
@@ -53,7 +53,7 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-purple-400",
         hoverBorder: "group-hover:border-purple-500/20",
         hoverBg: "group-hover:bg-purple-500/10",
-        href: "/blueprints/high-ticket-sales-scripts.md",
+        href: "/api/download/blueprint/high-ticket-sales-scripts.md",
         fileName: "High-Ticket-Sales-Scripts.md",
     },
     {
@@ -66,7 +66,7 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-indigo-400",
         hoverBorder: "group-hover:border-indigo-500/20",
         hoverBg: "group-hover:bg-indigo-500/10",
-        href: "/blueprints/investment-blueprint-template.md",
+        href: "/api/download/blueprint/investment-blueprint-template.md",
         fileName: "Investment-Blueprint-Template.md",
     },
     {
@@ -79,7 +79,7 @@ const DATA_SOURCES = [
         hoverText: "group-hover:text-rose-400",
         hoverBorder: "group-hover:border-rose-500/20",
         hoverBg: "group-hover:bg-rose-500/10",
-        href: "/blueprints/ai-agent-prompt-library.json",
+        href: "/api/download/blueprint/ai-agent-prompt-library.json",
         fileName: "AI-Agent-Prompt-Library.json",
     },
     {

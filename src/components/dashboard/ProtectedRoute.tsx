@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { AuthScreen } from "./AuthScreen";
@@ -8,19 +9,35 @@ import { AuthScreen } from "./AuthScreen";
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
+    const [isRecovery, setIsRecovery] = useState(false);
+    const pathname = usePathname();
+    const router = useRouter();
 
     useEffect(() => {
+        const checkOnboarding = async (userId: string) => {
+            const { data } = await supabase.from('profiles').select('onboarding_completed').eq('id', userId).single();
+            setIsOnboarded(data?.onboarding_completed || false);
+            setIsLoading(false);
+        };
+
         // Check active session on mount
         supabase.auth.getSession().then(({ data: { session } }) => {
             setIsAuthenticated(!!session);
-            setIsLoading(false);
+            if (session) checkOnboarding(session.user.id);
+            else setIsLoading(false);
         });
 
         // Listen for auth state changes (login, logout, token refresh)
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setIsAuthenticated(!!session);
-            setIsLoading(false);
+            if (session) checkOnboarding(session.user.id);
+            else setIsLoading(false);
         });
+
+        if (typeof window !== "undefined" && window.location.hash.includes("type=recovery")) {
+            setIsRecovery(true);
+        }
 
         return () => subscription.unsubscribe();
     }, []);
@@ -40,9 +57,15 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
     // Auth enforced in all environments
 
-    // If no active session, intercept the route and render the AuthScreen
-    if (!isAuthenticated) {
+    // If no active session or in password recovery mode, intercept the route and render the AuthScreen
+    if (!isAuthenticated || isRecovery) {
         return <AuthScreen />;
+    }
+
+    // Force onboarding if incomplete
+    if (isOnboarded === false && !pathname.includes("/dashboard/onboarding")) {
+        router.push("/dashboard/onboarding");
+        return null;
     }
 
     // Otherwise, render the requested dashboard content

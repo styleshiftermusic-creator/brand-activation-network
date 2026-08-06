@@ -1,5 +1,4 @@
 import { SiteNav } from "@/components/SiteNav";
-import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { Plus, Minus, Search, MessageCircle } from "lucide-react";
 import Link from "next/link";
@@ -118,8 +117,6 @@ export default function FAQPage() {
           </ScrollReveal>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { GamificationBar } from "./GamificationBar";
+
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -24,7 +26,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="mb-10 flex items-center gap-3"
+                className="mb-6 flex items-center gap-3"
             >
                 <div className="h-8 w-8 rounded bg-[var(--primary)]/20 border border-[var(--primary)]/50 flex items-center justify-center">
                     <Terminal className="h-4 w-4 text-[var(--primary)]" />
@@ -34,6 +36,10 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                     <div className="font-semibold text-white tracking-tight">Mission Control</div>
                 </div>
             </motion.div>
+
+            <div className="mb-8">
+                <GamificationBar />
+            </div>
 
             <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-600 mb-4 pl-2">Directories</div>
             <nav className="flex flex-col gap-1 flex-grow font-mono text-sm">
