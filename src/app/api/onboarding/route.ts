@@ -42,8 +42,7 @@ export async function POST(req: Request) {
 
         if (error) {
             console.error('Error saving onboarding profile:', error);
-            // Protect details, do not return raw DB errors
-            return NextResponse.json({ success: false, error: 'Failed to update profile.' }, { status: 500 });
+            return NextResponse.json({ success: false, error: `Failed to update profile: ${error.message} (${error.code})` }, { status: 500 });
         }
 
         // Send VIP Welcome Email
