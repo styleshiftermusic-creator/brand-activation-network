@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === "production";
-const scriptSrc = `script-src 'self' ${isProd ? "" : "'unsafe-eval'"} 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com`;
+const scriptSrc = "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
