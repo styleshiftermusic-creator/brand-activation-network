@@ -30,8 +30,8 @@ export async function POST(req: Request) {
         const userId = user.id;
         const userEmail = user.email;
 
-        // Upsert the profile
-        const { error } = await supabase.from('profiles').upsert({
+        // Upsert the profile using the authenticated server client
+        const { error } = await supabaseUser.from('profiles').upsert({
             id: userId,
             revenue_bracket: revenue_bracket || 'Unknown',
             primary_offer: primary_offer || 'Unknown',

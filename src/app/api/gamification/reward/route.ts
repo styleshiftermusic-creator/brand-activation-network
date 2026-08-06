@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         }
 
         // Fetch current profile
-        const { data: profile, error: fetchError } = await supabase
+        const { data: profile, error: fetchError } = await supabaseUser
             .from('profiles')
             .select('credits, badges')
             .eq('id', userId)
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
         if (fetchError) {
             // Auto-create profile if missing
-            await supabase.from('profiles').insert({ id: userId, credits: 0, badges: [] });
+            await supabaseUser.from('profiles').insert({ id: userId, credits: 0, badges: [] });
             return NextResponse.json({ success: true, newCredits: 0 });
         }
 
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         }
 
         // Update profile
-        const { error: updateError } = await supabase.from('profiles').update({
+        const { error: updateError } = await supabaseUser.from('profiles').update({
             credits: newCredits,
             badges: updatedBadges
         }).eq('id', userId);
