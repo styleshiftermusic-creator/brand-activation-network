@@ -1,7 +1,8 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Download, BookOpen, Database, Sparkles, FileText, Bot, Lock, ShieldCheck } from "lucide-react";
+import { Download, BookOpen, Database, Sparkles, FileText, Bot, Lock, ShieldCheck, Landmark, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const DATA_SOURCES = [
     {
@@ -164,6 +165,36 @@ export default function DataSourcesPage() {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* BAN Credit Unions Live Engine Banner */}
+                    <div className="mb-8 p-6 rounded-2xl border border-emerald-500/30 bg-black/40 backdrop-blur-xl relative overflow-hidden group hover:border-emerald-500/50 transition-all shadow-[0_0_30px_-10px_rgba(16,185,129,0.15)]">
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                            <div className="flex items-start gap-4">
+                                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                    <Landmark className="w-7 h-7" />
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase font-semibold">Live Interactive Tool</span>
+                                        <span className="text-xs font-mono text-zinc-500 uppercase">Interactive Software</span>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-white tracking-tight">BAN Credit Unions Database App</h3>
+                                    <p className="text-xs font-mono text-zinc-400 mt-1 max-w-xl">
+                                        Interactive eligibility search engine, bureau pulled intelligence, and Pledge Loan product matrix for Module 1 & 2 execution.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <Link
+                                href="/dashboard/credit-unions"
+                                className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs uppercase tracking-wider font-bold transition-all duration-300 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:shadow-[0_0_35px_rgba(16,185,129,0.5)] flex items-center gap-2 whitespace-nowrap flex-shrink-0"
+                            >
+                                <span>Launch App</span>
+                                <ArrowRight className="w-4 h-4" />
+                            </Link>
                         </div>
                     </div>
 

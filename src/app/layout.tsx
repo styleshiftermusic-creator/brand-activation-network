@@ -5,6 +5,7 @@ import { ReferralTracker } from "@/components/ReferralTracker";
 import { AuthRedirect } from "@/components/AuthRedirect";
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
+import { MotionProvider } from "@/components/MotionProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -104,13 +105,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
-        <Suspense fallback={null}>
-          <ReferralTracker />
-          <AuthRedirect />
-        </Suspense>
-        <Analytics />
-        {children}
-        <Footer />
+        <MotionProvider>
+          <Suspense fallback={null}>
+            <ReferralTracker />
+            <AuthRedirect />
+          </Suspense>
+          <Analytics />
+          {children}
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );

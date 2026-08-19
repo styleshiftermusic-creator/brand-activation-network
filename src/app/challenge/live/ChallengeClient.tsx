@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Lock, PlayCircle, Download, FileText, CheckCircle2, ChevronRight, Play } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { WaitlistModal } from "@/components/WaitlistModal";
 
 // Mock data for the challenge days

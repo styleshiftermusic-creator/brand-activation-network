@@ -3,13 +3,13 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
-import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap } from "lucide-react";
+import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap, Landmark, ExternalLink, Sparkles } from "lucide-react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Quiz from "@/components/dashboard/Quiz";
 import { supabase } from "@/lib/supabase";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { CertificateModal } from "@/components/dashboard/CertificateModal";
 
 interface QuizQuestion {
@@ -67,7 +67,7 @@ export default function MasterCoursePage() {
     const [activeModuleId, setActiveModuleId] = useState("M-01");
     const [isCertOpen, setIsCertOpen] = useState(false);
     const [studentName, setStudentName] = useState("Master Student");
-    const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources'>('study');
+    const [activeTab, setActiveTab] = useState<'study' | 'quiz' | 'resources' | 'credit-unions'>('study');
     const [modules, setModules] = useState<ModuleData[]>([]);
     const [isLoadingContent, setIsLoadingContent] = useState(true);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -175,31 +175,7 @@ export default function MasterCoursePage() {
         }
     }, [activeModuleId, logActivity]);
 
-    // Audio-Slide Sync: reads from ref — NOT re-registered on every activeModule change
-    useEffect(() => {
-        const audio = audioRef.current;
-        if (!audio) return;
-
-        const handleTimeUpdate = () => {
-            if (isManualNavRef.current) return;
-            const { currentTime, duration } = audio;
-            if (!duration || duration === 0) return;
-
-            const slideCount = activeModuleRef.current?.visuals?.length || 0;
-            if (slideCount <= 1) return;
-
-            const secondsPerSlide = duration / slideCount;
-            const targetSlide = Math.min(
-                Math.floor(currentTime / secondsPerSlide),
-                slideCount - 1
-            );
-            setCurrentSlide(prev => prev !== targetSlide ? targetSlide : prev);
-        };
-
-        audio.addEventListener('timeupdate', handleTimeUpdate);
-        return () => audio.removeEventListener('timeupdate', handleTimeUpdate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeModuleId]); // Only re-register when module changes, not on every re-render
+    // Audio-Slide Sync has been moved to the onTimeUpdate handler on the audio element
 
     // Seek audio — reads visuals count from stable ref
     const seekToSlide = useCallback((slideIndex: number) => {
@@ -244,14 +220,21 @@ export default function MasterCoursePage() {
 
             if (progressData && progressData.length > 0) {
                 setModules(prev => prev.map(m => {
-                    const userProgress = progressData.find(p => p.module_id === m.id);
-                    return userProgress ? { ...m, status: userProgress.status } : { ...m, status: "LOCKED" };
+                    const cleanId = m.id.replace(/^M-0*/, '');
+                    const userProgress = progressData.find(p => 
+                        p.module_id === m.id || 
+                        p.module_id.replace(/^M-0*/, '') === cleanId
+                    );
+                    if (userProgress) {
+                        return { ...m, status: userProgress.status };
+                    }
+                    return { ...m, status: cleanId === '1' ? 'ACTIVE' : 'LOCKED' };
                 }));
             } else {
                 await supabase.from('course_progress').insert({
                     user_id: user.id, module_id: 'M-01', status: 'ACTIVE'
                 });
-                setModules(prev => prev.map(m => m.id === 'M-01' ? { ...m, status: 'ACTIVE' } : { ...m, status: 'LOCKED' }));
+                setModules(prev => prev.map(m => m.id.replace(/^M-0*/, '') === '1' ? { ...m, status: 'ACTIVE' } : { ...m, status: 'LOCKED' }));
             }
         } catch {
             console.warn("Telemetry database not yet initialized. Falling back to Unlocked Mode.");
@@ -584,7 +567,24 @@ export default function MasterCoursePage() {
                             ref={audioRef}
                             key={activeModuleId}
                             src={activeModule.mediaSrc}
-                            onTimeUpdate={(e) => setAudioProgress(e.currentTarget.currentTime)}
+                            onTimeUpdate={(e) => {
+                                const audio = e.currentTarget;
+                                setAudioProgress(audio.currentTime);
+                                
+                                if (isManualNavRef.current) return;
+                                const { currentTime, duration } = audio;
+                                if (!duration || duration === 0) return;
+
+                                const slideCount = activeModuleRef.current?.visuals?.length || 0;
+                                if (slideCount <= 1) return;
+
+                                const secondsPerSlide = duration / slideCount;
+                                const targetSlide = Math.min(
+                                    Math.floor(currentTime / secondsPerSlide),
+                                    slideCount - 1
+                                );
+                                setCurrentSlide(prev => prev !== targetSlide ? targetSlide : prev);
+                            }}
                             onLoadedMetadata={(e) => { setAudioDuration(e.currentTarget.duration); setAudioError(null); }}
                             onPlay={() => setIsPlaying(true)}
                             onPause={() => setIsPlaying(false)}
@@ -644,7 +644,6 @@ export default function MasterCoursePage() {
                             <button
                                 onClick={() => setActiveTab('resources')}
                                 className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'resources'
-
                                     ? 'text-white'
                                     : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
                                     }`}
@@ -652,6 +651,27 @@ export default function MasterCoursePage() {
                                 <Download className="w-4 h-4 md:w-5 md:h-5" />
                                 Resources
                                 {activeTab === 'resources' && (
+                                    <motion.div 
+                                        layoutId="tab-underline"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                    />
+                                )}
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('credit-unions')}
+                                className={`pb-4 flex-shrink-0 flex items-center gap-2 text-sm md:text-base font-medium transition-all duration-300 border-b-2 tracking-tight relative ${activeTab === 'credit-unions'
+                                    ? 'text-white'
+                                    : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
+                                    }`}
+                            >
+                                <Landmark className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
+                                BAN Credit Unions
+                                {(activeModuleId === 'M-01' || activeModuleId === 'M-02') && (
+                                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider hidden sm:inline-block shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                                        Interactive Tool
+                                    </span>
+                                )}
+                                {activeTab === 'credit-unions' && (
                                     <motion.div 
                                         layoutId="tab-underline"
                                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
@@ -672,6 +692,32 @@ export default function MasterCoursePage() {
                                 >
                                     {activeTab === 'study' && (
                                         <div>
+                                            {(activeModuleId === 'M-01' || activeModuleId === 'M-02') && (
+                                                <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_20px_-5px_rgba(16,185,129,0.15)]">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 flex-shrink-0">
+                                                            <Landmark className="w-5 h-5" />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                                                                <Sparkles className="w-3 h-3" /> Interactive Tool Pairing
+                                                            </div>
+                                                            <div className="text-xs sm:text-sm font-medium text-white mt-0.5">
+                                                                {activeModuleId === 'M-01' 
+                                                                    ? 'Cross-reference Credit Unions offering 24hr Pledge Loan release products.' 
+                                                                    : 'Target Credit Unions offering 70–200% B-LOC matching on personal limits.'}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => setActiveTab('credit-unions')}
+                                                        className="px-4 py-2 rounded-lg bg-emerald-500 text-black font-mono text-xs uppercase tracking-wider font-bold hover:bg-emerald-400 transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)] whitespace-nowrap flex-shrink-0"
+                                                    >
+                                                        Launch BAN Credit Unions
+                                                    </button>
+                                                </div>
+                                            )}
+
                                             <div className="prose prose-invert prose-emerald prose-sm md:prose-base max-w-none text-zinc-300 leading-relaxed font-sans">
                                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                                     {activeModule.description}
@@ -758,6 +804,67 @@ export default function MasterCoursePage() {
                                         </div>
                                     )}
 
+                                    {activeTab === 'credit-unions' && (
+                                        <div className="flex flex-col gap-5 pb-20">
+                                            {/* Contextual Header */}
+                                            <div className="p-4 rounded-xl bg-black/40 border border-white/10 backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                                        <Landmark className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-semibold text-white flex items-center gap-2">
+                                                            <span>BAN Credit Unions Intelligence Engine</span>
+                                                            <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase">Live Tool</span>
+                                                        </div>
+                                                        <p className="text-xs font-mono text-zinc-400 mt-0.5">
+                                                            {activeModuleId === 'M-01' 
+                                                                ? 'Module 1 Integration: Cross-reference institutions with Pledge/Share-Secured loan products.' 
+                                                                : activeModuleId === 'M-02' 
+                                                                    ? 'Module 2 Integration: Cross-reference Tier-1 & Tier-2 Business Credit/B-LOC eligibility.' 
+                                                                    : 'Search eligibility criteria, pulled credit bureaus, and product terms.'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center gap-2 flex-shrink-0">
+                                                    <a
+                                                        href="https://ban-credit-union-app.web.app"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500 hover:text-black text-emerald-400 text-xs font-mono uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5"
+                                                    >
+                                                        <span>Full Window</span>
+                                                        <ExternalLink className="w-3.5 h-3.5" />
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            {/* Interactive Embedded App */}
+                                            <div className="w-full h-[700px] bg-black/40 backdrop-blur-2xl rounded-2xl border border-white/10 relative overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] flex flex-col">
+                                                <div className="h-9 bg-black/60 border-b border-white/10 px-4 flex items-center justify-between flex-shrink-0">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
+                                                        <span className="text-[10px] font-mono text-zinc-500 ml-2">BAN Credit Unions Engine (v1.0)</span>
+                                                    </div>
+                                                    <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest flex items-center gap-1">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                                        Active
+                                                    </span>
+                                                </div>
+
+                                                <iframe
+                                                    src="https://ban-credit-union-app.web.app"
+                                                    title="BAN Credit Unions Database"
+                                                    className="w-full flex-1 border-0 bg-transparent"
+                                                    allow="clipboard-read; clipboard-write; fullscreen"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+
                                 </motion.div>
                             </AnimatePresence>
                         </div>
@@ -836,9 +943,8 @@ export default function MasterCoursePage() {
                                                 ) : isLocked ? (
                                                     <Lock className="w-5 h-5 text-zinc-600" />
                                                 ) : (
-                                                    <div className="relative">
-                                                        <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
-                                                        <div className="absolute inset-0 w-5 h-5 rounded-full bg-emerald-500/20 blur animate-pulse" />
+                                                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                                                        <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                                                     </div>
                                                 )}
                                             </div>

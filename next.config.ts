@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ["lucide-react", "recharts"],
+    nextScriptWorkers: true,
   },
   async headers() {
     return [

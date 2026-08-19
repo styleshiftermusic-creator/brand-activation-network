@@ -11,9 +11,9 @@ export function Analytics() {
                 <>
                     <Script
                         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-                        strategy="afterInteractive"
+                        strategy="worker"
                     />
-                    <Script id="google-analytics" strategy="afterInteractive">
+                    <Script id="google-analytics" strategy="worker">
                         {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){window.dataLayer.push(arguments);}
@@ -26,7 +26,7 @@ export function Analytics() {
 
             {/* Meta Pixel — only loads when ID is configured */}
             {META_PIXEL_ID && (
-                <Script id="meta-pixel" strategy="afterInteractive">
+                <Script id="meta-pixel" strategy="worker">
                     {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

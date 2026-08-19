@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X, Settings } from "lucide-react";
+import { Terminal, Activity, FolderDot, Database, PowerOff, Briefcase, Menu, X, Settings, Landmark } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 
 import { GamificationBar } from "./GamificationBar";
 
@@ -16,6 +16,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     const navItems = [
         { path: "/dashboard", label: "Active Feed", icon: <Activity className="h-4 w-4" /> },
         { path: "/dashboard/master-course", label: "The Master Course", icon: <Briefcase className="h-4 w-4" /> },
+        { path: "/dashboard/credit-unions", label: "BAN Credit Unions", icon: <Landmark className="h-4 w-4" /> },
         { path: "/dashboard/data-sources", label: "The Million Dollar File", icon: <Database className="h-4 w-4" /> },
         { path: "/dashboard/blueprints", label: "Brand Blueprints", icon: <FolderDot className="h-4 w-4" /> },
         { path: "/dashboard/antigravity-system", label: "AntiGravity System", icon: <Terminal className="h-4 w-4" /> },
