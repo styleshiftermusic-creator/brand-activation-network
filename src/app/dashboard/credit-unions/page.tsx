@@ -108,7 +108,7 @@ export default function CreditUnionsPage() {
                     {/* Responsive Iframe */}
                     <iframe
                         key={iframeKey}
-                        src="https://ban-credit-union-app.web.app"
+                        src="/credit-unions/index.html"
                         title="BAN Credit Unions Database App"
                         onLoad={() => setIsLoading(false)}
                         className="w-full flex-1 border-0 bg-transparent"

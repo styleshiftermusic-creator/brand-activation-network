@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CU Finder — USA Credit Union Database</title>
+  <meta name="description" content="Search, filter, and compare credit unions across the United States. Find the best credit union for your needs based on eligibility, credit pull type, rates, and fees.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <h1 class="app-header__title">CU Finder</h1>
+    <p class="app-header__subtitle">USA Credit Union Database</p>
+    <div class="stats-banner">
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-total">0</div>
+        <div class="stat-card__label">Total CUs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-soft">0</div>
+        <div class="stat-card__label">Soft Pull</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-anywhere">0</div>
+        <div class="stat-card__label">Join Anywhere</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-rate">0%</div>
+        <div class="stat-card__label">Avg PLOC Rate</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="search-container">
+    <div class="search-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input type="text" id="search-input" class="search-input" placeholder="Search by name, eligibility, association..." autocomplete="off">
+      <button id="search-clear" class="search-clear" aria-label="Clear search">
+        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <main class="layout-main">
+    <button id="mobile-filter-btn" class="mobile-filter-btn">
+      <svg style="display:inline-block; vertical-align:middle; margin-right:4px;" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      </svg>
+      Filters
+    </button>
+
+    <aside class="filter-panel" id="filter-panel">
+      <div class="filter-header">
+        <h2>Filters</h2>
+        <button id="clear-filters" class="filter-clear">Clear All</button>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-toggle-wrapper">
+          <span class="filter-toggle-label">
+            <svg style="display:inline-block; vertical-align:middle; margin-right:4px; color:#F59E0B;" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            Favorites Only
+          </span>
+          <button class="filter-toggle" id="filter-favorites" role="switch" aria-checked="false"></button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group__title">Credit Pull Type</div>
+        <div class="filter-group__options" id="filter-creditPull">
+          <div class="filter-chip filter-chip--active" data-value="all">All</div>
+          <div class="filter-chip" data-value="Soft">Soft</div>
+          <div class="filter-chip" data-value="Hard">Hard</div>
+          <div class="filter-chip" data-value="No Credit">No Credit</div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group__title">Credit Bureau</div>
+        <div class="filter-group__options" id="filter-creditBureau">
+          <div class="filter-chip filter-chip--active" data-value="all">All</div>
+          <div class="filter-chip" data-value="Experian">Experian</div>
+          <div class="filter-chip" data-value="Equifax">Equifax</div>
+          <div class="filter-chip" data-value="TransUnion">TransUnion</div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-toggle-wrapper">
+          <span class="filter-toggle-label">Join Anywhere</span>
+          <button class="filter-toggle" id="filter-joinAnywhere" role="switch" aria-checked="false"></button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group__title">ChexSystems</div>
+        <div class="filter-group__options" id="filter-chexSystems">
+          <div class="filter-chip filter-chip--active" data-value="all">All</div>
+          <div class="filter-chip" data-value="No">Not Used</div>
+          <div class="filter-chip" data-value="Yes">Used</div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-toggle-wrapper">
+          <span class="filter-toggle-label">HP Reuse</span>
+          <button class="filter-toggle" id="filter-hpReuse" role="switch" aria-checked="false"></button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group__title">PLOC Rate</div>
+        <div class="filter-group__options" id="filter-plocRate">
+          <div class="filter-chip filter-chip--active" data-value="all">All</div>
+          <div class="filter-chip" data-value="hasRate">Has Rate</div>
+          <div class="filter-chip" data-value="under10">Under 10%</div>
+          <div class="filter-chip" data-value="under12">Under 12%</div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="results-container">
+      <div class="results-header">
+        <div class="results-count" id="results-count">Showing 0 of 0 credit unions</div>
+        <div class="results-actions">
+          <button id="export-csv" class="export-csv-btn">
+            <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export CSV
+          </button>
+          <div class="results-sort">
+            <select id="sort-select">
+              <option value="name">Sort by Name</option>
+              <option value="plocRate">Sort by Lowest Rate</option>
+              <option value="creditPull">Sort by Credit Pull</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="quick-filters">
+        <button class="quick-filter-btn" data-preset="joinAnywhere">Join Anywhere</button>
+        <button class="quick-filter-btn" data-preset="softPull">Soft Pull Only</button>
+        <button class="quick-filter-btn" data-preset="topRewards">Top Rewards Checking</button>
+        <button class="quick-filter-btn" data-preset="bestPloc">Best PLOC Rates</button>
+      </div>
+      <div class="results-grid" id="results-grid">
+        <!-- Cards injected via JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Detail Dialog -->
+  <dialog id="cu-detail-dialog" class="cu-detail-dialog">
+    <div class="cu-detail__header">
+      <div>
+        <h2 class="cu-detail__title" id="detail-name">Credit Union Name</h2>
+        <div class="cu-card__badges" id="detail-badges"></div>
+      </div>
+      <button class="dialog-close" id="close-detail" aria-label="Close dialog">
+        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="cu-detail__body">
+      
+      <div class="cu-detail__section">
+        <h3 class="cu-detail__section-title">Overview</h3>
+        <div class="cu-detail__field">
+          <div class="cu-detail__label">Website</div>
+          <div class="cu-detail__value"><a href="#" id="detail-url" target="_blank" rel="noopener noreferrer" style="color:var(--color-accent);text-decoration:none;">Visit Website</a></div>
+        </div>
+        <div class="cu-detail__field" id="detail-notes-container">
+          <div class="cu-detail__label">Data Notes</div>
+          <div class="cu-detail__notes" id="detail-notes"></div>
+        </div>
+      </div>
+
+      <div class="cu-detail__section">
+        <h3 class="cu-detail__section-title">How to Join</h3>
+        <div class="cu-detail__field">
+          <div class="cu-detail__label">Eligibility</div>
+          <div class="cu-detail__value" id="detail-eligibility"></div>
+        </div>
+        <div class="cu-detail__grid">
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">Join Anywhere</div>
+            <div class="cu-detail__value" id="detail-join-anywhere"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cu-detail__section">
+        <h3 class="cu-detail__section-title">Credit Impact</h3>
+        <div class="cu-detail__grid">
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">Credit Pull Type</div>
+            <div class="cu-detail__value" id="detail-pull"></div>
+          </div>
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">Credit Bureau</div>
+            <div class="cu-detail__value" id="detail-bureau"></div>
+          </div>
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">Hard Pull Reuse</div>
+            <div class="cu-detail__value" id="detail-hp-reuse"></div>
+          </div>
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">HP Reuse Duration</div>
+            <div class="cu-detail__value" id="detail-hp-duration"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cu-detail__section">
+        <h3 class="cu-detail__section-title">Account Screening</h3>
+        <div class="cu-detail__grid">
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">ChexSystems</div>
+            <div class="cu-detail__value" id="detail-chex"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cu-detail__section">
+        <h3 class="cu-detail__section-title">Rates</h3>
+        <div class="cu-detail__grid">
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">PLOC Rate</div>
+            <div class="cu-detail__value" id="detail-ploc"></div>
+          </div>
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">Lowest Card Rate</div>
+            <div class="cu-detail__value" id="detail-card-rate"></div>
+          </div>
+          <div class="cu-detail__field">
+            <div class="cu-detail__label">Rewards Card Rate</div>
+            <div class="cu-detail__value" id="detail-rewards-card"></div>
+          </div>
+        </div>
+        <div class="cu-detail__field" id="detail-rewards-checking-container">
+          <div class="cu-detail__label">Rewards Checking</div>
+          <div class="cu-detail__notes" id="detail-rewards-checking"></div>
+        </div>
+      </div>
+      
+      <div style="text-align:center; margin-top: 2rem;">
+        <a href="#" id="detail-visit-btn" target="_blank" rel="noopener noreferrer" class="cu-card__btn cu-card__btn--primary" style="display:inline-block; width: 100%; max-width:300px; padding: 0.75rem;">Visit Website</a>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- Compare Tray -->
+  <div id="compare-tray" class="compare-tray">
+    <div class="compare-tray__content">
+      <div class="compare-tray__count"><span id="compare-count">0</span> Credit Unions Selected (Max 3)</div>
+      <div class="compare-tray__actions">
+        <button class="compare-tray__clear" id="compare-clear">Clear</button>
+        <button class="compare-tray__btn" id="compare-now">Compare Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Dialog -->
+  <dialog id="compare-dialog" class="compare-dialog">
+    <div class="cu-detail__header">
+      <h2 class="cu-detail__title">Compare Credit Unions</h2>
+      <button class="dialog-close" id="close-compare" aria-label="Close dialog">
+        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="cu-detail__body">
+      <div class="compare-table-wrapper" id="compare-table-wrapper">
+        <!-- Table injected via JS -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Default empty state template (hidden) -->
+  <template id="empty-state-template">
+    <div class="empty-state">
+      <svg class="empty-state__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div class="empty-state__text">No credit unions match your filters.</div>
+      <button class="empty-state__btn" onclick="clearFilters()">Clear All Filters</button>
+    </div>
+  </template>
+
+  
+  <script type="module" src="app.js"></script>
+</body>
+</html>

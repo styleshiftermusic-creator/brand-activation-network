@@ -856,7 +856,7 @@ export default function MasterCoursePage() {
                                                 </div>
 
                                                 <iframe
-                                                    src="https://ban-credit-union-app.web.app"
+                                                    src="/credit-unions/index.html"
                                                     title="BAN Credit Unions Database"
                                                     className="w-full flex-1 border-0 bg-transparent"
                                                     allow="clipboard-read; clipboard-write; fullscreen"
