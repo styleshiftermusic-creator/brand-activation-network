@@ -89,14 +89,15 @@ export async function POST(req: Request) {
             }
         }
 
-        const { error } = await supabase.from('webinar_registrations').insert([
+        const { error } = await supabase.from('webinar_registrations').upsert(
             {
                 full_name: name,
                 email: email,
                 phone: phone || null,
                 event_name: 'The Master Blueprint Challenge'
-            }
-        ]);
+            },
+            { onConflict: 'email' }
+        );
 
         if (error) {
             console.error("Supabase Insertion Error:", error);

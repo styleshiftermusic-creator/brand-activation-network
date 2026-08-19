@@ -71,15 +71,16 @@ export async function POST(req: Request) {
         const { email, name, phone, revenue, referredBy } = parsed.data;
 
         // Save Lead to Supabase
-        const { error } = await supabase.from('webinar_registrations').insert([
+        const eventName = revenue ? `BAN Application (${revenue})` : 'BAN Waitlist / Download';
+        const { error } = await supabase.from('webinar_registrations').upsert(
             {
                 full_name: name || 'Lead Magnet Download',
                 email: email,
                 phone: phone || null,
-                event_name: 'BAN Waitlist / Download',
-                metadata: { revenue_bracket: revenue || 'unspecified' } // Using JSONB metadata column for flexibility
-            }
-        ]);
+                event_name: eventName,
+            },
+            { onConflict: 'email' }
+        );
 
         if (error) {
             console.error("Supabase Insertion Error:", error);
