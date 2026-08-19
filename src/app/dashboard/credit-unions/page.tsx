@@ -87,7 +87,7 @@ export default function CreditUnionsPage() {
                             <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
                             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
                             <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                            <span className="text-[11px] font-mono text-zinc-500 ml-2">https://ban-credit-union-app.web.app</span>
+                            <span className="text-[11px] font-mono text-zinc-500 ml-2">brandactivationnetwork.com/dashboard/credit-unions</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest flex items-center gap-1">

@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const scriptSrc = "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com";
+const scriptSrc = "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com https://www.gstatic.com https://apis.google.com";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "X-Frame-Options",
-            value: "DENY",
+            value: "SAMEORIGIN",
           },
           {
             key: "Permissions-Policy",
@@ -31,15 +31,15 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Cross-Origin-Opener-Policy",
-            value: "same-origin",
+            value: "same-origin-allow-popups",
           },
           {
             key: "Cross-Origin-Resource-Policy",
-            value: "same-site",
+            value: "same-origin",
           },
           {
             key: "Content-Security-Policy",
-            value: `default-src 'self'; ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://api.stripe.com https://prod.spline.design https://*.spline.design; worker-src 'self' blob:; child-src 'self' blob:; font-src 'self' data:; report-uri /api/csp-report`,
+            value: `default-src 'self'; ${scriptSrc}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; frame-src 'self' https://ban-credit-union-app.web.app https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://api.stripe.com https://prod.spline.design https://*.spline.design https://*.googleapis.com https://*.firebaseio.com https://ban-credit-union-app.firebaseapp.com; worker-src 'self' blob:; child-src 'self' blob:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'self'; report-uri /api/csp-report`,
           },
           {
             key: "Strict-Transport-Security",
