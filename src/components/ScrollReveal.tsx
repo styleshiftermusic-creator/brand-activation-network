@@ -18,8 +18,8 @@ export function ScrollReveal({
 
         // If IntersectionObserver isn't available, just show everything
         if (typeof IntersectionObserver === "undefined") {
-            setIsVisible(true);
-            return;
+            const timer = setTimeout(() => setIsVisible(true), 0);
+            return () => clearTimeout(timer);
         }
 
         const observer = new IntersectionObserver(

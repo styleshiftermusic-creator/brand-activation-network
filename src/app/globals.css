@@ -2,40 +2,53 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--brand-font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--brand-font-heading), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--brand-font-mono), ui-monospace, monospace;
+}
+
+[data-brand="ban"] {
+  --brand-bg: #0C0B12;
+  --brand-surface: #16151F;
+  --brand-primary: #A855F7;
+  --brand-primary-light: #C084FC;
+  --brand-secondary: #14B8A6;
+  --brand-secondary-light: #2DD4BF;
+  --brand-border: #1E1D2A;
+  --brand-muted: #9CA3AF;
+  --brand-ring: #A855F7;
+  --brand-danger: #EF4444;
+  --brand-warning: #F59E0B;
+  --brand-info: #38BDF8;
+  --brand-glow-primary: rgba(168, 85, 247, 0.45);
+  --brand-glow-secondary: rgba(20, 184, 166, 0.40);
+  --brand-font-heading: "Syne";
+  --brand-font-body: "Outfit";
+  --brand-font-mono: "JetBrains Mono";
+  --brand-motion-duration: 300ms;
+  --brand-motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-brand] {
+    --brand-motion-duration: 0ms;
+  }
 }
 
 :root {
-  --background: #09090b;
-  /* Very dark zinc */
+  --background: var(--brand-bg);
   --foreground: #ffffff;
-  /* pure white */
-
-  --primary: #9d4edd;
-  /* Deep purple */
+  --primary: var(--brand-primary);
   --primary-foreground: #ffffff;
-
-  --secondary: #27272a;
-  /* Zinc 800 */
+  --secondary: var(--brand-border);
   --secondary-foreground: #fafafa;
-  /* Zinc 50 */
-
-  --muted: #18181b;
-  /* Zinc 900 */
-  --muted-foreground: #a1a1aa;
-  /* Zinc 400 */
-
-  --accent: #5c2092;
-  /* Darker purple */
+  --muted: var(--brand-surface);
+  --muted-foreground: var(--brand-muted);
+  --accent: var(--brand-primary-light);
   --accent-foreground: #fafafa;
-
-  --border: #27272a;
-  /* Zinc 800 */
-  --input: #27272a;
-  /* Zinc 800 */
-  --ring: #9d4edd;
-
+  --border: var(--brand-border);
+  --input: var(--brand-border);
+  --ring: var(--brand-ring);
   --radius: 0.75rem;
 }
 
@@ -55,18 +68,18 @@
   }
 
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#c77dff] to-[#7b2cbf];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)];
   }
 
   .glass {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--brand-border);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
   .glass-card {
-    @apply bg-[var(--secondary)]/40 backdrop-blur-xl border border-[var(--border)] shadow-2xl;
+    @apply bg-[var(--brand-surface)]/40 backdrop-blur-xl border border-[var(--brand-border)] shadow-2xl;
   }
 }
 
@@ -83,9 +96,9 @@
 }
 
 .prose thead th {
-  background: rgba(16, 185, 129, 0.08);
-  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-  color: #34d399;
+  background: rgba(20, 184, 166, 0.08); /* 0.08 of brand-secondary roughly */
+  border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+  color: var(--brand-secondary-light);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -106,13 +119,13 @@
 }
 
 .prose tbody tr:hover {
-  background: rgba(16, 185, 129, 0.04);
+  background: rgba(20, 184, 166, 0.04);
 }
 
 /* ─── Cheat Sheet Blockquotes ─────────────────────────────────────────── */
 .prose blockquote {
-  border-left: 3px solid #10b981;
-  background: rgba(16, 185, 129, 0.06);
+  border-left: 3px solid var(--brand-secondary);
+  background: rgba(20, 184, 166, 0.06);
   border-radius: 0 0.5rem 0.5rem 0;
   padding: 1rem 1.25rem;
   margin: 1.5rem 0;
@@ -121,13 +134,13 @@
 
 .prose blockquote p {
   margin: 0;
-  color: #a1a1aa;
+  color: var(--brand-muted);
   font-size: 0.875rem;
   line-height: 1.7;
 }
 
 .prose blockquote strong {
-  color: #34d399;
+  color: var(--brand-secondary-light);
 }
 
 /* ─── Audio Player Theme ──────────────────────────────────────────────── */
@@ -137,8 +150,8 @@ audio::-webkit-media-controls-panel {
 
 audio::-webkit-media-controls-current-time-display,
 audio::-webkit-media-controls-time-remaining-display {
-  color: #a1a1aa;
-  font-family: 'Inter', monospace;
+  color: var(--brand-muted);
+  font-family: var(--font-mono), monospace;
   font-size: 0.75rem;
 }
 

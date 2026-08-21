@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Lock, PlayCircle, Download, FileText, CheckCircle2, ChevronRight, Play } from "lucide-react";
-import { m as motion, AnimatePresence } from "framer-motion";
+import { Lock, PlayCircle, Download, FileText, CheckCircle2, ChevronRight } from "lucide-react";
 import { WaitlistModal } from "@/components/WaitlistModal";
 
 // Mock data for the challenge days
@@ -55,7 +54,7 @@ export function ChallengeClient() {
                             disabled={day.locked}
                             className={`flex items-center gap-2 px-4 py-3 rounded-xl whitespace-nowrap transition-all duration-300 ${
                                 activeDay === day.id 
-                                ? "bg-[var(--primary)]/20 border border-[var(--primary)]/50 text-white shadow-[0_0_20px_-5px_rgba(157,78,221,0.4)]"
+                                ? "bg-[var(--brand-primary)]/20 border border-[var(--brand-primary)]/50 text-white shadow-[0_0_20px_-5px_var(--brand-glow-primary),0.4)]"
                                 : day.locked
                                     ? "bg-white/[0.02] border border-transparent text-zinc-600 cursor-not-allowed"
                                     : "bg-white/[0.05] border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10"
@@ -100,7 +99,7 @@ export function ChallengeClient() {
                             href={currentDayData.worksheetUrl}
                             className="flex-shrink-0 flex items-center gap-2 px-5 py-3 rounded-xl bg-white/[0.05] hover:bg-white/10 border border-white/10 text-white font-medium transition-colors group"
                         >
-                            <FileText className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                            <FileText className="w-4 h-4 text-[var(--brand-secondary-light)] group-hover:scale-110 transition-transform" />
                             Download Worksheet
                             <Download className="w-4 h-4 text-zinc-500 ml-2" />
                         </a>
@@ -113,20 +112,20 @@ export function ChallengeClient() {
                 <div className="sticky top-8 flex flex-col gap-6">
                     
                     {/* VIP Upsell Card */}
-                    <div className="bg-black/60 backdrop-blur-2xl border border-emerald-500/30 rounded-2xl p-6 relative overflow-hidden group shadow-[0_0_30px_rgba(16,185,129,0.1)]">
-                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent pointer-events-none" />
+                    <div className="bg-black/60 backdrop-blur-2xl border border-[var(--brand-secondary)]/30 rounded-2xl p-6 relative overflow-hidden group shadow-[0_0_30px_var(--brand-glow-secondary),0.1)]">
+                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-secondary)]/10 via-transparent to-transparent pointer-events-none" />
                         
                         <div className="relative z-10 flex flex-col items-center text-center">
-                            <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-mono uppercase tracking-widest mb-4 border border-emerald-500/30">
+                            <span className="inline-block px-3 py-1 rounded-full bg-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)] text-[10px] font-mono uppercase tracking-widest mb-4 border border-[var(--brand-secondary)]/30">
                                 Skip The Line
                             </span>
                             
                             <h3 className="text-xl font-bold text-white mb-3 leading-tight">
-                                Want the entire system <br/> <span className="text-emerald-400">right now?</span>
+                                Want the entire system <br/> <span className="text-[var(--brand-secondary-light)]">right now?</span>
                             </h3>
                             
                             <p className="text-sm text-zinc-400 mb-6 leading-relaxed">
-                                Don't wait 3 days. Upgrade to VIP and get instant, lifetime access to the complete Brand Activation Network.
+                                Don&apos;t wait 3 days. Upgrade to VIP and get instant, lifetime access to the complete Brand Activation Network.
                             </p>
                             
                             <div className="w-full space-y-3 mb-6 text-left">
@@ -137,7 +136,7 @@ export function ChallengeClient() {
                                     "Lifetime updates included"
                                 ].map((benefit, i) => (
                                     <div key={i} className="flex items-start gap-2 text-xs text-zinc-300">
-                                        <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                                        <CheckCircle2 className="w-4 h-4 text-[var(--brand-secondary-light)] flex-shrink-0" />
                                         <span>{benefit}</span>
                                     </div>
                                 ))}
@@ -148,14 +147,14 @@ export function ChallengeClient() {
                                     href={stripeLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wider text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]"
+                                    className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold uppercase tracking-wider text-sm transition-all shadow-[0_0_20px_var(--brand-glow-secondary),0.4)] hover:shadow-[0_0_30px_var(--brand-glow-secondary),0.6)]"
                                 >
                                     Upgrade For $497 <ChevronRight className="w-4 h-4" />
                                 </a>
                             ) : (
                                 <button 
                                     onClick={() => setModalOpen(true)}
-                                    className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wider text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]"
+                                    className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold uppercase tracking-wider text-sm transition-all shadow-[0_0_20px_var(--brand-glow-secondary),0.4)] hover:shadow-[0_0_30px_var(--brand-glow-secondary),0.6)]"
                                 >
                                     Upgrade For $497 <ChevronRight className="w-4 h-4" />
                                 </button>

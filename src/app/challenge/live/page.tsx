@@ -1,5 +1,4 @@
 import { ChallengeClient } from "./ChallengeClient";
-import Image from "next/image";
 import Link from "next/link";
 import { Zap } from "lucide-react";
 
@@ -10,11 +9,11 @@ export const metadata = {
 
 export default function ChallengeLiveRoom() {
     return (
-        <div className="min-h-screen bg-[#050505] text-white flex flex-col relative overflow-hidden font-sans selection:bg-[var(--primary)]/30">
+        <div className="min-h-screen bg-[var(--brand-bg)] text-white flex flex-col relative overflow-hidden font-sans selection:bg-[var(--primary)]/30">
             
             {/* Ambient Background Glows */}
             <div className="fixed top-[-20%] left-[-10%] w-[800px] h-[800px] bg-[var(--primary)]/10 rounded-full blur-[150px] pointer-events-none z-0" />
-            <div className="fixed bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[var(--brand-secondary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
             {/* Top Navigation */}
             <header className="relative z-10 flex items-center justify-between px-6 md:px-10 py-5 border-b border-white/5 bg-black/40 backdrop-blur-xl">
@@ -26,8 +25,8 @@ export default function ChallengeLiveRoom() {
                 </Link>
                 
                 <div className="flex items-center gap-3">
-                    <div className="px-3 py-1.5 rounded-full border border-red-500/30 bg-red-500/10 text-red-500 text-xs font-bold tracking-widest uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                        <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                    <div className="px-3 py-1.5 rounded-full border border-[var(--brand-danger)]/30 bg-[var(--brand-danger)]/10 text-[var(--brand-danger)] text-xs font-bold tracking-widest uppercase flex items-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                        <div className="h-2 w-2 rounded-full bg-[var(--brand-danger)] animate-pulse" />
                         Live Event
                     </div>
                 </div>

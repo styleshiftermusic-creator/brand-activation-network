@@ -1,6 +1,6 @@
 import { SiteNav } from "@/components/SiteNav";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { Plus, Minus, Search, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -56,14 +56,14 @@ const FAQS = [
 
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-[#080808] text-white flex flex-col">
+    <div className="min-h-screen bg-[var(--brand-bg)] text-white flex flex-col">
       <SiteNav />
 
       <main className="flex-grow pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-4 block">Knowledge Base</span>
+              <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--brand-primary)] mb-4 block">Knowledge Base</span>
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 font-heading">
                 Questions? <span className="text-zinc-500">Answered.</span>
               </h1>
@@ -86,7 +86,7 @@ export default function FAQPage() {
                         key={i} 
                         className="p-6 md:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all group"
                       >
-                        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[var(--primary)] transition-colors leading-tight">
+                        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[var(--brand-primary)] transition-colors leading-tight">
                           {faq.q}
                         </h3>
                         <p className="text-zinc-400 leading-relaxed font-light">
@@ -101,15 +101,15 @@ export default function FAQPage() {
           </div>
 
           <ScrollReveal delay={0.4}>
-            <div className="mt-20 p-10 rounded-3xl border border-[var(--primary)]/20 bg-gradient-to-br from-[var(--primary)]/5 to-transparent text-center">
-              <MessageCircle className="w-10 h-10 text-[var(--primary)] mx-auto mb-6" />
+            <div className="mt-20 p-10 rounded-3xl border border-[var(--brand-primary)]/20 bg-gradient-to-br from-[var(--brand-primary)]/5 to-transparent text-center">
+              <MessageCircle className="w-10 h-10 text-[var(--brand-primary)] mx-auto mb-6" />
               <h3 className="text-2xl font-bold mb-4">Still have questions?</h3>
               <p className="text-zinc-400 mb-8 max-w-md mx-auto font-light">
                 Our team of architects is ready to help you engineer your path to scale.
               </p>
               <Link 
                 href="/#apply" 
-                className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-[var(--primary)] text-white font-bold hover:bg-[#b06cf0] transition-all shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)]"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-[var(--brand-primary)] text-white font-bold hover:bg-[var(--brand-primary-light)] transition-all shadow-[0_0_30px_-5px_var(--brand-glow-primary),0.5)]"
               >
                 Submit an Application
               </Link>

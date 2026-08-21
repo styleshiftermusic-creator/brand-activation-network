@@ -39,7 +39,7 @@ export function HeroCTA({ stripeLink }: { stripeLink?: string }) {
     return (
       <a
         href={stripeLink}
-        className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
+        className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--brand-primary)] to-[var(--brand-primary-light)] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_var(--brand-glow-primary),0.5)] hover:shadow-[0_0_60px_-5px_var(--brand-glow-primary),0.8)] hover:-translate-y-1 w-full sm:w-auto"
       >
         Apply Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
         <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
@@ -51,7 +51,7 @@ export function HeroCTA({ stripeLink }: { stripeLink?: string }) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--primary)] to-[#c77dff] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_rgba(157,78,221,0.5)] hover:shadow-[0_0_60px_-5px_rgba(157,78,221,0.8)] hover:-translate-y-1 w-full sm:w-auto"
+        className="group relative flex items-center justify-center gap-3 px-10 py-5 bg-gradient-to-r from-[var(--brand-primary)] to-[var(--brand-primary-light)] hover:opacity-90 text-white font-bold text-lg md:text-xl rounded-full transition-all duration-300 shadow-[0_0_40px_-5px_var(--brand-glow-primary),0.5)] hover:shadow-[0_0_60px_-5px_var(--brand-glow-primary),0.8)] hover:-translate-y-1 w-full sm:w-auto"
       >
         Apply Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
         <div className="absolute inset-0 rounded-full border border-white/20 pointer-events-none" />
@@ -69,7 +69,7 @@ export function ModuleCTA({ stripeLink }: { stripeLink?: string }) {
     return (
       <a
         href={stripeLink}
-        className="group flex items-center gap-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-10px_rgba(52,211,153,0.8)] hover:-translate-y-1"
+        className="group flex items-center gap-2 px-10 py-4 bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_var(--brand-glow-secondary),0.6)] hover:shadow-[0_0_60px_-10px_var(--brand-glow-secondary),0.8)] hover:-translate-y-1"
       >
         Get All 7 Modules <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </a>
@@ -80,7 +80,7 @@ export function ModuleCTA({ stripeLink }: { stripeLink?: string }) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="group flex items-center gap-2 px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-10px_rgba(52,211,153,0.8)] hover:-translate-y-1"
+        className="group flex items-center gap-2 px-10 py-4 bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold text-lg rounded-xl transition-all duration-300 shadow-[0_0_40px_-10px_var(--brand-glow-secondary),0.6)] hover:shadow-[0_0_60px_-10px_var(--brand-glow-secondary),0.8)] hover:-translate-y-1"
       >
         Join the Waitlist <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </button>
@@ -97,7 +97,7 @@ export function FinalCTA({ stripeLink }: { stripeLink?: string }) {
     return (
       <a
         href={stripeLink}
-        className="group inline-flex items-center gap-3 px-14 py-5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_80px_-10px_rgba(52,211,153,0.9)] hover:-translate-y-1.5"
+        className="group inline-flex items-center gap-3 px-14 py-5 bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_var(--brand-glow-secondary),0.6)] hover:shadow-[0_0_80px_-10px_var(--brand-glow-secondary),0.9)] hover:-translate-y-1.5"
       >
         Activate Now <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
       </a>
@@ -108,7 +108,7 @@ export function FinalCTA({ stripeLink }: { stripeLink?: string }) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="group inline-flex items-center gap-3 px-14 py-5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_rgba(52,211,153,0.6)] hover:shadow-[0_0_80px_-10px_rgba(52,211,153,0.9)] hover:-translate-y-1.5"
+        className="group inline-flex items-center gap-3 px-14 py-5 bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold text-xl rounded-xl transition-all duration-300 shadow-[0_0_60px_-10px_var(--brand-glow-secondary),0.6)] hover:shadow-[0_0_80px_-10px_var(--brand-glow-secondary),0.9)] hover:-translate-y-1.5"
       >
         Join the Waitlist <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
       </button>

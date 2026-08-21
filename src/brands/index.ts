@@ -1,0 +1,1 @@
+export { banConfig } from "./ban";

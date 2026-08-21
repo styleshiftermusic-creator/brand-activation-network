@@ -10,11 +10,11 @@ const DATA_SOURCES = [
         title: "Pledge Loan Calculator",
         format: "Spreadsheet",
         size: "2.5 KB",
-        icon: <FileText className="w-5 h-5 text-emerald-400" />,
-        bgClass: "bg-emerald-500/10",
-        hoverText: "group-hover:text-emerald-400",
-        hoverBorder: "group-hover:border-emerald-500/20",
-        hoverBg: "group-hover:bg-emerald-500/10",
+        icon: <FileText className="w-5 h-5 text-[var(--brand-secondary-light)]" />,
+        bgClass: "bg-[var(--brand-secondary)]/10",
+        hoverText: "group-hover:text-[var(--brand-secondary-light)]",
+        hoverBorder: "group-hover:border-[var(--brand-secondary)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-secondary)]/10",
         href: "/api/download/blueprint/pledge-loan-calculator.md",
         fileName: "Pledge-Loan-Calculator.md",
     },
@@ -23,11 +23,11 @@ const DATA_SOURCES = [
         title: "Business Funding Checklist",
         format: "PDF Document",
         size: "3.1 KB",
-        icon: <FileText className="w-5 h-5 text-blue-400" />,
-        bgClass: "bg-blue-500/10",
-        hoverText: "group-hover:text-blue-400",
-        hoverBorder: "group-hover:border-blue-500/20",
-        hoverBg: "group-hover:bg-blue-500/10",
+        icon: <FileText className="w-5 h-5 text-[var(--brand-info)]" />,
+        bgClass: "bg-[var(--brand-info)]/10",
+        hoverText: "group-hover:text-[var(--brand-info)]",
+        hoverBorder: "group-hover:border-[var(--brand-info)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-info)]/10",
         href: "/api/download/blueprint/business-funding-checklist.md",
         fileName: "Business-Funding-Checklist.md",
     },
@@ -36,11 +36,11 @@ const DATA_SOURCES = [
         title: "OPA Marketing Playbook",
         format: "Notion System",
         size: "4.2 KB",
-        icon: <Database className="w-5 h-5 text-amber-400" />,
-        bgClass: "bg-amber-500/10",
-        hoverText: "group-hover:text-amber-400",
-        hoverBorder: "group-hover:border-amber-500/20",
-        hoverBg: "group-hover:bg-amber-500/10",
+        icon: <Database className="w-5 h-5 text-[var(--brand-warning)]" />,
+        bgClass: "bg-[var(--brand-warning)]/10",
+        hoverText: "group-hover:text-[var(--brand-warning)]",
+        hoverBorder: "group-hover:border-[var(--brand-warning)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-warning)]/10",
         href: "/api/download/blueprint/opa-marketing-playbook.md",
         fileName: "OPA-Marketing-Playbook.md",
     },
@@ -49,11 +49,11 @@ const DATA_SOURCES = [
         title: "High-Ticket Sales Scripts",
         format: "PDF Document",
         size: "4.9 KB",
-        icon: <FileText className="w-5 h-5 text-purple-400" />,
-        bgClass: "bg-purple-500/10",
-        hoverText: "group-hover:text-purple-400",
-        hoverBorder: "group-hover:border-purple-500/20",
-        hoverBg: "group-hover:bg-purple-500/10",
+        icon: <FileText className="w-5 h-5 text-[var(--brand-primary)]" />,
+        bgClass: "bg-[var(--brand-primary)]/10",
+        hoverText: "group-hover:text-[var(--brand-primary)]",
+        hoverBorder: "group-hover:border-[var(--brand-primary)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-primary)]/10",
         href: "/api/download/blueprint/high-ticket-sales-scripts.md",
         fileName: "High-Ticket-Sales-Scripts.md",
     },
@@ -62,11 +62,11 @@ const DATA_SOURCES = [
         title: "Investment Blueprint Template",
         format: "Notion Template",
         size: "4.0 KB",
-        icon: <Database className="w-5 h-5 text-indigo-400" />,
-        bgClass: "bg-indigo-500/10",
-        hoverText: "group-hover:text-indigo-400",
-        hoverBorder: "group-hover:border-indigo-500/20",
-        hoverBg: "group-hover:bg-indigo-500/10",
+        icon: <Database className="w-5 h-5 text-[var(--brand-primary)]" />,
+        bgClass: "bg-[var(--brand-primary)]/10",
+        hoverText: "group-hover:text-[var(--brand-primary)]",
+        hoverBorder: "group-hover:border-[var(--brand-primary)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-primary)]/10",
         href: "/api/download/blueprint/investment-blueprint-template.md",
         fileName: "Investment-Blueprint-Template.md",
     },
@@ -75,11 +75,11 @@ const DATA_SOURCES = [
         title: "AI Agent Prompt Library",
         format: "JSON / TXT",
         size: "5.3 KB",
-        icon: <Bot className="w-5 h-5 text-rose-400" />,
-        bgClass: "bg-rose-500/10",
-        hoverText: "group-hover:text-rose-400",
-        hoverBorder: "group-hover:border-rose-500/20",
-        hoverBg: "group-hover:bg-rose-500/10",
+        icon: <Bot className="w-5 h-5 text-[var(--brand-danger)]" />,
+        bgClass: "bg-[var(--brand-danger)]/10",
+        hoverText: "group-hover:text-[var(--brand-danger)]",
+        hoverBorder: "group-hover:border-[var(--brand-danger)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-danger)]/10",
         href: "/api/download/blueprint/ai-agent-prompt-library.json",
         fileName: "AI-Agent-Prompt-Library.json",
     },
@@ -88,11 +88,11 @@ const DATA_SOURCES = [
         title: "BAN Credit Sweep Blueprint",
         format: "HTML Blueprint",
         size: "12.8 KB",
-        icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
-        bgClass: "bg-emerald-500/10",
-        hoverText: "group-hover:text-emerald-400",
-        hoverBorder: "group-hover:border-emerald-500/20",
-        hoverBg: "group-hover:bg-emerald-500/10",
+        icon: <ShieldCheck className="w-5 h-5 text-[var(--brand-secondary-light)]" />,
+        bgClass: "bg-[var(--brand-secondary)]/10",
+        hoverText: "group-hover:text-[var(--brand-secondary-light)]",
+        hoverBorder: "group-hover:border-[var(--brand-secondary)]/20",
+        hoverBg: "group-hover:bg-[var(--brand-secondary)]/10",
         href: "/api/download/playbook",
         fileName: "BAN-Credit-Sweep-Blueprint.html",
     }
@@ -109,7 +109,7 @@ function downloadFile(url: string, fileName: string) {
 
 export default function DataSourcesPage() {
     return (
-        <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--brand-bg)] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
             <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-[var(--primary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
             <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-blue-900/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
@@ -169,16 +169,16 @@ export default function DataSourcesPage() {
                     </div>
 
                     {/* BAN Credit Unions Live Engine Banner */}
-                    <div className="mb-8 p-6 rounded-2xl border border-emerald-500/30 bg-black/40 backdrop-blur-xl relative overflow-hidden group hover:border-emerald-500/50 transition-all shadow-[0_0_30px_-10px_rgba(16,185,129,0.15)]">
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    <div className="mb-8 p-6 rounded-2xl border border-[var(--brand-secondary)]/30 bg-black/40 backdrop-blur-xl relative overflow-hidden group hover:border-[var(--brand-secondary)]/50 transition-all shadow-[0_0_30px_-10px_var(--brand-glow-secondary)0.15)]">
+                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--brand-secondary)]/10 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
                         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                             <div className="flex items-start gap-4">
-                                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                <div className="p-3.5 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary-light)]">
                                     <Landmark className="w-7 h-7" />
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase font-semibold">Live Interactive Tool</span>
+                                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)] border border-[var(--brand-secondary)]/30 uppercase font-semibold">Live Interactive Tool</span>
                                         <span className="text-xs font-mono text-zinc-500 uppercase">Interactive Software</span>
                                     </div>
                                     <h3 className="text-xl font-bold text-white tracking-tight">BAN Credit Unions Database App</h3>
@@ -190,7 +190,7 @@ export default function DataSourcesPage() {
 
                             <Link
                                 href="/dashboard/credit-unions"
-                                className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs uppercase tracking-wider font-bold transition-all duration-300 shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:shadow-[0_0_35px_rgba(16,185,129,0.5)] flex items-center gap-2 whitespace-nowrap flex-shrink-0"
+                                className="px-6 py-3 rounded-xl bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-mono text-xs uppercase tracking-wider font-bold transition-all duration-300 shadow-[0_0_25px_var(--brand-glow-secondary)0.3)] hover:shadow-[0_0_35px_var(--brand-glow-secondary)0.5)] flex items-center gap-2 whitespace-nowrap flex-shrink-0"
                             >
                                 <span>Launch App</span>
                                 <ArrowRight className="w-4 h-4" />

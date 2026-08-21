@@ -34,7 +34,7 @@ export function MetricChart({
                         <XAxis dataKey="time" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
                         <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#09090b', borderColor: '#27272a', borderRadius: '8px' }}
+                            contentStyle={{ backgroundColor: 'var(--brand-bg)', borderColor: '#27272a', borderRadius: '8px' }}
                             itemStyle={{ color: '#fff' }}
                         />
                         <Area type="monotone" dataKey="load" stroke="var(--primary)" fillOpacity={1} fill="url(#colorLoad)" strokeWidth={2} />

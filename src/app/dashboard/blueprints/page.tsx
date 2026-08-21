@@ -128,11 +128,11 @@ const BLUEPRINTS = [
 ];
 
 const COLOR_MAP: Record<string, { bg: string; text: string; border: string; glow: string }> = {
-    emerald: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/30", glow: "shadow-[0_0_20px_rgba(16,185,129,0.15)]" },
-    blue: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/30", glow: "shadow-[0_0_20px_rgba(59,130,246,0.15)]" },
-    amber: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/30", glow: "shadow-[0_0_20px_rgba(245,158,11,0.15)]" },
-    purple: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/30", glow: "shadow-[0_0_20px_rgba(168,85,247,0.15)]" },
-    indigo: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/30", glow: "shadow-[0_0_20px_rgba(99,102,241,0.15)]" },
+    emerald: { bg: "bg-[var(--brand-secondary)]/10", text: "text-[var(--brand-secondary-light)]", border: "border-[var(--brand-secondary)]/30", glow: "shadow-[0_0_20px_var(--brand-glow-secondary)0.15)]" },
+    blue: { bg: "bg-[var(--brand-info)]/10", text: "text-[var(--brand-info)]", border: "border-[var(--brand-info)]/30", glow: "shadow-[0_0_20px_rgba(59,130,246,0.15)]" },
+    amber: { bg: "bg-[var(--brand-warning)]/10", text: "text-[var(--brand-warning)]", border: "border-[var(--brand-warning)]/30", glow: "shadow-[0_0_20px_rgba(245,158,11,0.15)]" },
+    purple: { bg: "bg-[var(--brand-primary)]/10", text: "text-[var(--brand-primary)]", border: "border-[var(--brand-primary)]/30", glow: "shadow-[0_0_20px_rgba(168,85,247,0.15)]" },
+    indigo: { bg: "bg-[var(--brand-primary)]/10", text: "text-[var(--brand-primary)]", border: "border-[var(--brand-primary)]/30", glow: "shadow-[0_0_20px_rgba(99,102,241,0.15)]" },
 };
 
 function downloadFile(url: string, fileName: string) {
@@ -180,7 +180,7 @@ export default function BlueprintsPage() {
 
 
     return (
-        <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--brand-bg)] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
             {/* Deep Ambient Glows */}
             <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-[var(--primary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
             <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-emerald-900/5 rounded-full blur-[150px] pointer-events-none z-0" />
@@ -324,7 +324,7 @@ export default function BlueprintsPage() {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-6 lg:p-8 overflow-hidden"
+                            className="relative w-full max-w-lg bg-[var(--brand-bg)] border border-white/10 rounded-2xl shadow-2xl p-6 lg:p-8 overflow-hidden"
                         >
                             <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-[80px] pointer-events-none" />
                             

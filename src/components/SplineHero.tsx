@@ -17,18 +17,18 @@ export function SplineHero() {
       </div>
 
       {/* Ambient glows */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-black pointer-events-none z-0" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/20 blur-[100px] rounded-full z-0" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-secondary)]/10 via-transparent to-black pointer-events-none z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[var(--brand-secondary)]/20 blur-[100px] rounded-full z-0" />
 
       {/* Overlay Text */}
       <div className="relative z-20 pointer-events-none flex flex-col items-center justify-center text-center p-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-[10px] font-mono uppercase tracking-widest mb-6 backdrop-blur-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(16,185,129,1)]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[var(--brand-secondary-light)] text-[10px] font-mono uppercase tracking-widest mb-6 backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-secondary-light)] animate-pulse shadow-[0_0_10px_var(--brand-glow-secondary),1)]" />
               Neural Architecture Active
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter text-white mb-4 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
               Welcome to the <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-white to-emerald-400">Network.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand-secondary-light)] via-white to-[var(--brand-secondary-light)]">Network.</span>
           </h2>
           <p className="text-sm md:text-base text-zinc-400 font-mono max-w-lg mx-auto">
               You are now viewing your active data feed. Complete your directives to unlock new assets.

@@ -3,16 +3,24 @@
  * Designed for Resend delivery with inline styles for maximum email client compatibility.
  */
 
-const BRAND = {
-    name: "Brand Activation Network",
-    color: "#9d4edd",
-    emerald: "#10b981",
-    bg: "#0a0a0a",
-    text: "#d4d4d8",
-    muted: "#71717a",
-    from: "The Master Blueprint <onboarding@brandactivationnetwork.com>",
-    domain: "https://brandactivationnetwork.com",
-};
+import { getBrandConfig } from "@/lib/brand";
+
+const brand = getBrandConfig();
+
+/**
+ * Backward-compatible BRAND export.
+ * Used by API routes (e.g., Stripe webhook) that import { BRAND } for email sender identity.
+ */
+export const BRAND = {
+  name:    brand.name,
+  color:   brand.tokens.primary,
+  emerald: brand.tokens.secondary,
+  bg:      brand.tokens.background,
+  text:    "#d4d4d8",
+  muted:   brand.tokens.muted,
+  from:    brand.senderEmail,
+  domain:  `https://${brand.domain}`,
+} as const;
 
 // ─── Shared Layout ────────────────────────────────────────────────────────────
 
@@ -21,19 +29,19 @@ function emailWrapper(content: string): string {
     <!DOCTYPE html>
     <html lang="en">
     <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-    <body style="margin:0;padding:0;background-color:${BRAND.bg};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:${BRAND.text};">
+    <body style="margin:0;padding:0;background-color:${brand.tokens.background};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:${"#d4d4d8"};">
         <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
             <!-- Logo Header -->
             <div style="text-align:center;margin-bottom:32px;">
-                <img src="${BRAND.domain}/logo.png" alt="Brand Activation Network" width="200" style="height:auto;opacity:0.8;" />
+                <img src="${`https://${brand.domain}`}/logo.png" alt="Brand Activation Network" width="200" style="height:auto;opacity:0.8;" />
             </div>
             ${content}
             <!-- Footer -->
             <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;">
-                <p style="font-size:11px;color:${BRAND.muted};margin:0;line-height:1.8;">
+                <p style="font-size:11px;color:${brand.tokens.muted};margin:0;line-height:1.8;">
                     © ${new Date().getFullYear()} Brand Activation Network<br/>
                     You're receiving this because you joined the BAN ecosystem.<br/>
-                    <a href="${BRAND.domain}" style="color:${BRAND.color};text-decoration:none;">brandactivationnetwork.com</a>
+                    <a href="${`https://${brand.domain}`}" style="color:${brand.tokens.primary};text-decoration:none;">brandactivationnetwork.com</a>
                 </p>
             </div>
         </div>
@@ -52,16 +60,16 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
                 <h1 style="margin:0 0 8px;font-size:28px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">
                     Welcome, ${firstName}.
                 </h1>
-                <p style="margin:0;font-size:12px;text-transform:uppercase;letter-spacing:3px;color:${BRAND.color};font-weight:600;">
+                <p style="margin:0;font-size:12px;text-transform:uppercase;letter-spacing:3px;color:${brand.tokens.primary};font-weight:600;">
                     Your Activation Has Begun
                 </p>
             </div>
 
-            <p style="font-size:15px;line-height:1.8;color:${BRAND.text};margin-bottom:24px;">
+            <p style="font-size:15px;line-height:1.8;color:${"#d4d4d8"};margin-bottom:24px;">
                 You now have <strong style="color:#ffffff;">full access</strong> to all 7 modules, every blueprint, calculator, sales script, and the complete AI Prompt Library.
             </p>
 
-            <p style="font-size:15px;line-height:1.8;color:${BRAND.text};margin-bottom:24px;">
+            <p style="font-size:15px;line-height:1.8;color:${"#d4d4d8"};margin-bottom:24px;">
                 Here's your recommended launch sequence:
             </p>
 
@@ -74,11 +82,11 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
                 ].map(s => `
                     <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-start;">
                         <div style="flex-shrink:0;width:36px;height:36px;border-radius:10px;background:rgba(157,78,221,0.1);border:1px solid rgba(157,78,221,0.3);display:flex;align-items:center;justify-content:center;">
-                            <span style="font-size:13px;font-weight:700;color:${BRAND.color};font-family:monospace;">${s.num}</span>
+                            <span style="font-size:13px;font-weight:700;color:${brand.tokens.primary};font-family:monospace;">${s.num}</span>
                         </div>
                         <div>
                             <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;">${s.title}</div>
-                            <div style="font-size:13px;color:${BRAND.muted};line-height:1.6;">${s.desc}</div>
+                            <div style="font-size:13px;color:${brand.tokens.muted};line-height:1.6;">${s.desc}</div>
                         </div>
                     </div>
                 `).join("")}
@@ -86,12 +94,12 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
 
             <!-- CTA Button -->
             <div style="text-align:center;margin:32px 0;">
-                <a href="${BRAND.domain}/dashboard" style="display:inline-block;padding:16px 40px;background:${BRAND.color};color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;border-radius:12px;letter-spacing:0.5px;text-transform:uppercase;">
+                <a href="${`https://${brand.domain}`}/dashboard" style="display:inline-block;padding:16px 40px;background:${brand.tokens.primary};color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;border-radius:12px;letter-spacing:0.5px;text-transform:uppercase;">
                     Open Mission Control →
                 </a>
             </div>
 
-            <p style="font-size:13px;color:${BRAND.muted};text-align:center;">
+            <p style="font-size:13px;color:${brand.tokens.muted};text-align:center;">
                 Questions? Reply directly to this email — we read every message.
             </p>
         `),
@@ -116,12 +124,12 @@ export function moduleCompleteEmail(name: string, moduleId: string, moduleTitle:
                 <h1 style="margin:0 0 8px;font-size:24px;font-weight:800;color:#ffffff;">
                     ${isLastModule ? "You've Completed the Master Blueprint!" : `Module ${moduleId.replace("M-0", "")} Complete`}
                 </h1>
-                <p style="margin:0;font-size:13px;color:${BRAND.emerald};font-weight:600;text-transform:uppercase;letter-spacing:2px;">
+                <p style="margin:0;font-size:13px;color:${brand.tokens.secondary};font-weight:600;text-transform:uppercase;letter-spacing:2px;">
                     ${moduleTitle}
                 </p>
             </div>
 
-            <p style="font-size:15px;line-height:1.8;color:${BRAND.text};margin-bottom:24px;">
+            <p style="font-size:15px;line-height:1.8;color:${"#d4d4d8"};margin-bottom:24px;">
                 ${firstName}, you just locked in another level of the system. ${isLastModule
                     ? "You've completed every module in the Master Blueprint. You now have the complete playbook for funding, sales, and AI-powered scaling."
                     : "Keep the momentum going — your next module is already unlocked and waiting."
@@ -130,18 +138,18 @@ export function moduleCompleteEmail(name: string, moduleId: string, moduleTitle:
 
             ${!isLastModule ? `
                 <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:24px;margin-bottom:24px;">
-                    <p style="margin:0 0 4px;font-size:11px;color:${BRAND.muted};text-transform:uppercase;letter-spacing:2px;">Next Up</p>
+                    <p style="margin:0 0 4px;font-size:11px;color:${brand.tokens.muted};text-transform:uppercase;letter-spacing:2px;">Next Up</p>
                     <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;">${nextModuleTitle}</p>
                 </div>
             ` : `
                 <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:24px;margin-bottom:24px;">
-                    <p style="margin:0 0 4px;font-size:11px;color:${BRAND.muted};text-transform:uppercase;letter-spacing:2px;">Achievement Unlocked</p>
-                    <p style="margin:0;font-size:18px;font-weight:700;color:#f59e0b;">Brand Activation Architect 🏅</p>
+                    <p style="margin:0 0 4px;font-size:11px;color:${brand.tokens.muted};text-transform:uppercase;letter-spacing:2px;">Achievement Unlocked</p>
+                    <p style="margin:0;font-size:18px;font-weight:700;color:${brand.tokens.warning};">Brand Activation Architect 🏅</p>
                 </div>
             `}
 
             <div style="text-align:center;margin:32px 0;">
-                <a href="${BRAND.domain}/dashboard/master-course" style="display:inline-block;padding:16px 40px;background:${BRAND.emerald};color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;border-radius:12px;letter-spacing:0.5px;text-transform:uppercase;">
+                <a href="${`https://${brand.domain}`}/dashboard/master-course" style="display:inline-block;padding:16px 40px;background:${brand.tokens.secondary};color:#ffffff;font-weight:700;font-size:14px;text-decoration:none;border-radius:12px;letter-spacing:0.5px;text-transform:uppercase;">
                     ${isLastModule ? "View Your Progress" : "Continue Learning →"}
                 </a>
             </div>
@@ -186,4 +194,4 @@ export function adminLeadEmail(email: string, source: string): { subject: string
     };
 }
 
-export { BRAND };
+export { brand };

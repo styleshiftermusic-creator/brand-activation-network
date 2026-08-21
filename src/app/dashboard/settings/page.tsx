@@ -13,7 +13,6 @@ export default function SettingsPage() {
     const [profileStatus, setProfileStatus] = useState<Status>("idle");
     const [profileMsg, setProfileMsg] = useState("");
 
-    const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordStatus, setPasswordStatus] = useState<Status>("idle");
@@ -64,7 +63,6 @@ export default function SettingsPage() {
             if (error) throw error;
             setPasswordStatus("success");
             setPasswordMsg("Password changed successfully.");
-            setCurrentPassword("");
             setNewPassword("");
             setConfirmPassword("");
         } catch (err) {
@@ -74,7 +72,7 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--brand-bg)] flex text-zinc-300 font-sans selection:bg-[var(--primary)]/30 relative overflow-hidden">
             <div className="fixed top-0 right-1/4 w-[600px] h-[600px] bg-[var(--primary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
             <Sidebar />
 
@@ -134,7 +132,7 @@ export default function SettingsPage() {
                                 </div>
 
                                 {profileMsg && (
-                                    <div className={`flex items-center gap-2 text-xs font-mono px-3 py-2 rounded-lg ${profileStatus === "success" ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" : "bg-red-500/10 border border-red-500/20 text-red-400"}`}>
+                                    <div className={`flex items-center gap-2 text-xs font-mono px-3 py-2 rounded-lg ${profileStatus === "success" ? "bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)]" : "bg-[var(--brand-danger)]/10 border border-[var(--brand-danger)]/20 text-[var(--brand-danger)]"}`}>
                                         {profileStatus === "success" ? <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" /> : <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />}
                                         {profileMsg}
                                     </div>
@@ -155,8 +153,8 @@ export default function SettingsPage() {
                         <div className="bg-black/40 backdrop-blur-xl border border-white/8 rounded-2xl p-6 relative overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
                             <div className="flex items-center gap-3 mb-6 relative z-10">
-                                <div className="h-9 w-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                                    <Lock className="h-4 w-4 text-amber-400" />
+                                <div className="h-9 w-9 rounded-xl bg-[var(--brand-warning)]/10 border border-[var(--brand-warning)]/20 flex items-center justify-center">
+                                    <Lock className="h-4 w-4 text-[var(--brand-warning)]" />
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-semibold text-white tracking-tight">Change Password</h2>
@@ -179,13 +177,13 @@ export default function SettingsPage() {
                                             value={field.value}
                                             onChange={(e) => field.set(e.target.value)}
                                             required
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-amber-500/40 focus:bg-white/8 transition-all text-sm"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[var(--brand-warning)]/40 focus:bg-white/8 transition-all text-sm"
                                         />
                                     </div>
                                 ))}
 
                                 {passwordMsg && (
-                                    <div className={`flex items-center gap-2 text-xs font-mono px-3 py-2 rounded-lg ${passwordStatus === "success" ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" : "bg-red-500/10 border border-red-500/20 text-red-400"}`}>
+                                    <div className={`flex items-center gap-2 text-xs font-mono px-3 py-2 rounded-lg ${passwordStatus === "success" ? "bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)]" : "bg-[var(--brand-danger)]/10 border border-[var(--brand-danger)]/20 text-[var(--brand-danger)]"}`}>
                                         {passwordStatus === "success" ? <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" /> : <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />}
                                         {passwordMsg}
                                     </div>
@@ -194,7 +192,7 @@ export default function SettingsPage() {
                                 <button
                                     type="submit"
                                     disabled={passwordStatus === "loading"}
-                                    className="self-start flex items-center gap-2 px-5 py-2.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-xl text-sm font-medium hover:bg-amber-500/20 hover:border-amber-500/50 transition-all duration-300 disabled:opacity-50"
+                                    className="self-start flex items-center gap-2 px-5 py-2.5 bg-[var(--brand-warning)]/10 border border-[var(--brand-warning)]/30 text-[var(--brand-warning)] rounded-xl text-sm font-medium hover:bg-[var(--brand-warning)]/20 hover:border-[var(--brand-warning)]/50 transition-all duration-300 disabled:opacity-50"
                                 >
                                     {passwordStatus === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
                                     Update Password

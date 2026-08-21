@@ -77,15 +77,15 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative w-full max-w-4xl bg-[#080808] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+                        className="relative w-full max-w-4xl bg-[var(--brand-bg)] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
                     >
                         {/* Ambient Glows */}
-                        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
+                        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--brand-secondary)]/10 rounded-full blur-[120px] pointer-events-none" />
                         <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/10 rounded-full blur-[120px] pointer-events-none" />
 
                         <div className="flex items-center justify-between p-4 border-b border-white/5 relative z-10 bg-black/20">
                             <div className="flex items-center gap-2 text-zinc-400">
-                                <Award className="w-5 h-5 text-emerald-400" />
+                                <Award className="w-5 h-5 text-[var(--brand-secondary-light)]" />
                                 <span className="text-sm font-medium tracking-tight">Official Certification</span>
                             </div>
                             <button
@@ -100,14 +100,14 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                         <div className="p-6 md:p-10 relative z-10 flex flex-col items-center justify-center bg-[url('/noise.png')]">
                             
                             {/* The Certificate Itself */}
-                            <div id="certificate-node" className="relative w-full max-w-3xl aspect-[1.414/1] bg-[#0a0a0a] border border-white/10 p-8 md:p-16 flex flex-col items-center text-center overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-lg">
+                            <div id="certificate-node" className="relative w-full max-w-3xl aspect-[1.414/1] bg-[var(--brand-bg)] border border-white/10 p-8 md:p-16 flex flex-col items-center text-center overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-lg">
                                 {/* Inner decorative border */}
                                 <div className="absolute inset-3 md:inset-4 border border-white/[0.03] pointer-events-none" />
-                                <div className="absolute inset-4 md:inset-6 border border-emerald-500/10 pointer-events-none" />
+                                <div className="absolute inset-4 md:inset-6 border border-[var(--brand-secondary)]/10 pointer-events-none" />
                                 
                                 {/* Background Watermark */}
                                 <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-                                    <Award className="w-96 h-96 text-emerald-500" />
+                                    <Award className="w-96 h-96 text-[var(--brand-secondary)]" />
                                 </div>
 
                                 <div className="relative z-10 flex flex-col items-center w-full h-full justify-between py-4">
@@ -115,7 +115,7 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                                         <div className="text-[10px] md:text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase">
                                             Certificate of Completion
                                         </div>
-                                        <div className="w-16 h-px bg-emerald-500/50 mx-auto" />
+                                        <div className="w-16 h-px bg-[var(--brand-secondary)]/50 mx-auto" />
                                     </div>
 
                                     <div className="space-y-6 md:space-y-10 w-full">
@@ -129,7 +129,7 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                                             has successfully completed all requirements, technical assessments, and strategic 
                                             deployments for the core curriculum of
                                         </p>
-                                        <h3 className="text-xl md:text-2xl font-bold tracking-widest text-emerald-400 uppercase">
+                                        <h3 className="text-xl md:text-2xl font-bold tracking-widest text-[var(--brand-secondary-light)] uppercase">
                                             The Master Blueprint
                                         </h3>
                                     </div>
@@ -144,9 +144,9 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                                         
                                         {/* Seal */}
                                         <div className="relative flex items-center justify-center">
-                                            <div className="absolute w-16 h-16 md:w-20 md:h-20 bg-emerald-500/20 rounded-full blur-md" />
-                                            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-emerald-500/50 bg-black flex items-center justify-center relative z-10">
-                                                <Award className="w-6 h-6 md:w-8 md:h-8 text-emerald-400" />
+                                            <div className="absolute w-16 h-16 md:w-20 md:h-20 bg-[var(--brand-secondary)]/20 rounded-full blur-md" />
+                                            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-[var(--brand-secondary)]/50 bg-black flex items-center justify-center relative z-10">
+                                                <Award className="w-6 h-6 md:w-8 md:h-8 text-[var(--brand-secondary-light)]" />
                                             </div>
                                         </div>
 
@@ -176,7 +176,7 @@ export function CertificateModal({ isOpen, onClose, studentName = "Master Studen
                                     // For now, we'll provide a placeholder alert or trigger a browser print
                                     window.print();
                                 }}
-                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-[0_0_20px_var(--brand-glow-secondary)0.3)]"
                             >
                                 <Download className="w-4 h-4" /> Save as PDF
                             </button>

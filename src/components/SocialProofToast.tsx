@@ -97,7 +97,7 @@ export function SocialProofToast({
 
                         <div className="flex items-start gap-3">
                             {/* Avatar */}
-                            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-emerald-500 flex items-center justify-center text-[11px] font-bold text-white shadow-[0_0_12px_rgba(157,78,221,0.3)]">
+                            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-[var(--brand-primary)] to-[var(--brand-secondary)] flex items-center justify-center text-[11px] font-bold text-white shadow-[0_0_12px_var(--brand-glow-primary),0.3)]">
                                 {message.name.split(" ").map(n => n[0]).join("")}
                             </div>
 
@@ -108,7 +108,7 @@ export function SocialProofToast({
                                     <span className="text-zinc-400">{message.action}</span>
                                 </p>
                                 <p className="text-[11px] text-zinc-600 mt-1 flex items-center gap-1.5">
-                                    <Zap className="w-3 h-3 text-emerald-500/60 fill-current" />
+                                    <Zap className="w-3 h-3 text-[var(--brand-secondary)]/60 fill-current" />
                                     {message.location} · {message.time}
                                 </p>
                             </div>

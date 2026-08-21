@@ -3,7 +3,7 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
-import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, Loader2, ChevronLeft, ChevronRight, Image as ImageIcon, Zap, Landmark, ExternalLink, Sparkles } from "lucide-react";
+import { Play, Pause, Download, Lock, CheckCircle2, FileText, BookOpen, Brain, ChevronLeft, ChevronRight, Image as ImageIcon, Landmark, ExternalLink, Sparkles } from "lucide-react";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -298,21 +298,21 @@ export default function MasterCoursePage() {
 
     if (isLoadingContent || modules.length === 0) {
         return (
-            <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-emerald-500/30 relative overflow-hidden">
-                <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
+            <div className="min-h-screen bg-[var(--brand-bg)] flex text-zinc-300 font-sans selection:bg-[var(--brand-secondary)]/30 relative overflow-hidden">
+                <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-[var(--brand-secondary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
                 <Sidebar />
                 <main className="flex-1 p-6 lg:p-10 lg:pl-12 overflow-y-auto z-10 flex flex-col lg:flex-row gap-8">
                     {/* LEFT PANE SKELETON */}
                     <div className="flex-1 flex flex-col animate-pulse">
                         <div className="mb-6 border-b border-white/10 pb-4">
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="h-5 w-20 bg-emerald-500/10 rounded" />
+                                <div className="h-5 w-20 bg-[var(--brand-secondary)]/10 rounded" />
                                 <div className="h-4 w-40 bg-white/5 rounded hidden sm:block" />
                             </div>
                             <div className="h-8 w-72 bg-white/5 rounded" />
                         </div>
                         <div className="w-full aspect-video bg-black/40 backdrop-blur-2xl rounded-xl mb-8 border border-white/10 flex items-center justify-center">
-                            <div className="h-20 w-20 rounded-full bg-emerald-500/10 border border-emerald-500/30" />
+                            <div className="h-20 w-20 rounded-full bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30" />
                         </div>
                         <div className="flex gap-1 mb-6">
                             {[1, 2, 3].map(i => <div key={i} className="h-10 flex-1 bg-white/5 rounded-lg" />)}
@@ -327,7 +327,7 @@ export default function MasterCoursePage() {
                         <div className="space-y-2">
                             {[1, 2, 3, 4, 5, 6, 7].map(i => (
                                 <div key={i} className="p-4 rounded-xl bg-black/40 border border-white/5 flex items-center gap-4">
-                                    <div className="h-10 w-10 rounded-lg bg-emerald-500/10" />
+                                    <div className="h-10 w-10 rounded-lg bg-[var(--brand-secondary)]/10" />
                                     <div className="flex-1 space-y-2">
                                         <div className="h-4 w-32 bg-white/5 rounded" />
                                         <div className="h-3 w-20 bg-white/5 rounded" />
@@ -342,9 +342,9 @@ export default function MasterCoursePage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#050505] flex text-zinc-300 font-sans selection:bg-emerald-500/30 relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--brand-bg)] flex text-zinc-300 font-sans selection:bg-[var(--brand-secondary)]/30 relative overflow-hidden">
             {/* Deep Ambient Glows - Emerald color for wealth/finance theme */}
-            <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
+            <div className="fixed top-0 left-1/4 w-[800px] h-[800px] bg-[var(--brand-secondary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
             <Sidebar />
 
@@ -355,7 +355,7 @@ export default function MasterCoursePage() {
                     <header className="mb-6 border-b border-white/10 pb-4">
                         <div className="flex items-center justify-between gap-3 mb-2">
                             <div className="flex items-center gap-3">
-                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 tracking-widest uppercase shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]">
+                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary-light)] tracking-widest uppercase shadow-[0_0_15px_-3px_var(--brand-glow-secondary)0.3)]">
                                     Module {activeModule.id.replace('M-', '')}
                                 </span>
                                 <span className="text-xs font-mono text-zinc-500 tracking-wider hidden sm:block">| FOUNDATIONAL PROTOCOL</span>
@@ -369,16 +369,16 @@ export default function MasterCoursePage() {
                                             title={m.title}
                                             className={`h-1.5 w-4 rounded-full transition-all duration-500 ${
                                                 m.status === 'COMPLETED'
-                                                    ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]'
+                                                    ? 'bg-[var(--brand-secondary)] shadow-[0_0_6px_var(--brand-glow-secondary)0.7)]'
                                                     : m.id === activeModuleId
-                                                        ? 'bg-emerald-500/40 w-6'
+                                                        ? 'bg-[var(--brand-secondary)]/40 w-6'
                                                         : 'bg-white/10'
                                             }`}
                                         />
                                     ))}
                                 </div>
                                 <span className="text-[10px] font-mono text-zinc-500 tabular-nums">
-                                    <span className="text-emerald-400 font-bold">{modules.filter(m => m.status === 'COMPLETED').length}</span>
+                                    <span className="text-[var(--brand-secondary-light)] font-bold">{modules.filter(m => m.status === 'COMPLETED').length}</span>
                                     <span className="text-zinc-600"> / {modules.length}</span>
                                 </span>
                             </div>
@@ -401,7 +401,7 @@ export default function MasterCoursePage() {
                                         disabled={isLocked}
                                         className={`flex-shrink-0 px-4 py-2.5 rounded-lg text-xs font-mono transition-all duration-300 flex items-center gap-2 ${
                                             isSelected 
-                                                ? "bg-emerald-500 text-black font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)]" 
+                                                ? "bg-[var(--brand-secondary)] text-black font-bold shadow-[0_0_15px_var(--brand-glow-secondary)0.4)]" 
                                                 : isLocked 
                                                     ? "opacity-30 grayscale cursor-not-allowed" 
                                                     : "text-zinc-400 hover:text-white bg-white/5"
@@ -472,7 +472,7 @@ export default function MasterCoursePage() {
                                 <>
                                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-black to-black z-0" />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center z-10 gap-3">
-                                        <ImageIcon className="w-12 h-12 text-emerald-500/30" />
+                                        <ImageIcon className="w-12 h-12 text-[var(--brand-secondary)]/30" />
                                         <p className="text-xs font-mono text-zinc-600 tracking-wider uppercase">Slide visuals loading</p>
                                     </div>
                                 </>
@@ -481,7 +481,7 @@ export default function MasterCoursePage() {
 
                         {/* Integrated Audio Player Controls */}
                         <div className="absolute bottom-0 left-0 right-0 z-30 bg-black/60 backdrop-blur-xl border-t border-white/10 p-3 md:p-4">
-                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent pointer-events-none" />
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--brand-secondary)]/30 to-transparent pointer-events-none" />
 
                             <div className="flex items-center gap-4">
                                 {/* Play Button */}
@@ -490,7 +490,7 @@ export default function MasterCoursePage() {
                                         onClick={togglePlay}
                                         className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-500 relative group/play ${isPlaying
                                             ? 'bg-white text-black scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)]'
-                                            : 'bg-emerald-500 text-white hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                                            : 'bg-[var(--brand-secondary)] text-white hover:scale-105 shadow-[0_0_20px_var(--brand-glow-secondary)0.3)]'
                                             }`}
                                     >
                                         {isPlaying && (
@@ -516,7 +516,7 @@ export default function MasterCoursePage() {
                                             {activeModule.title}
                                         </span>
                                         <span className="text-zinc-400 flex-shrink-0 tabular-nums">
-                                            <span className="text-emerald-400">{formatTime(audioProgress)}</span>
+                                            <span className="text-[var(--brand-secondary-light)]">{formatTime(audioProgress)}</span>
                                             <span className="text-zinc-600 mx-1">/</span>
                                             {formatTime(audioDuration || 0)}
                                         </span>
@@ -533,8 +533,8 @@ export default function MasterCoursePage() {
                                             className="absolute top-0 left-0 h-full rounded-full z-0 transition-all duration-100 ease-linear"
                                             style={{
                                                 width: `${audioDuration ? (audioProgress / audioDuration) * 100 : 0}%`,
-                                                background: 'linear-gradient(90deg, #10b981, #34d399)',
-                                                boxShadow: '0 0 10px rgba(16,185,129,0.5)',
+                                                background: 'linear-gradient(90deg, var(--brand-secondary), var(--brand-secondary-light))',
+                                                boxShadow: '0 0 10px var(--brand-glow-secondary)0.5)',
                                             }}
                                         />
                                         <div
@@ -555,8 +555,8 @@ export default function MasterCoursePage() {
                             
                             {/* Error banner */}
                             {audioError && (
-                                <div className="mt-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-mono flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                                <div className="mt-3 px-3 py-2 rounded-lg bg-[var(--brand-danger)]/10 border border-[var(--brand-danger)]/20 text-[var(--brand-danger)] text-[11px] font-mono flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-danger)] flex-shrink-0" />
                                     {audioError}
                                 </div>
                             )}
@@ -620,7 +620,7 @@ export default function MasterCoursePage() {
                                 {activeTab === 'study' && (
                                     <motion.div 
                                         layoutId="tab-underline"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--brand-secondary)] shadow-[0_0_15px_var(--brand-glow-secondary)0.5)]"
                                     />
                                 )}
                             </button>
@@ -637,7 +637,7 @@ export default function MasterCoursePage() {
                                 {activeTab === 'quiz' && (
                                     <motion.div 
                                         layoutId="tab-underline"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--brand-secondary)] shadow-[0_0_15px_var(--brand-glow-secondary)0.5)]"
                                     />
                                 )}
                             </button>
@@ -653,7 +653,7 @@ export default function MasterCoursePage() {
                                 {activeTab === 'resources' && (
                                     <motion.div 
                                         layoutId="tab-underline"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--brand-secondary)] shadow-[0_0_15px_var(--brand-glow-secondary)0.5)]"
                                     />
                                 )}
                             </button>
@@ -664,17 +664,17 @@ export default function MasterCoursePage() {
                                     : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-white/20'
                                     }`}
                             >
-                                <Landmark className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
+                                <Landmark className="w-4 h-4 md:w-5 md:h-5 text-[var(--brand-secondary-light)]" />
                                 BAN Credit Unions
                                 {(activeModuleId === 'M-01' || activeModuleId === 'M-02') && (
-                                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider hidden sm:inline-block shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                                    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--brand-secondary)]/20 text-emerald-300 border border-[var(--brand-secondary)]/30 uppercase tracking-wider hidden sm:inline-block shadow-[0_0_10px_var(--brand-glow-secondary)0.2)]">
                                         Interactive Tool
                                     </span>
                                 )}
                                 {activeTab === 'credit-unions' && (
                                     <motion.div 
                                         layoutId="tab-underline"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--brand-secondary)] shadow-[0_0_15px_var(--brand-glow-secondary)0.5)]"
                                     />
                                 )}
                             </button>
@@ -693,13 +693,13 @@ export default function MasterCoursePage() {
                                     {activeTab === 'study' && (
                                         <div>
                                             {(activeModuleId === 'M-01' || activeModuleId === 'M-02') && (
-                                                <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_20px_-5px_rgba(16,185,129,0.15)]">
+                                                <div className="mb-6 p-4 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_0_20px_-5px_var(--brand-glow-secondary)0.15)]">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 flex-shrink-0">
+                                                        <div className="p-2 rounded-lg bg-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)] flex-shrink-0">
                                                             <Landmark className="w-5 h-5" />
                                                         </div>
                                                         <div>
-                                                            <div className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                                                            <div className="text-[10px] font-mono font-bold text-[var(--brand-secondary-light)] uppercase tracking-wider flex items-center gap-1.5">
                                                                 <Sparkles className="w-3 h-3" /> Interactive Tool Pairing
                                                             </div>
                                                             <div className="text-xs sm:text-sm font-medium text-white mt-0.5">
@@ -711,7 +711,7 @@ export default function MasterCoursePage() {
                                                     </div>
                                                     <button
                                                         onClick={() => setActiveTab('credit-unions')}
-                                                        className="px-4 py-2 rounded-lg bg-emerald-500 text-black font-mono text-xs uppercase tracking-wider font-bold hover:bg-emerald-400 transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)] whitespace-nowrap flex-shrink-0"
+                                                        className="px-4 py-2 rounded-lg bg-[var(--brand-secondary)] text-black font-mono text-xs uppercase tracking-wider font-bold hover:bg-[var(--brand-secondary-light)] transition-all shadow-[0_0_15px_var(--brand-glow-secondary)0.4)] whitespace-nowrap flex-shrink-0"
                                                     >
                                                         Launch BAN Credit Unions
                                                     </button>
@@ -729,7 +729,7 @@ export default function MasterCoursePage() {
                                                 <div className="mt-10 mb-20 flex justify-center">
                                                     <button
                                                         onClick={markModuleComplete}
-                                                        className="px-8 py-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-white font-medium tracking-wide transition-all duration-300 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-3 group"
+                                                        className="px-8 py-3.5 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/40 text-[var(--brand-secondary-light)] hover:bg-[var(--brand-secondary)] hover:text-white font-medium tracking-wide transition-all duration-300 shadow-[0_0_20px_-5px_var(--brand-glow-secondary)0.3)] hover:shadow-[0_0_30px_var(--brand-glow-secondary)0.5)] flex items-center gap-3 group"
                                                     >
                                                         <CheckCircle2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                                         Mark Module Complete
@@ -738,7 +738,7 @@ export default function MasterCoursePage() {
                                             )}
                                             {activeModule.status === 'COMPLETED' && (
                                                 <div className="mt-10 mb-20 flex flex-col items-center gap-6">
-                                                    <div className="px-8 py-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-500/60 font-medium tracking-wide flex items-center gap-3">
+                                                    <div className="px-8 py-3.5 rounded-xl bg-[var(--brand-secondary)]/5 border border-[var(--brand-secondary)]/20 text-[var(--brand-secondary)]/60 font-medium tracking-wide flex items-center gap-3">
                                                         <CheckCircle2 className="w-5 h-5" />
                                                         Module Completed
                                                     </div>
@@ -780,11 +780,11 @@ export default function MasterCoursePage() {
                                                         href={res.url}
                                                         download
                                                         onClick={() => logActivity("DOWNLOAD", activeModule.id, { resource: res.name })}
-                                                        className="w-full flex items-center justify-between p-4 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-emerald-500/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(16,185,129,0.2)] group text-left relative overflow-hidden"
+                                                        className="w-full flex items-center justify-between p-4 rounded-xl border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 hover:border-[var(--brand-secondary)]/50 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_var(--brand-glow-secondary)0.2)] group text-left relative overflow-hidden"
                                                     >
                                                         <div className="absolute inset-0 border border-white/[0.02] pointer-events-none rounded-xl" />
                                                         <div className="flex items-center gap-4 relative z-10">
-                                                            <div className="p-2 rounded-lg bg-black/60 border border-white/5 text-zinc-500 group-hover:text-emerald-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-all duration-500 group-hover:scale-110">
+                                                            <div className="p-2 rounded-lg bg-black/60 border border-white/5 text-zinc-500 group-hover:text-[var(--brand-secondary-light)] group-hover:border-[var(--brand-secondary)]/30 group-hover:bg-[var(--brand-secondary)]/10 transition-all duration-500 group-hover:scale-110">
                                                                 {res.icon}
                                                             </div>
                                                             <div>
@@ -792,7 +792,7 @@ export default function MasterCoursePage() {
                                                                 <div className="text-[10px] font-mono text-zinc-500 uppercase">{res.type} Format</div>
                                                             </div>
                                                         </div>
-                                                        <Download className="w-5 h-5 text-zinc-600 group-hover:text-emerald-400 group-hover:-translate-y-1 transition-all duration-500 relative z-10" />
+                                                        <Download className="w-5 h-5 text-zinc-600 group-hover:text-[var(--brand-secondary-light)] group-hover:-translate-y-1 transition-all duration-500 relative z-10" />
                                                     </a>
                                                 ))
                                             ) : (
@@ -809,13 +809,13 @@ export default function MasterCoursePage() {
                                             {/* Contextual Header */}
                                             <div className="p-4 rounded-xl bg-black/40 border border-white/10 backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                                    <div className="p-2.5 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary-light)]">
                                                         <Landmark className="w-5 h-5" />
                                                     </div>
                                                     <div>
                                                         <div className="text-sm font-semibold text-white flex items-center gap-2">
                                                             <span>BAN Credit Unions Intelligence Engine</span>
-                                                            <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase">Live Tool</span>
+                                                            <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)] border border-[var(--brand-secondary)]/30 uppercase">Live Tool</span>
                                                         </div>
                                                         <p className="text-xs font-mono text-zinc-400 mt-0.5">
                                                             {activeModuleId === 'M-01' 
@@ -832,7 +832,7 @@ export default function MasterCoursePage() {
                                                         href="https://ban-credit-union-app.web.app"
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500 hover:text-black text-emerald-400 text-xs font-mono uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5"
+                                                        className="px-3.5 py-2 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 hover:bg-[var(--brand-secondary)] hover:text-black text-[var(--brand-secondary-light)] text-xs font-mono uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5"
                                                     >
                                                         <span>Full Window</span>
                                                         <ExternalLink className="w-3.5 h-3.5" />
@@ -844,13 +844,13 @@ export default function MasterCoursePage() {
                                             <div className="w-full h-[700px] bg-black/40 backdrop-blur-2xl rounded-2xl border border-white/10 relative overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] flex flex-col">
                                                 <div className="h-9 bg-black/60 border-b border-white/10 px-4 flex items-center justify-between flex-shrink-0">
                                                     <div className="flex items-center gap-2">
-                                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-danger)]/40" />
                                                         <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
-                                                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
+                                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-secondary)]/60" />
                                                         <span className="text-[10px] font-mono text-zinc-500 ml-2">BAN Credit Unions Engine (v1.0)</span>
                                                     </div>
-                                                    <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest flex items-center gap-1">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                                    <span className="text-[10px] font-mono text-[var(--brand-secondary-light)] uppercase tracking-widest flex items-center gap-1">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-secondary-light)] animate-pulse" />
                                                         Active
                                                     </span>
                                                 </div>
@@ -879,7 +879,7 @@ export default function MasterCoursePage() {
                         <div className="mb-8">
                             <div className="flex justify-between items-end mb-2">
                                 <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-zinc-500">Course Matrix</h2>
-                                <span className="text-xs font-mono text-emerald-500">
+                                <span className="text-xs font-mono text-[var(--brand-secondary)]">
                                     {Math.round((modules.filter(m => m.status === 'COMPLETED').length / modules.length) * 100)}%
                                 </span>
                             </div>
@@ -887,7 +887,7 @@ export default function MasterCoursePage() {
                                 <motion.div 
                                     initial={{ width: 0 }}
                                     animate={{ width: `${(modules.filter(m => m.status === 'COMPLETED').length / modules.length) * 100}%` }}
-                                    className="h-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                                    className="h-full bg-[var(--brand-secondary)] shadow-[0_0_10px_var(--brand-glow-secondary)0.5)]"
                                 />
                             </div>
                         </div>
@@ -895,11 +895,11 @@ export default function MasterCoursePage() {
                         {modules.filter(m => m.status === 'COMPLETED').length === modules.length && modules.length > 0 && (
                             <div 
                                 onClick={handleClaimCertificate}
-                                className="mb-6 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-emerald-500/20 transition-all shadow-[0_0_20px_rgba(16,185,129,0.1)]"
+                                className="mb-6 p-4 rounded-xl border border-[var(--brand-secondary)]/30 bg-[var(--brand-secondary)]/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-[var(--brand-secondary)]/20 transition-all shadow-[0_0_20px_var(--brand-glow-secondary)0.1)]"
                             >
-                                <CheckCircle2 className="w-8 h-8 text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
+                                <CheckCircle2 className="w-8 h-8 text-[var(--brand-secondary-light)] mb-2 group-hover:scale-110 transition-transform" />
                                 <h3 className="text-sm font-bold text-white tracking-tight">Curriculum Complete</h3>
-                                <p className="text-[10px] text-emerald-400/80 font-mono mt-1 uppercase tracking-widest flex items-center justify-center gap-1 group-hover:text-emerald-300">
+                                <p className="text-[10px] text-[var(--brand-secondary-light)]/80 font-mono mt-1 uppercase tracking-widest flex items-center justify-center gap-1 group-hover:text-emerald-300">
                                     <Download className="w-3 h-3" /> Claim Certificate
                                 </p>
                             </div>
@@ -922,7 +922,7 @@ export default function MasterCoursePage() {
                                         className={`w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden group ${isLocked
                                             ? "opacity-50 border border-white/5 cursor-not-allowed bg-black/20"
                                             : isSelected
-                                                ? "bg-gradient-to-br from-emerald-500/10 to-black/60 border border-emerald-500/50 text-white shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]"
+                                                ? "bg-gradient-to-br from-[var(--brand-secondary)]/10 to-black/60 border border-[var(--brand-secondary)]/50 text-white shadow-[0_0_30px_-5px_var(--brand-glow-secondary)0.2)]"
                                                 : "bg-black/40 border border-white/5 hover:border-white/20 hover:bg-white-[0.02] text-zinc-300 hover:-translate-y-1 hover:shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]"
                                             }`}
                                     >
@@ -931,7 +931,7 @@ export default function MasterCoursePage() {
                                         {isSelected && (
                                             <motion.div 
                                                 layoutId="module-active-pill"
-                                                className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)] z-10" 
+                                                className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--brand-secondary)] shadow-[0_0_15px_var(--brand-glow-secondary)0.8)] z-10" 
                                             />
                                         )}
 
@@ -939,11 +939,11 @@ export default function MasterCoursePage() {
                                             {/* Status Icon */}
                                             <div className="flex-shrink-0 mt-0.5">
                                                 {isCompleted ? (
-                                                    <CheckCircle2 className={`w-5 h-5 ${isSelected ? 'text-emerald-400' : 'text-green-500'}`} />
+                                                    <CheckCircle2 className={`w-5 h-5 ${isSelected ? 'text-[var(--brand-secondary-light)]' : 'text-[var(--brand-secondary)]'}`} />
                                                 ) : isLocked ? (
                                                     <Lock className="w-5 h-5 text-zinc-600" />
                                                 ) : (
-                                                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                                                    <div className="w-5 h-5 rounded-full bg-[var(--brand-secondary)]/20 border border-[var(--brand-secondary)]/40 flex items-center justify-center text-[var(--brand-secondary-light)] shadow-[0_0_10px_var(--brand-glow-secondary)0.3)]">
                                                         <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                                                     </div>
                                                 )}

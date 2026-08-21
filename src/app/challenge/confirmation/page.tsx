@@ -20,21 +20,21 @@ const WHY_IT_WORKS = [
         icon: <Layers className="w-5 h-5" />,
         title: "Unified Architecture",
         body: "Streamline your entire brand presence into a single, high-performance engine.",
-        color: "text-[var(--primary)]",
-        glow: "shadow-[0_0_20px_-5px_rgba(157,78,221,0.5)]",
+        color: "text-[var(--brand-primary)]",
+        glow: "shadow-[0_0_20px_-5px_var(--brand-glow-primary),0.5)]",
     },
     {
         icon: <Zap className="w-5 h-5" />,
         title: "Automated Triggers",
         body: "Set and forget activation protocols that work while you sleep.",
-        color: "text-emerald-400",
-        glow: "shadow-[0_0_20px_-5px_rgba(52,211,153,0.4)]",
+        color: "text-[var(--brand-secondary-light)]",
+        glow: "shadow-[0_0_20px_-5px_var(--brand-glow-secondary),0.4)]",
     },
     {
         icon: <BarChart2 className="w-5 h-5" />,
         title: "Data-Driven Growth",
         body: "Real-time feedback loops that optimize your funnel every 60 seconds.",
-        color: "text-sky-400",
+        color: "text-[var(--brand-info)]",
         glow: "shadow-[0_0_20px_-5px_rgba(56,189,248,0.4)]",
     },
 ];
@@ -44,19 +44,19 @@ const HOW_YOU_WIN = [
         icon: <TrendingUp className="w-5 h-5" />,
         title: "Rapid Scalability",
         body: "Go from local presence to global authority in record time.",
-        color: "text-[var(--primary)]",
+        color: "text-[var(--brand-primary)]",
     },
     {
         icon: <ShieldCheck className="w-5 h-5" />,
         title: "Authority Dominance",
         body: "Position yourself as the undisputed leader in your niche overnight.",
-        color: "text-emerald-400",
+        color: "text-[var(--brand-secondary-light)]",
     },
     {
         icon: <BarChart2 className="w-5 h-5" />,
         title: "Exponential ROI",
         body: "Maximize every dollar spent with high-conversion activation cycles.",
-        color: "text-amber-400",
+        color: "text-[var(--brand-warning)]",
     },
 ];
 
@@ -67,9 +67,9 @@ function UrgencyBar() {
     const [visible, setVisible] = useState(false);
     useEffect(() => { setTimeout(() => setVisible(true), 50); }, []);
     return (
-        <div className={`w-full bg-emerald-500/10 border-b border-emerald-500/20 py-3 flex justify-center items-center gap-3 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"}`}>
-            <Clock className="h-4 w-4 text-emerald-400 animate-pulse" />
-            <span className="text-emerald-400 text-sm font-bold tracking-[0.15em] uppercase">
+        <div className={`w-full bg-[var(--brand-secondary)]/10 border-b border-[var(--brand-secondary)]/20 py-3 flex justify-center items-center gap-3 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"}`}>
+            <Clock className="h-4 w-4 text-[var(--brand-secondary-light)] animate-pulse" />
+            <span className="text-[var(--brand-secondary-light)] text-sm font-bold tracking-[0.15em] uppercase">
                 Wait! Your Order Is Not Complete
             </span>
         </div>
@@ -104,11 +104,11 @@ export default function ChallengeConfirmation() {
   const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
   const [modalOpen, setModalOpen] = useState(false);
     return (
-        <div className="min-h-screen bg-[#080808] text-white flex flex-col relative overflow-hidden">
+        <div className="min-h-screen bg-[var(--brand-bg)] text-white flex flex-col relative overflow-hidden">
 
             {/* Ambient glows */}
-            <div className="fixed top-[-20%] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[var(--primary)]/8 rounded-full blur-[180px] pointer-events-none z-0" />
-            <div className="fixed bottom-0 left-[-10%] w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none z-0" />
+            <div className="fixed top-[-20%] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[var(--brand-primary)]/8 rounded-full blur-[180px] pointer-events-none z-0" />
+            <div className="fixed bottom-0 left-[-10%] w-[600px] h-[600px] bg-[var(--brand-secondary)]/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
             {/* Urgency top bar */}
             <UrgencyBar />
@@ -116,7 +116,7 @@ export default function ChallengeConfirmation() {
             {/* Nav */}
             <header className="relative z-10 flex items-center justify-between px-6 md:px-10 py-4 border-b border-white/5">
                 <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
+                    <div className="w-7 h-7 rounded-lg bg-[var(--brand-primary)] flex items-center justify-center">
                         <Zap className="w-4 h-4 text-white fill-white" />
                     </div>
                     <span className="font-semibold text-sm tracking-tight">Brand Activation Network</span>
@@ -134,7 +134,7 @@ export default function ChallengeConfirmation() {
                 {/* Headline Section */}
                 <div className="text-center max-w-2xl">
                     <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-4">
-                        <span className="text-emerald-400">Wait!</span> Upgrade to VIP &amp; Skip The Line
+                        <span className="text-[var(--brand-secondary-light)]">Wait!</span> Upgrade to VIP &amp; Skip The Line
                     </h1>
                     <p className="text-zinc-400 text-base md:text-lg leading-relaxed">
                         Watch this short video to see how to instantly unlock <strong>Lifetime Access</strong> to the complete Master Blueprint system today for just $497.
@@ -153,7 +153,7 @@ export default function ChallengeConfirmation() {
                             {["A", "B", "C", "D"].map((l, i) => (
                                 <div
                                     key={i}
-                                    className="w-8 h-8 rounded-full border-2 border-[#080808] bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-xs font-bold text-white"
+                                    className="w-8 h-8 rounded-full border-2 border-[var(--brand-bg)] bg-gradient-to-br from-[var(--brand-primary)] to-[var(--brand-primary)] flex items-center justify-center text-xs font-bold text-white"
                                 >
                                     {l}
                                 </div>
@@ -182,7 +182,7 @@ export default function ChallengeConfirmation() {
                     {/* Why it works */}
                     <div>
                         <div className="flex items-center gap-2 mb-4">
-                            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                            <ShieldCheck className="w-4 h-4 text-[var(--brand-secondary-light)]" />
                             <h3 className="text-sm font-semibold tracking-tight text-white uppercase tracking-[0.1em]">Why this works</h3>
                         </div>
                         <div className="flex flex-col gap-3">
@@ -195,7 +195,7 @@ export default function ChallengeConfirmation() {
                     {/* How you win */}
                     <div>
                         <div className="flex items-center gap-2 mb-4">
-                            <TrendingUp className="w-4 h-4 text-[var(--primary)]" />
+                            <TrendingUp className="w-4 h-4 text-[var(--brand-primary)]" />
                             <h3 className="text-sm font-semibold tracking-tight text-white uppercase tracking-[0.1em]">How you&apos;ll win</h3>
                         </div>
                         <div className="flex flex-col gap-3">
@@ -207,13 +207,13 @@ export default function ChallengeConfirmation() {
                 </div>
 
                 {/* CTA Box */}
-                <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8 md:p-10 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_-20px_rgba(157,78,221,0.3)]">
-                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary)]/5 to-transparent pointer-events-none" />
+                <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8 md:p-10 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_-20px_var(--brand-glow-primary),0.3)]">
+                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--brand-primary)]/5 to-transparent pointer-events-none" />
                     <div className="absolute inset-0 border border-white/[0.04] rounded-2xl pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col items-center gap-5">
                         <div className="flex flex-col items-center gap-1">
-                            <span className="text-xs font-mono tracking-[0.2em] text-emerald-500 uppercase mb-1">One-Time Offer ($497)</span>
+                            <span className="text-xs font-mono tracking-[0.2em] text-[var(--brand-secondary)] uppercase mb-1">One-Time Offer ($497)</span>
                             <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
                                 VIP Lifetime Access
                             </h2>
@@ -227,14 +227,14 @@ export default function ChallengeConfirmation() {
                                 href={stripeLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
+                                className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_var(--brand-glow-secondary),0.6)] hover:shadow-[0_0_60px_-5px_var(--brand-glow-secondary),0.8)] hover:-translate-y-0.5 active:scale-95"
                             >
                                 YES, UPGRADE MY ORDER NOW →
                             </a>
                         ) : (
                             <button
                                 onClick={() => setModalOpen(true)}
-                                className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_rgba(52,211,153,0.6)] hover:shadow-[0_0_60px_-5px_rgba(52,211,153,0.8)] hover:-translate-y-0.5 active:scale-95"
+                                className="group w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold text-base transition-all duration-300 shadow-[0_0_40px_-5px_var(--brand-glow-secondary),0.6)] hover:shadow-[0_0_60px_-5px_var(--brand-glow-secondary),0.8)] hover:-translate-y-0.5 active:scale-95"
                             >
                                 JOIN THE WAITLIST →
                             </button>
@@ -244,15 +244,15 @@ export default function ChallengeConfirmation() {
 
                         <div className="flex flex-wrap items-center justify-center gap-5 text-xs text-zinc-600">
                             <span className="flex items-center gap-1.5">
-                                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+                                <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-secondary)]" />
                                 Instant platform access
                             </span>
                             <span className="flex items-center gap-1.5">
-                                <Users className="h-3.5 w-3.5 text-[var(--primary)]" />
+                                <Users className="h-3.5 w-3.5 text-[var(--brand-primary)]" />
                                 5,000+ active members
                             </span>
                             <span className="flex items-center gap-1.5">
-                                <Zap className="h-3.5 w-3.5 text-amber-400" />
+                                <Zap className="h-3.5 w-3.5 text-[var(--brand-warning)]" />
                                 Skip the waitlist
                             </span>
                         </div>

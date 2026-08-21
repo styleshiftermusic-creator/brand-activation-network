@@ -107,7 +107,7 @@ export function AuthScreen() {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center relative overflow-hidden px-6 font-mono selection:bg-[var(--primary)]/30">
+        <div className="min-h-screen bg-[var(--brand-bg)] flex items-center justify-center relative overflow-hidden px-6 font-mono selection:bg-[var(--primary)]/30">
             {/* CRT Scanline Overlay */}
             <div className="absolute inset-0 pointer-events-none bg-[url('/noise.svg')] opacity-20 mix-blend-overlay z-50"></div>
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#000_100%)] z-40 opacity-80"></div>
@@ -124,7 +124,7 @@ export function AuthScreen() {
 
                 <div className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-xl p-8 relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                     {/* Fake terminal boot lines */}
-                    <div className="mb-8 text-xs text-green-400/70 font-mono space-y-1 min-h-[80px]">
+                    <div className="mb-8 text-xs text-[var(--brand-secondary-light)]/70 font-mono space-y-1 min-h-[80px]">
                         {bootSequence.map((log, idx) => (
                             <div key={idx} className="animate-fade-in-up">{log}</div>
                         ))}
@@ -134,12 +134,12 @@ export function AuthScreen() {
                     </div>
 
                     {authError && (
-                        <div className="mb-6 p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
+                        <div className="mb-6 p-3 bg-[var(--brand-danger)]/10 border border-[var(--brand-danger)]/30 rounded text-[var(--brand-danger)] text-xs font-mono">
                             {authError}
                         </div>
                     )}
                     {authMessage && (
-                        <div className="mb-6 p-3 bg-green-500/10 border border-green-500/30 rounded text-green-400 text-xs font-mono">
+                        <div className="mb-6 p-3 bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 rounded text-[var(--brand-secondary-light)] text-xs font-mono">
                             {authMessage}
                         </div>
                     )}

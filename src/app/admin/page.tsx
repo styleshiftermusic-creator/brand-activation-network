@@ -10,10 +10,10 @@ interface Module {
   title: string;
   category: string;
   audio_src: string;
-  visuals: any[];
+  visuals: unknown[];
   study_guide: string;
-  resources: any[];
-  quiz: any[];
+  resources: unknown[];
+  quiz: unknown[];
   order_index: number;
 }
 
@@ -52,7 +52,7 @@ export default function AdminDashboard() {
   const startEdit = (mod: Module) => setEditing({ ...mod });
   const cancelEdit = () => setEditing(null);
 
-  const handleChange = (field: keyof Module, value: any) => {
+  const handleChange = <K extends keyof Module>(field: K, value: Module[K]) => {
     if (!editing) return;
     setEditing({ ...editing, [field]: value });
   };
@@ -77,17 +77,17 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#050505] text-zinc-300">
+      <div className="flex items-center justify-center min-h-screen bg-[var(--brand-bg)] text-zinc-300">
         <Loader2 className="animate-spin mr-2" /> Loading admin data…
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-300 p-6 lg:p-10 relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--brand-bg)] text-zinc-300 p-6 lg:p-10 relative overflow-hidden">
       {/* Ambient glow */}
-      <div className="fixed inset-0 bg-emerald-500/5 blur-[200px] pointer-events-none" />
-      <h1 className="text-3xl font-bold mb-8 text-emerald-400 tracking-wider">
+      <div className="fixed inset-0 bg-[var(--brand-secondary)]/5 blur-[200px] pointer-events-none" />
+      <h1 className="text-3xl font-bold mb-8 text-[var(--brand-secondary-light)] tracking-wider">
         Course Modules – Admin Dashboard
       </h1>
 
@@ -96,7 +96,7 @@ export default function AdminDashboard() {
         {modules.map((mod) => (
           <div
             key={mod.id}
-            className="bg-black/40 border border-white/10 rounded-xl p-4 hover:border-emerald-500/30 transition-shadow shadow-[0_0_30px_rgba(0,0,0,0.3)]"
+            className="bg-black/40 border border-white/10 rounded-xl p-4 hover:border-[var(--brand-secondary)]/30 transition-shadow shadow-[0_0_30px_rgba(0,0,0,0.3)]"
           >
             <h2 className="font-medium text-xl text-emerald-300 mb-2">
               {mod.title}
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
             <div className="flex justify-between items-center">
               <button
                 onClick={() => startEdit(mod)}
-                className="px-3 py-1 text-sm bg-emerald-500/10 border border-emerald-500/30 rounded hover:bg-emerald-500/20 transition"
+                className="px-3 py-1 text-sm bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 rounded hover:bg-[var(--brand-secondary)]/20 transition"
               >
                 Edit
               </button>
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
             className="fixed inset-0 flex items-center justify-center z-50"
           >
             <div className="absolute inset-0 bg-black/70" onClick={cancelEdit} />
-            <div className="relative bg-[#0a0a0a] border border-emerald-500/30 rounded-xl p-6 w-full max-w-2xl mx-4 shadow-xl">
+            <div className="relative bg-[var(--brand-bg)] border border-[var(--brand-secondary)]/30 rounded-xl p-6 w-full max-w-2xl mx-4 shadow-xl">
               <h3 className="text-lg font-bold mb-4 text-emerald-300">
                 Edit Module – {editing.title}
               </h3>
@@ -138,7 +138,7 @@ export default function AdminDashboard() {
                     type="text"
                     value={editing.title}
                     onChange={(e) => handleChange('title', e.target.value)}
-                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500"
+                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)]"
                   />
                 </label>
                 <label className="block">
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
                     type="text"
                     value={editing.audio_src}
                     onChange={(e) => handleChange('audio_src', e.target.value)}
-                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500"
+                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)]"
                   />
                 </label>
                 <label className="block">
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
                     rows={6}
                     value={editing.study_guide}
                     onChange={(e) => handleChange('study_guide', e.target.value)}
-                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500"
+                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)]"
                   />
                 </label>
                 <label className="block">
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
                         handleChange('visuals', JSON.parse(e.target.value));
                       } catch {}
                     }}
-                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500 font-mono text-xs"
+                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)] font-mono text-xs"
                   />
                 </label>
                 <label className="block">
@@ -182,7 +182,7 @@ export default function AdminDashboard() {
                         handleChange('resources', JSON.parse(e.target.value));
                       } catch {}
                     }}
-                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500 font-mono text-xs"
+                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)] font-mono text-xs"
                   />
                 </label>
                 <label className="block">
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
                         handleChange('quiz', JSON.parse(e.target.value));
                       } catch {}
                     }}
-                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500 font-mono text-xs"
+                    className="mt-1 block w-full rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)] font-mono text-xs"
                   />
                 </label>
                 <label className="block">
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
                     type="number"
                     value={editing.order_index}
                     onChange={(e) => handleChange('order_index', parseInt(e.target.value, 10))}
-                    className="mt-1 w-20 rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-emerald-500 focus:ring-emerald-500"
+                    className="mt-1 w-20 rounded bg-black/30 border border-white/10 text-zinc-200 focus:border-[var(--brand-secondary)] focus:ring-[var(--brand-secondary)]"
                   />
                 </label>
               </div>
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
                 <button
                   onClick={saveChanges}
                   disabled={saving}
-                  className="px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-sm flex items-center gap-1"
+                  className="px-4 py-2 rounded bg-emerald-600 hover:bg-[var(--brand-secondary)] text-sm flex items-center gap-1"
                 >
                   {saving ? (
                     <Loader2 className="animate-spin w-4 h-4" />

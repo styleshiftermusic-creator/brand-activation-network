@@ -21,8 +21,8 @@ export default function ChallengeFunnel() {
     return (
         <div className="min-h-screen bg-[var(--background)] flex flex-col items-center relative overflow-hidden">
             {/* Abstract Backgrounds */}
-            <div className="absolute top-0 right-[-10%] w-[600px] h-[600px] bg-[var(--primary)]/10 rounded-full blur-[150px] pointer-events-none" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[var(--accent)]/10 rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute top-0 right-[-10%] w-[600px] h-[600px] bg-[var(--brand-primary)]/10 rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[var(--brand-primary)]/10 rounded-full blur-[150px] pointer-events-none" />
 
             {/* Navigation Layer */}
             <nav className="w-full max-w-6xl px-6 py-8 flex justify-between items-center z-10 animate-fade-in-up">
@@ -31,8 +31,8 @@ export default function ChallengeFunnel() {
                         <Image src="/logo.png" alt="BAN Logo" width={180} height={60} className="h-10 w-auto object-contain hover:scale-105 transition-transform" />
                     </Link>
                 </div>
-                <div className="px-4 py-1.5 rounded-full border border-red-500/30 bg-red-500/10 text-red-500 text-sm font-semibold tracking-widest uppercase flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="px-4 py-1.5 rounded-full border border-[var(--brand-danger)]/30 bg-[var(--brand-danger)]/10 text-[var(--brand-danger)] text-sm font-semibold tracking-widest uppercase flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-[var(--brand-danger)] animate-pulse" />
                     Live Event
                 </div>
             </nav>
@@ -42,7 +42,7 @@ export default function ChallengeFunnel() {
 
                 {/* Left Column: Value Prop */}
                 <div className="flex flex-col text-left">
-                    <div className="inline-flex items-center gap-2 text-[var(--primary)] font-semibold mb-6 uppercase tracking-wider text-sm">
+                    <div className="inline-flex items-center gap-2 text-[var(--brand-primary)] font-semibold mb-6 uppercase tracking-wider text-sm">
                         <Calendar className="h-4 w-4" /> Next Challenge Starts Tuesday
                     </div>
                     <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
@@ -59,8 +59,8 @@ export default function ChallengeFunnel() {
                             "Automating High-Ticket Lead Generation."
                         ].map((bullet, i) => (
                             <div key={i} className="flex items-start gap-4">
-                                <div className="h-6 w-6 rounded-full bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0 mt-1">
-                                    <PlayCircle className="h-4 w-4 text-[var(--primary)]" />
+                                <div className="h-6 w-6 rounded-full bg-[var(--brand-primary)]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <PlayCircle className="h-4 w-4 text-[var(--brand-primary)]" />
                                 </div>
                                 <p className="text-lg text-zinc-300">{bullet}</p>
                             </div>
@@ -71,7 +71,7 @@ export default function ChallengeFunnel() {
                 {/* Right Column: The Lead Capture Form */}
                 <div className="w-full max-w-md mx-auto relative animate-fade-in-up">
                     {/* Decorative Elements */}
-                    <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] opacity-30 blur-xl" />
+                    <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[var(--brand-primary)] to-[var(--brand-primary)] opacity-30 blur-xl" />
                     <RegistrationForm />
                 </div>
             </main>

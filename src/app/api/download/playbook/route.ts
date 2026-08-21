@@ -1,15 +1,18 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getBrandConfig } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
     const supabase = await createSupabaseServerClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
-
+    
     if (authError || !user) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const brand = getBrandConfig();
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -23,14 +26,14 @@ export async function GET() {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --primary: #9d4edd;
-    --emerald: #10b981;
-    --amber: #f59e0b;
+    --primary: ${brand.tokens.primary};
+    --emerald: ${brand.tokens.secondary};
+    --amber: ${brand.tokens.warning};
     --bg: #ffffff;
     --text: #111111;
     --muted: #6b7280;
     --border: #e5e7eb;
-    --header-bg: #0a0a0a;
+    --header-bg: ${brand.tokens.background};
   }
 
   body {
@@ -60,8 +63,9 @@ export async function GET() {
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--emerald);
-    border: 1px solid rgba(16,185,129,0.3);
-    background: rgba(16,185,129,0.1);
+    border: 1px solid var(--emerald);
+    opacity: 0.8;
+    background: transparent;
     border-radius: 999px;
     padding: 4px 12px;
     width: fit-content;
@@ -96,7 +100,7 @@ export async function GET() {
 
   /* ── HERO STRIP ── */
   .hero-strip {
-    background: linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(157,78,221,0.08) 100%);
+    background: #f9fafb;
     border-bottom: 1px solid var(--border);
     padding: 20px 48px;
     display: flex;
@@ -114,7 +118,7 @@ export async function GET() {
   .content { max-width: 800px; margin: 0 auto; padding: 48px 48px 64px; }
 
   .intro-quote {
-    background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(157,78,221,0.06));
+    background: #f9fafb;
     border-left: 4px solid var(--emerald);
     border-radius: 0 12px 12px 0;
     padding: 20px 24px;
@@ -143,8 +147,8 @@ export async function GET() {
     border-radius: 6px;
     flex-shrink: 0;
   }
-  .badge-green { background: rgba(16,185,129,0.12); color: #059669; border: 1px solid rgba(16,185,129,0.3); }
-  .badge-purple { background: rgba(157,78,221,0.12); color: #7c3aed; border: 1px solid rgba(157,78,221,0.3); }
+  .badge-green { background: #f0fdf4; color: var(--emerald); border: 1px solid var(--emerald); }
+  .badge-purple { background: #f5f3ff; color: var(--primary); border: 1px solid var(--primary); }
   .method-title { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
 
   /* ── SECTION HEADER ── */
@@ -203,8 +207,8 @@ export async function GET() {
 
   /* ── SCRIPT BOX ── */
   .script-box {
-    background: linear-gradient(135deg, #f0fdf4, #f5f3ff);
-    border: 1px solid #d1fae5;
+    background: #f9fafb;
+    border: 1px solid var(--border);
     border-left: 4px solid var(--emerald);
     border-radius: 0 10px 10px 0;
     padding: 20px 24px;
@@ -245,7 +249,7 @@ export async function GET() {
   .yn-box-yes { background: #f0fdf4; border: 1px solid #bbf7d0; }
   .yn-box-no { background: #fff7f7; border: 1px solid #fecaca; }
   .yn-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-  .yn-title-yes { color: #059669; }
+  .yn-title-yes { color: var(--emerald); }
   .yn-title-no { color: #dc2626; }
   .yn-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
   .yn-list li { font-size: 13px; color: #374151; display: flex; align-items: flex-start; gap: 8px; }
@@ -313,8 +317,8 @@ export async function GET() {
     border-radius: 8px 8px 0 0;
     border: 1px solid;
   }
-  .cl-green { background: rgba(16,185,129,0.1); color: #059669; border-color: rgba(16,185,129,0.3); }
-  .cl-purple { background: rgba(157,78,221,0.1); color: #7c3aed; border-color: rgba(157,78,221,0.3); }
+  .cl-green { background: #f0fdf4; color: var(--emerald); border-color: var(--emerald); }
+  .cl-purple { background: #f5f3ff; color: var(--primary); border-color: var(--primary); }
   .checklist-body {
     border: 1px solid var(--border);
     border-top: none;
@@ -340,8 +344,8 @@ export async function GET() {
 
   /* ── WHAT COMES NEXT ── */
   .next-section {
-    background: linear-gradient(135deg, rgba(157,78,221,0.06), rgba(16,185,129,0.06));
-    border: 1px solid rgba(157,78,221,0.15);
+    background: #f9fafb;
+    border: 1px solid var(--border);
     border-radius: 14px;
     padding: 28px 32px;
     margin-top: 40px;
@@ -352,7 +356,7 @@ export async function GET() {
   .next-step { display: flex; gap: 14px; align-items: flex-start; }
   .next-num {
     width: 28px; height: 28px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), #6d28d9);
+    background: var(--primary);
     color: white; font-size: 12px; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; margin-top: 1px;
@@ -690,6 +694,7 @@ export async function GET() {
 
 </body>
 </html>`;
+
 
     return new NextResponse(html, {
         status: 200,

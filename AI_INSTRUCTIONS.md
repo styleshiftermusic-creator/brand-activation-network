@@ -3,19 +3,19 @@
 This document serves as the master blueprint for all AI agents (Antigravity, Claude, etc.) operating within this workspace. You MUST read and adhere to these guidelines before executing any changes.
 
 ## 1. System & Tech Stack
-- **Framework:** Next.js 16 (App Router)
-- **Database & Auth:** Supabase (PostgreSQL, Email/Password, RLS)
-- **Payments:** Stripe (Webhook driven user provisioning)
+- **Framework:** Next.js 16 (App Router) + React 19
+- **Database & Auth:** Supabase (PostgreSQL, SSR Session Cookies, RLS)
+- **Payments:** Stripe (Webhook signature verification & automated user provisioning)
 - **Deployment:** Vercel
-- **Styling:** Vanilla CSS (`globals.css`) — absolutely NO Tailwind unless specifically requested.
+- **Styling:** Tailwind CSS v4 (`@theme` directive in `globals.css` + CSS custom properties)
 
-## 2. Global Design System (UI Pro Max Rules)
-- **Theme:** Strict Dark Mode. Pure black backgrounds (`#000000`).
-- **Accent:** Emerald Green (`#00D084`). Use this for primary CTAs, active states, and subtle glow effects (`box-shadow: 0 0 15px rgba(0, 208, 132, 0.3)`).
-- **Glassmorphism:** Use translucent backgrounds with backdrop-filter blurs for cards, modals, and navigation components.
-  - Example: `background: rgba(20, 20, 20, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05);`
-- **Typography:** `Inter` font. Clean, highly legible, modern hierarchy.
-- **Animations:** Include micro-interactions on hover (scale up, border color shifts) and smooth page transitions using standard CSS `transition: all 0.3s ease;` or Framer Motion if installed.
+## 2. Multi-Brand Token System
+- **Theme Architecture:** Multi-brand token engine scoped via `[data-brand="<id>"]` on `<html>`.
+- **Entity Configurations:** Defined in `src/brands/<id>.ts` implementing the `BrandConfig` contract.
+- **Zero Hard-Coded Colors:** All components must strictly consume `var(--brand-*)` or semantic aliases (`var(--primary)`, `var(--secondary)`). Never hardcode hex/rgb colors in components or page templates.
+- **Shared Components:** Shared layout and visual primitives reside in `src/components/shared/` and are fully data-driven.
+- **Typography:** Configured dynamically per brand (BAN uses Syne display + Outfit body + JetBrains Mono utility).
+- **Animations:** Framer Motion (LazyMotion) + CSS transitions respecting `prefers-reduced-motion`.
 
 ## 3. Architecture & File Structure
 - `src/app/`: Next.js App Router structure.

@@ -32,7 +32,7 @@ export async function GET() {
             quiz: mod.quiz || []
         };
         return acc;
-    }, {} as Record<string, any>) || {};
+    }, {} as Record<string, unknown>) || {};
 
     return NextResponse.json(courseData);
 }

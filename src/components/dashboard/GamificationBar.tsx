@@ -2,30 +2,36 @@
 
 import { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { Zap, Shield, Trophy } from "lucide-react";
+import { Zap, Trophy } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+
+interface ProfileGamification {
+    credits?: number;
+    badges?: string[];
+}
 
 export function GamificationBar() {
     const [credits, setCredits] = useState(0);
     const [badges, setBadges] = useState<string[]>([]);
     
-    const fetchGamificationData = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        
-        const { data } = await supabase
-            .from('profiles')
-            .select('credits, badges')
-            .eq('id', user.id)
-            .single();
-            
-        if (data) {
-            setCredits(data.credits);
-            setBadges(data.badges || []);
-        }
-    };
-
     useEffect(() => {
+        let isMounted = true;
+        const fetchGamificationData = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user || !isMounted) return;
+            
+            const { data } = await supabase
+                .from('profiles')
+                .select('credits, badges')
+                .eq('id', user.id)
+                .single();
+                
+            if (data && isMounted) {
+                setCredits(data.credits || 0);
+                setBadges(data.badges || []);
+            }
+        };
+
         fetchGamificationData();
         
         // Listen to profiles table changes to instantly update credits
@@ -34,14 +40,15 @@ export function GamificationBar() {
                 'postgres_changes',
                 { event: 'UPDATE', schema: 'public', table: 'profiles' },
                 (payload) => {
-                    const updatedData = payload.new as any;
-                    setCredits(updatedData.credits);
-                    setBadges(updatedData.badges || []);
+                    const updatedData = payload.new as ProfileGamification;
+                    if (typeof updatedData?.credits === 'number') setCredits(updatedData.credits);
+                    if (Array.isArray(updatedData?.badges)) setBadges(updatedData.badges);
                 }
             )
             .subscribe();
 
         return () => {
+            isMounted = false;
             supabase.removeChannel(channel);
         };
     }, []);
@@ -49,8 +56,8 @@ export function GamificationBar() {
     return (
         <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-4 py-2">
             <div className="flex items-center gap-2 group">
-                <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/30 group-hover:scale-110 transition-transform">
-                    <Zap className="w-4 h-4 text-emerald-400" />
+                <div className="w-8 h-8 rounded-full bg-[var(--brand-secondary)]/10 flex items-center justify-center border border-[var(--brand-secondary)]/30 group-hover:scale-110 transition-transform">
+                    <Zap className="w-4 h-4 text-[var(--brand-secondary-light)]" />
                 </div>
                 <div className="flex flex-col">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest leading-none">Credits</span>
@@ -70,8 +77,8 @@ export function GamificationBar() {
             <div className="w-px h-6 bg-white/10" />
 
             <div className="flex items-center gap-2 group cursor-help" title={badges.length > 0 ? badges.join(", ") : "No badges yet"}>
-                <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/30 group-hover:scale-110 transition-transform">
-                    <Trophy className="w-4 h-4 text-amber-400" />
+                <div className="w-8 h-8 rounded-full bg-[var(--brand-warning)]/10 flex items-center justify-center border border-[var(--brand-warning)]/30 group-hover:scale-110 transition-transform">
+                    <Trophy className="w-4 h-4 text-[var(--brand-warning)]" />
                 </div>
                 <div className="flex flex-col">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest leading-none">Badges</span>

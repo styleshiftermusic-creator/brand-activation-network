@@ -10,7 +10,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
-    const [isRecovery, setIsRecovery] = useState(false);
+    const [isRecovery] = useState(() => typeof window !== "undefined" && window.location.hash.includes("type=recovery"));
     const pathname = usePathname();
     const router = useRouter();
 
@@ -34,10 +34,6 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
             if (session) checkOnboarding(session.user.id);
             else setIsLoading(false);
         });
-
-        if (typeof window !== "undefined" && window.location.hash.includes("type=recovery")) {
-            setIsRecovery(true);
-        }
 
         return () => subscription.unsubscribe();
     }, []);

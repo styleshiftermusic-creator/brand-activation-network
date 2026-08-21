@@ -51,11 +51,11 @@ export function NeuralGrid() {
       
       {/* Subtle Crossing Glows */}
       <div 
-        className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent top-1/4 animate-[pulse_4s_infinite]" 
+        className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--brand-secondary)]/20 to-transparent top-1/4 animate-[pulse_4s_infinite]" 
         style={{ top: '20%' }}
       />
       <div 
-        className="absolute w-[1px] h-full bg-gradient-to-b from-transparent via-blue-500/10 to-transparent left-1/3 animate-[pulse_6s_infinite]" 
+        className="absolute w-[1px] h-full bg-gradient-to-b from-transparent via-[var(--brand-info)]/10 to-transparent left-1/3 animate-[pulse_6s_infinite]" 
         style={{ left: '33%' }}
       />
     </div>

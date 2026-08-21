@@ -72,7 +72,7 @@ export default function RegistrationForm() {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 {errorMsg && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl flex items-center gap-3 text-sm">
+                    <div className="bg-[var(--brand-danger)]/10 border border-[var(--brand-danger)]/20 text-[var(--brand-danger)] p-3 rounded-xl flex items-center gap-3 text-sm">
                         <AlertCircle className="h-5 w-5 flex-shrink-0" />
                         <p>{errorMsg}</p>
                     </div>
@@ -86,7 +86,7 @@ export default function RegistrationForm() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="John Doe"
-                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
+                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] transition-all placeholder:text-zinc-600"
                     />
                 </div>
 
@@ -98,7 +98,7 @@ export default function RegistrationForm() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="john@example.com"
-                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
+                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] transition-all placeholder:text-zinc-600"
                     />
                 </div>
 
@@ -109,7 +109,7 @@ export default function RegistrationForm() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="(555) 123-4567"
-                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-600"
+                        className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] transition-all placeholder:text-zinc-600"
                     />
                 </div>
 
@@ -132,7 +132,7 @@ export default function RegistrationForm() {
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 mt-2 bg-[var(--primary)] hover:bg-[#b06cf0] text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_-5px_rgba(157,78,221,0.5)] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 mt-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-light)] text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-[0_0_30px_-5px_var(--brand-glow-primary),0.5)] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isSubmitting ? (
                         <>

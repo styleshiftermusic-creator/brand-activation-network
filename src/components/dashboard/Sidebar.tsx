@@ -84,8 +84,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
             <div className="mt-auto border-t border-white/5 pt-4">
                 <div className="flex items-center gap-3 mb-4 px-2">
-                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-                    <span className="text-xs font-mono text-green-500 uppercase tracking-widest">Uplink Stable</span>
+                    <div className="h-2 w-2 rounded-full bg-[var(--brand-secondary)] animate-pulse shadow-[0_0_10px_var(--brand-glow-secondary)0.5)]" />
+                    <span className="text-xs font-mono text-[var(--brand-secondary)] uppercase tracking-widest">Uplink Stable</span>
                 </div>
                 {/* Settings Link */}
                 <Link
@@ -103,9 +103,9 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                 </Link>
                 <button
                     onClick={async () => { await supabase.auth.signOut(); router.push('/'); }}
-                    className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-500/10 text-zinc-600 hover:text-red-400 border border-transparent hover:border-red-500/20 hover:shadow-[0_0_15px_-3px_rgba(239,68,68,0.2)] transition-all duration-300 w-full text-left font-mono text-sm overflow-hidden"
+                    className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[var(--brand-danger)]/10 text-zinc-600 hover:text-[var(--brand-danger)] border border-transparent hover:border-[var(--brand-danger)]/20 hover:shadow-[0_0_15px_-3px_rgba(239,68,68,0.2)] transition-all duration-300 w-full text-left font-mono text-sm overflow-hidden"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent opacity-0 -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--brand-danger)]/10 to-transparent opacity-0 -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 pointer-events-none" />
                     <PowerOff className="h-4 w-4 relative z-10 group-hover:scale-110 transition-transform duration-300" />
                     <span className="relative z-10">Terminate Session</span>
                 </button>
@@ -146,7 +146,7 @@ export function Sidebar() {
                             animate={{ x: 0 }}
                             exit={{ x: "-100%" }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="absolute left-0 top-0 w-72 h-full border-r border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl p-6 flex flex-col z-50"
+                            className="absolute left-0 top-0 w-72 h-full border-r border-white/10 bg-[var(--brand-bg)]/95 backdrop-blur-xl p-6 flex flex-col z-50"
                         >
                             <button
                                 onClick={() => setMobileOpen(false)}

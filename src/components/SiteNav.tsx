@@ -41,7 +41,7 @@ export function SiteNav() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${scrolled ? "border-b border-white/[0.06] bg-[#080808]/80 backdrop-blur-xl py-2" : "bg-transparent border-transparent py-4"}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${scrolled ? "border-b border-white/[0.06] bg-[var(--brand-bg)]/80 backdrop-blur-xl py-2" : "bg-transparent border-transparent py-4"}`}>
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Left: Logo */}
           <Link href="/" className="flex items-center gap-3 w-fit z-50 relative">
@@ -89,7 +89,7 @@ export function SiteNav() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-[#080808]/95 backdrop-blur-2xl transition-all duration-300 md:hidden flex flex-col items-center justify-center gap-8 ${
+        className={`fixed inset-0 z-40 bg-[var(--brand-bg)]/95 backdrop-blur-2xl transition-all duration-300 md:hidden flex flex-col items-center justify-center gap-8 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
@@ -110,7 +110,7 @@ export function SiteNav() {
         <div className="w-16 h-px bg-white/10 my-4" />
         <Link
           href="/dashboard"
-          className="text-lg font-medium text-[var(--primary)] px-8 py-3 rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 transition-colors"
+          className="text-lg font-medium text-[var(--brand-primary)] px-8 py-3 rounded-full border border-[var(--brand-primary)]/30 bg-[var(--brand-primary)]/10 hover:bg-[var(--brand-primary)]/20 transition-colors"
           onClick={() => setIsOpen(false)}
         >
           Member Login

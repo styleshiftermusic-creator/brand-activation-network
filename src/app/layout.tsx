@@ -1,77 +1,75 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Syne, Outfit, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { ReferralTracker } from "@/components/ReferralTracker";
 import { AuthRedirect } from "@/components/AuthRedirect";
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import { MotionProvider } from "@/components/MotionProvider";
+import { getBrandConfig } from "@/lib/brand";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
+const syne = Syne({ 
+  variable: "--font-heading", 
+  subsets: ["latin"] 
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
+const outfit = Outfit({ 
+  variable: "--font-sans", 
+  subsets: ["latin"] 
 });
+
+const jetbrainsMono = JetBrains_Mono({ 
+  variable: "--font-mono", 
+  subsets: ["latin"] 
+});
+
+const brand = getBrandConfig();
 
 export const metadata: Metadata = {
   title: {
-    default: "Brand Activation Network | Autonomy at the Speed of Thought",
-    template: "%s | Brand Activation Network",
+    default: brand.metadata.title,
+    template: `%s | ${brand.name}`,
   },
-  description: "Master the exact blueprint to secure business funding, automate high-ticket sales, and completely scale your life. The 7-module system for building with AI.",
+  description: brand.metadata.description,
   keywords: [
-    "business funding",
-    "credit repair",
-    "high ticket sales",
-    "AI automation",
-    "brand activation",
-    "pledge loan",
-    "credit union hack",
-    "business credit",
-    "scaling",
-    "entrepreneurship",
-    "online business",
-    "digital marketing",
+    "business funding", "high-ticket sales", "AI automation",
+    "credit repair", "brand activation", "business scaling",
   ],
-  authors: [{ name: "Brand Activation Network" }],
-  creator: "Brand Activation Network",
-  publisher: "Brand Activation Network",
+  authors: [{ name: brand.name }],
+  creator: brand.name,
+  publisher: brand.name,
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
   },
-  metadataBase: new URL("https://brandactivationnetwork.com"),
+  metadataBase: new URL(`https://${brand.domain}`),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Brand Activation Network — Master Funding, Sales & AI Systems",
-    description: "The 7-module Master Blueprint to secure business funding, close high-ticket deals, and build AI-powered scaling systems. Lifetime access.",
-    siteName: "Brand Activation Network",
+    title: brand.metadata.title,
+    description: brand.metadata.description,
+    siteName: brand.name,
     type: "website",
     locale: "en_US",
-    url: "https://brandactivationnetwork.com",
+    url: `https://${brand.domain}`,
     images: [
       {
-        url: "/og-image.png",
+        url: brand.metadata.ogImage,
         width: 1200,
         height: 630,
-        alt: "Brand Activation Network — Master Business Funding • High-Ticket Sales • AI Systems",
+        alt: brand.metadata.title,
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Brand Activation Network — The Master Blueprint",
-    description: "Master business funding, high-ticket sales, and AI-powered systems. The Master Blueprint to scale your brand.",
-    images: ["/og-image.png"],
-    creator: "@brandactivation",
+    title: brand.metadata.title,
+    description: brand.metadata.description,
+    images: [brand.metadata.ogImage],
+    creator: brand.metadata.twitterHandle,
   },
   robots: {
     index: true,
@@ -96,14 +94,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-brand={brand.id}>
       <head>
-        <meta name="theme-color" content="#9d4edd" />
+        <meta name="theme-color" content={brand.tokens.primary} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
+        className={`${outfit.variable} ${syne.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <MotionProvider>
           <Suspense fallback={null}>

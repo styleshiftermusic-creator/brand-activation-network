@@ -8,7 +8,7 @@ export function VSLPlayer() {
 
     return (
         <div
-            className="w-full aspect-video rounded-2xl overflow-hidden relative group cursor-pointer border border-white/10 bg-black shadow-[0_0_60px_-10px_rgba(157,78,221,0.3)]"
+            className="w-full aspect-video rounded-2xl overflow-hidden relative group cursor-pointer border border-white/10 bg-black shadow-[0_0_60px_-10px_var(--brand-glow-primary),0.3)]"
             onClick={() => setPlaying(true)}
         >
             {/* Ambient background */}
@@ -20,7 +20,7 @@ export function VSLPlayer() {
 
             {!playing ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-                    <button className="h-20 w-20 rounded-full bg-emerald-500/20 border border-emerald-500/50 backdrop-blur-md flex items-center justify-center text-white hover:scale-110 hover:bg-emerald-500 transition-all duration-300 shadow-[0_0_40px_rgba(52,211,153,0.4)] mb-4 group/btn">
+                    <button className="h-20 w-20 rounded-full bg-[var(--brand-secondary)]/20 border border-[var(--brand-secondary)]/50 backdrop-blur-md flex items-center justify-center text-white hover:scale-110 hover:bg-[var(--brand-secondary)] transition-all duration-300 shadow-[0_0_40px_var(--brand-glow-secondary),0.4)] mb-4 group/btn">
                         <Play className="h-8 w-8 ml-1.5 fill-current" />
                     </button>
                     <span className="text-xs font-mono tracking-[0.2em] uppercase text-zinc-400 bg-black/50 px-3 py-1 rounded-full border border-white/10">
@@ -40,7 +40,7 @@ export function VSLPlayer() {
             {!playing && (
                 <div className="absolute bottom-4 left-6 right-6 z-10 flex items-center gap-3">
                     <div className="flex-1 h-[2px] bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full w-[95%] bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" />
+                        <div className="h-full w-[95%] bg-gradient-to-r from-[var(--brand-secondary)] to-[var(--brand-secondary-light)] rounded-full" />
                     </div>
                     <span className="text-xs font-mono text-zinc-400">01:00 / 01:00</span>
                 </div>

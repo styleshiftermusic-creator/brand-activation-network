@@ -113,18 +113,18 @@ export default function Quiz({ moduleId, questions, onComplete }: QuizProps) {
             <div className="bg-black/40 backdrop-blur-md rounded-xl p-8 border border-white/5 text-center relative overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)]">
                 <div className="absolute inset-0 border border-white/[0.02] rounded-xl pointer-events-none" />
                 <h3 className="text-2xl font-medium tracking-tight text-white mb-4">Knowledge Check Complete</h3>
-                <p className="text-zinc-400 mb-6">You scored <span className="text-emerald-400 font-mono tracking-widest">{score}</span> out of {questions.length}</p>
+                <p className="text-zinc-400 mb-6">You scored <span className="text-[var(--brand-secondary-light)] font-mono tracking-widest">{score}</span> out of {questions.length}</p>
 
                 <div className="w-full bg-black/60 border border-white/5 rounded-full h-2 mb-8 overflow-hidden relative">
                     <div
-                        className="bg-emerald-500 h-full transition-all duration-1000 shadow-[0_0_15px_rgba(16,185,129,0.8)]"
+                        className="bg-[var(--brand-secondary)] h-full transition-all duration-1000 shadow-[0_0_15px_var(--brand-glow-secondary)0.8)]"
                         style={{ width: `${(score / questions.length) * 100}%` }}
                     />
                 </div>
 
                 <button
                     onClick={resetQuiz}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-lg hover:bg-emerald-500 hover:text-black transition-all duration-300 font-medium tracking-wide shadow-[0_0_20px_rgba(16,185,129,0.1)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-[var(--brand-secondary)]/10 text-[var(--brand-secondary-light)] border border-[var(--brand-secondary)]/30 rounded-lg hover:bg-[var(--brand-secondary)] hover:text-black transition-all duration-300 font-medium tracking-wide shadow-[0_0_20px_var(--brand-glow-secondary)0.1)] hover:shadow-[0_0_30px_var(--brand-glow-secondary)0.4)]"
                 >
                     <RefreshCcw className="w-4 h-4" />
                     Recalibrate & Retake
@@ -141,7 +141,7 @@ export default function Quiz({ moduleId, questions, onComplete }: QuizProps) {
             <div className="absolute inset-0 border border-white/[0.02] rounded-xl pointer-events-none" />
 
             <div className="flex justify-between items-center mb-8 relative z-10">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-500/70 border border-emerald-500/20 px-2 py-1 rounded bg-emerald-500/5">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--brand-secondary)]/70 border border-[var(--brand-secondary)]/20 px-2 py-1 rounded bg-[var(--brand-secondary)]/5">
                     Query {currentQuestion + 1} / {questions.length}
                 </span>
                 <span className="text-[10px] font-mono tracking-widest text-zinc-500">
@@ -166,18 +166,18 @@ export default function Quiz({ moduleId, questions, onComplete }: QuizProps) {
                             disabled={isAnswered}
                             className={`w-full p-4 rounded-xl border text-left transition-all duration-300 flex justify-between items-center group relative overflow-hidden backdrop-blur-sm
                                 ${isCorrect
-                                    ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.1)]'
+                                    ? 'bg-[var(--brand-secondary)]/10 border-[var(--brand-secondary)]/50 text-[var(--brand-secondary-light)] shadow-[0_0_20px_var(--brand-glow-secondary)0.1)]'
                                     : isWrongSelection
-                                        ? 'bg-red-500/10 border-red-500/50 text-red-400'
+                                        ? 'bg-[var(--brand-danger)]/10 border-[var(--brand-danger)]/50 text-[var(--brand-danger)]'
                                         : isSelected
-                                            ? 'bg-emerald-500/20 border-emerald-500 text-white'
-                                            : 'bg-black/60 border-white/5 hover:border-emerald-500/30 hover:bg-emerald-500/5 text-zinc-300'
+                                            ? 'bg-[var(--brand-secondary)]/20 border-[var(--brand-secondary)] text-white'
+                                            : 'bg-black/60 border-white/5 hover:border-[var(--brand-secondary)]/30 hover:bg-[var(--brand-secondary)]/5 text-zinc-300'
                                 }
                             `}
                         >
                             <span className="text-sm md:text-base">{option}</span>
-                            {isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)] flex-shrink-0 ml-4" />}
-                            {isWrongSelection && <XCircle className="w-5 h-5 text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] flex-shrink-0 ml-4" />}
+                            {isCorrect && <CheckCircle2 className="w-5 h-5 text-[var(--brand-secondary)] drop-shadow-[0_0_8px_var(--brand-glow-secondary)0.8)] flex-shrink-0 ml-4" />}
+                            {isWrongSelection && <XCircle className="w-5 h-5 text-[var(--brand-danger)] drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] flex-shrink-0 ml-4" />}
                         </button>
                     );
                 })}

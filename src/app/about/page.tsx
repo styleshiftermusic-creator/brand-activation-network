@@ -11,17 +11,17 @@ export default function AboutPage() {
   const stripeLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
   
   return (
-    <div className="min-h-screen bg-[var(--background)] flex flex-col font-sans overflow-x-hidden selection:bg-[var(--primary)] selection:text-white">
+    <div className="min-h-screen bg-[var(--background)] flex flex-col font-sans overflow-x-hidden selection:bg-[var(--brand-primary)] selection:text-white">
       <SiteNav />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-6 w-full max-w-5xl mx-auto z-10 flex flex-col items-center text-center">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[var(--primary)]/10 rounded-full blur-[150px] pointer-events-none -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[var(--brand-primary)]/10 rounded-full blur-[150px] pointer-events-none -z-10" />
         
-        <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--primary)] mb-6 block">Our Mission</span>
+        <span className="text-xs font-mono uppercase tracking-[0.3em] text-[var(--brand-primary)] mb-6 block">Our Mission</span>
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-8 uppercase leading-[0.96] font-heading">
           <span className="text-white">Engineering </span>
-          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[#e0aaff] via-[#c77dff] to-[#9d4edd]">
+          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] via-[var(--brand-primary-light)] to-[var(--brand-primary)]">
             Leverage
           </span>
         </h1>
@@ -49,10 +49,10 @@ export default function AboutPage() {
           </div>
           
           <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-white/10 bg-black/50 shadow-2xl p-8 flex flex-col justify-between">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--primary)]/10 to-transparent mix-blend-overlay z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[var(--brand-primary)]/10 to-transparent mix-blend-overlay z-10 pointer-events-none" />
             <div className="relative z-20 flex justify-between items-start">
-              <Layers className="w-8 h-8 text-[var(--primary)]" />
-              <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest border border-[var(--primary)]/30 rounded-full text-[var(--primary)]">EST. 2024</div>
+              <Layers className="w-8 h-8 text-[var(--brand-primary)]" />
+              <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest border border-[var(--brand-primary)]/30 rounded-full text-[var(--brand-primary)]">EST. 2024</div>
             </div>
             <div className="relative z-20">
               <div className="text-5xl font-bold text-white tracking-tighter mb-2">0</div>
@@ -73,23 +73,23 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: <ShieldCheck className="w-6 h-6 text-[var(--primary)]" />,
+                icon: <ShieldCheck className="w-6 h-6 text-[var(--brand-primary)]" />,
                 title: "Capital First",
                 desc: "Cash flow constraints kill businesses. We prioritize securing 0% interest funding before anything else."
               },
               {
-                icon: <TrendingUp className="w-6 h-6 text-[var(--primary)]" />,
+                icon: <TrendingUp className="w-6 h-6 text-[var(--brand-primary)]" />,
                 title: "Asymmetric Returns",
                 desc: "We focus on building assets (funnels, AI agents, credit profiles) that yield continuous returns on a one-time effort."
               },
               {
-                icon: <Users className="w-6 h-6 text-[var(--primary)]" />,
+                icon: <Users className="w-6 h-6 text-[var(--brand-primary)]" />,
                 title: "Exclusive Network",
                 desc: "Your network is your net worth. We gatekeep our community to ensure only serious, execution-oriented founders join."
               }
             ].map((value, i) => (
               <div key={i} className="p-8 rounded-2xl border border-white/10 bg-black/40 hover:bg-black/60 transition-colors">
-                <div className="w-12 h-12 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/20 flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-full bg-[var(--brand-primary)]/10 border border-[var(--brand-primary)]/20 flex items-center justify-center mb-6">
                   {value.icon}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{value.title}</h3>

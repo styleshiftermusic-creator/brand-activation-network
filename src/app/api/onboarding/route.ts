@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getBrandConfig } from "@/lib/brand";
 
 export async function POST(req: Request) {
     try {
@@ -37,16 +38,17 @@ export async function POST(req: Request) {
         if (process.env.RESEND_API_KEY && userEmail) {
             try {
                 const resend = new Resend(process.env.RESEND_API_KEY);
+                const brand = getBrandConfig();
                 
                 const result = await resend.emails.send({
-                    from: 'Brand Activation Network <onboarding@brandactivationnetwork.com>',
+                    from: brand.senderEmail,
                     to: userEmail,
-                    subject: 'Welcome to the Private Network. Your Next Steps.',
+                    subject: `Welcome to ${brand.name}. Your Next Steps.`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
-                            <h2 style="color: #10b981;">Access Granted.</h2>
+                            <h2 style="color: ${brand.tokens.secondary};">Access Granted.</h2>
                             <p>Hey ${userName || 'there'},</p>
-                            <p>You have officially completed your onboarding for the <strong>Brand Activation Network</strong>.</p>
+                            <p>You have officially completed your onboarding for the <strong>${brand.name}</strong>.</p>
                             <p>We've logged your current bottlenecks and revenue bracket. The Master Blueprint is designed exactly to solve these constraints using leverage, capital, and automated systems.</p>
                             <p><strong>Your next immediate steps:</strong></p>
                             <ol>
@@ -55,7 +57,7 @@ export async function POST(req: Request) {
                                 <li>Commit to the execution. No compromises.</li>
                             </ol>
                             <div style="margin: 30px 0;">
-                                <a href="https://brandactivationnetwork.com/dashboard/master-course" style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                                <a href="https://${brand.domain}/dashboard/master-course" style="background-color: ${brand.tokens.secondary}; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
                                     Access Your Dashboard →
                                 </a>
                             </div>

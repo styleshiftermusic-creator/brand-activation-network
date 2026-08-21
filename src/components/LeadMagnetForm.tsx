@@ -10,21 +10,21 @@ export function LeadMagnetForm() {
     return (
         <>
             <section className="mt-32 w-full max-w-4xl mx-auto px-6">
-                <div className="relative rounded-3xl overflow-hidden border border-emerald-500/20 bg-black/40 backdrop-blur-xl p-10 md:p-14 text-center group">
+                <div className="relative rounded-3xl overflow-hidden border border-[var(--brand-secondary)]/20 bg-black/40 backdrop-blur-xl p-10 md:p-14 text-center group">
                     {/* Background effects */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 via-transparent to-[var(--primary)]/8 pointer-events-none" />
-                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none transition-transform group-hover:scale-110 duration-700" />
-                    <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[var(--primary)]/10 rounded-full blur-[80px] pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-secondary)]/8 via-transparent to-[var(--brand-primary)]/8 pointer-events-none" />
+                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-[var(--brand-secondary)]/10 rounded-full blur-[100px] pointer-events-none transition-transform group-hover:scale-110 duration-700" />
+                    <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[var(--brand-primary)]/10 rounded-full blur-[80px] pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col items-center">
-                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase font-bold tracking-widest mb-6">
+                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary-light)] text-xs font-mono uppercase font-bold tracking-widest mb-6">
                             <ShieldCheck className="w-3 h-3" />
                             Free Blueprint
                         </span>
 
                         <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
                             The BAN{" "}
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-300">
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-emerald-300">
                                 Credit Sweep
                             </span>
                         </h2>
@@ -34,15 +34,15 @@ export function LeadMagnetForm() {
                         </p>
 
                         <div className="flex flex-wrap items-center justify-center gap-4 mb-10 text-xs text-zinc-500 font-mono uppercase tracking-wider">
-                            <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-emerald-500 inline-block" />Method 1: Phone (24hr)</span>
-                            <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[var(--primary)] inline-block" />Method 2: 609 Letter (7-Day)</span>
-                            <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-amber-500 inline-block" />2 Complete Scripts Included</span>
+                            <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[var(--brand-secondary)] inline-block" />Method 1: Phone (24hr)</span>
+                            <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[var(--brand-primary)] inline-block" />Method 2: 609 Letter (7-Day)</span>
+                            <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[var(--brand-warning)] inline-block" />2 Complete Scripts Included</span>
                         </div>
 
                         <button
                             id="lead-magnet-cta"
                             onClick={() => setModalOpen(true)}
-                            className="group/btn relative px-10 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-all duration-300 shadow-[0_0_30px_-10px_rgba(52,211,153,0.5)] hover:shadow-[0_0_50px_-10px_rgba(52,211,153,0.9)] hover:-translate-y-0.5 flex items-center gap-3 text-base"
+                            className="group/btn relative px-10 py-4 bg-[var(--brand-secondary)] hover:bg-[var(--brand-secondary-light)] text-black font-bold rounded-xl transition-all duration-300 shadow-[0_0_30px_-10px_var(--brand-glow-secondary),0.5)] hover:shadow-[0_0_50px_-10px_var(--brand-glow-secondary),0.9)] hover:-translate-y-0.5 flex items-center gap-3 text-base"
                         >
                             Get Free Access
                             <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-200" />

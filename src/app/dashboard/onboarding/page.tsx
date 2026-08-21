@@ -91,9 +91,9 @@ export default function OnboardingPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden font-sans">
+        <div className="min-h-screen bg-[var(--brand-bg)] flex items-center justify-center p-6 relative overflow-hidden font-sans">
             {/* Ambient glows */}
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--brand-secondary)]/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/10 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="w-full max-w-xl relative z-10">
@@ -101,7 +101,7 @@ export default function OnboardingPage() {
                 {/* Progress Indicators */}
                 <div className="flex gap-2 mb-8 justify-center">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${step >= i ? 'w-12 bg-emerald-500' : 'w-4 bg-white/10'}`} />
+                        <div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${step >= i ? 'w-12 bg-[var(--brand-secondary)]' : 'w-4 bg-white/10'}`} />
                     ))}
                 </div>
 
@@ -115,8 +115,8 @@ export default function OnboardingPage() {
                 >
                     {step === 1 && (
                         <div className="space-y-8">
-                            <div className="flex items-center gap-4 text-emerald-400 mb-6">
-                                <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                            <div className="flex items-center gap-4 text-[var(--brand-secondary-light)] mb-6">
+                                <div className="w-12 h-12 rounded-full bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/20 flex items-center justify-center">
                                     <TrendingUp className="w-6 h-6" />
                                 </div>
                                 <div>
@@ -132,7 +132,7 @@ export default function OnboardingPage() {
                                     <button
                                         key={opt}
                                         onClick={() => setFormData({ ...formData, revenue_bracket: opt })}
-                                        className={`w-full p-4 rounded-xl border text-left transition-all ${formData.revenue_bracket === opt ? 'border-emerald-500 bg-emerald-500/10 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10'}`}
+                                        className={`w-full p-4 rounded-xl border text-left transition-all ${formData.revenue_bracket === opt ? 'border-[var(--brand-secondary)] bg-[var(--brand-secondary)]/10 text-emerald-300 shadow-[0_0_15px_var(--brand-glow-secondary)0.1)]' : 'border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10'}`}
                                     >
                                         {opt}
                                     </button>
@@ -160,7 +160,7 @@ export default function OnboardingPage() {
                                     <button
                                         key={opt}
                                         onClick={() => setFormData({ ...formData, primary_offer: opt })}
-                                        className={`w-full p-4 rounded-xl border text-left transition-all ${formData.primary_offer === opt ? 'border-[var(--primary)] bg-[var(--primary)]/10 text-[#c77dff] shadow-[0_0_15px_var(--primary)]' : 'border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10'}`}
+                                        className={`w-full p-4 rounded-xl border text-left transition-all ${formData.primary_offer === opt ? 'border-[var(--primary)] bg-[var(--primary)]/10 text-[var(--brand-primary-light)] shadow-[0_0_15px_var(--primary)]' : 'border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10'}`}
                                     >
                                         {opt}
                                     </button>
@@ -171,8 +171,8 @@ export default function OnboardingPage() {
 
                     {step === 3 && (
                         <div className="space-y-8">
-                            <div className="flex items-center gap-4 text-amber-400 mb-6">
-                                <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                            <div className="flex items-center gap-4 text-[var(--brand-warning)] mb-6">
+                                <div className="w-12 h-12 rounded-full bg-[var(--brand-warning)]/10 border border-[var(--brand-warning)]/20 flex items-center justify-center">
                                     <Zap className="w-6 h-6" />
                                 </div>
                                 <div>
@@ -188,7 +188,7 @@ export default function OnboardingPage() {
                                     <button
                                         key={opt}
                                         onClick={() => setFormData({ ...formData, biggest_bottleneck: opt })}
-                                        className={`w-full p-4 rounded-xl border text-left transition-all ${formData.biggest_bottleneck === opt ? 'border-amber-500 bg-amber-500/10 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.1)]' : 'border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10'}`}
+                                        className={`w-full p-4 rounded-xl border text-left transition-all ${formData.biggest_bottleneck === opt ? 'border-[var(--brand-warning)] bg-[var(--brand-warning)]/10 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.1)]' : 'border-white/10 bg-white/5 text-zinc-300 hover:bg-white/10'}`}
                                     >
                                         {opt}
                                     </button>
@@ -198,7 +198,7 @@ export default function OnboardingPage() {
                     )}
 
                     {errorMsg && (
-                        <div className="mt-6 text-xs font-mono text-red-500 border border-red-500/20 bg-red-500/10 p-3.5 rounded-xl text-center">
+                        <div className="mt-6 text-xs font-mono text-[var(--brand-danger)] border border-[var(--brand-danger)]/20 bg-[var(--brand-danger)]/10 p-3.5 rounded-xl text-center">
                             {errorMsg}
                         </div>
                     )}

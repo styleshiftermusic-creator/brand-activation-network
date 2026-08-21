@@ -4,6 +4,7 @@ import { Resend } from 'resend';
 import { z } from 'zod';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import { getBrandConfig } from '@/lib/brand';
 
 export const dynamic = "force-dynamic";
 
@@ -112,16 +113,18 @@ export async function POST(req: Request) {
                 if (revenue === "50k+") leadScore = "🔥 HIGH VALUE LEAD";
                 else if (revenue === "10k-50k") leadScore = "⭐ Qualified Lead";
 
+                const brand = getBrandConfig();
+
                 // 1. Admin Alert
                 if (process.env.ADMIN_EMAIL) {
                     emailPromises.push(
                         resend.emails.send({
-                            from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
+                            from: brand.senderEmail,
                             to: process.env.ADMIN_EMAIL,
                             subject: `${leadScore}: ${name || email}`,
                             html: `
                                 <div style="font-family: sans-serif; padding: 20px; color: #111;">
-                                    <h2 style="color: #6366f1;">New Master Blueprint Applicant</h2>
+                                    <h2 style="color: ${brand.tokens.primary};">New Master Blueprint Applicant</h2>
                                     <p><strong>Name:</strong> ${name || 'N/A'}</p>
                                     <p><strong>Email:</strong> ${email}</p>
                                     <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
@@ -136,20 +139,19 @@ export async function POST(req: Request) {
 
                 // 2. User Playbook Delivery
                 // We construct the absolute URL for the playbook download link.
-                // Assuming domain is brandactivationnetwork.com
-                const origin = req.headers.get('origin') || 'https://brandactivationnetwork.com';
+                const origin = req.headers.get('origin') || `https://${brand.domain}`;
                 const playbookUrl = `${origin}/api/download/playbook`;
 
                 emailPromises.push(
                     resend.emails.send({
-                        from: 'The Master Blueprint <onboarding@brandactivationnetwork.com>',
+                        from: brand.senderEmail,
                         to: email,
-                        subject: 'Your BAN Credit Sweep Blueprint is Here',
+                        subject: `Your ${brand.name} Credit Sweep Blueprint is Here`,
                         html: `
                             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
                                 <h2>Your Blueprint Has Arrived.</h2>
                                 <p>Hey there,</p>
-                                <p>You requested the <strong>BAN Credit Sweep Blueprint</strong>. Inside you'll find two complete methods to remove unauthorized hard inquiries from your credit report — in as little as 24 hours.</p>
+                                <p>You requested the <strong>${brand.name} Credit Sweep Blueprint</strong>. Inside you'll find two complete methods to remove unauthorized hard inquiries from your credit report — in as little as 24 hours.</p>
                                 <p><strong>What's inside:</strong></p>
                                 <ul>
                                     <li>Method 1: 24-Hour Phone Script (Experian, Equifax, TransUnion Fraud Depts)</li>
@@ -157,14 +159,14 @@ export async function POST(req: Request) {
                                     <li>Combined Quick-Action Checklist</li>
                                 </ul>
                                 <div style="margin: 30px 0;">
-                                    <a href="${playbookUrl}" style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                                    <a href="${playbookUrl}" style="background-color: ${brand.tokens.secondary}; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
                                         View Your Blueprint →
                                     </a>
                                 </div>
                                 <p>If the button above doesn't work, copy and paste this link:</p>
                                 <p><a href="${playbookUrl}">${playbookUrl}</a></p>
                                 <p>More tools are coming. Stay tuned.</p>
-                                <p>Talk soon,<br>The Brand Activation Network Team</p>
+                                <p>Talk soon,<br>The ${brand.name} Team</p>
                             </div>
                         `
                     })

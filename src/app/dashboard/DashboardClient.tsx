@@ -203,8 +203,8 @@ export default function DashboardClient() {
                         <div className="flex items-center justify-between mb-6 relative z-10">
                             <h3 className="text-xs font-mono text-zinc-400 uppercase tracking-widest">Network Status</h3>
                             <div className="flex items-center gap-2">
-                                <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-                                <span className="text-[10px] font-mono text-green-500 uppercase tracking-widest">Optimal Node Uplink</span>
+                                <div className="h-2 w-2 rounded-full bg-[var(--brand-secondary)] animate-pulse shadow-[0_0_10px_var(--brand-glow-secondary)0.5)]" />
+                                <span className="text-[10px] font-mono text-[var(--brand-secondary)] uppercase tracking-widest">Optimal Node Uplink</span>
                             </div>
                         </div>
 
@@ -246,8 +246,8 @@ export default function DashboardClient() {
                         <div className="grid grid-cols-3 gap-3 mb-4 relative z-10">
                             {[
                                 { icon: <Users className="w-3.5 h-3.5" />, label: "Members", value: totalMembers ?? "—", color: "text-[var(--primary)]" },
-                                { icon: <Eye className="w-3.5 h-3.5" />,     label: "Views",   value: activityCounts["MODULE_VIEW"] ?? 0, color: "text-blue-400" },
-                                { icon: <Download className="w-3.5 h-3.5" />, label: "DLs",   value: activityCounts["DOWNLOAD"] ?? 0,     color: "text-amber-400" },
+                                { icon: <Eye className="w-3.5 h-3.5" />,     label: "Views",   value: activityCounts["MODULE_VIEW"] ?? 0, color: "text-[var(--brand-info)]" },
+                                { icon: <Download className="w-3.5 h-3.5" />, label: "DLs",   value: activityCounts["DOWNLOAD"] ?? 0,     color: "text-[var(--brand-warning)]" },
                             ].map((stat) => (
                                 <div key={stat.label} className="flex flex-col items-center justify-center p-3 rounded-xl bg-white/[0.03] border border-white/5">
                                     <span className={`${stat.color} mb-1`}>{stat.icon}</span>
@@ -260,7 +260,7 @@ export default function DashboardClient() {
                         {/* Quizzes */}
                         <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5 mb-4 relative z-10">
                             <div className="flex items-center gap-2 text-xs text-zinc-500">
-                                <ClipboardCheck className="w-3.5 h-3.5 text-emerald-400" />
+                                <ClipboardCheck className="w-3.5 h-3.5 text-[var(--brand-secondary-light)]" />
                                 Quizzes Completed
                             </div>
                             <span className="text-sm font-bold text-white tabular-nums">{activityCounts["QUIZ_COMPLETE"] ?? 0}</span>
@@ -290,18 +290,18 @@ export default function DashboardClient() {
                     </div>
 
                     {/* ─── Refer & Earn Card ─── */}
-                    <div className="bg-black/40 backdrop-blur-2xl border border-emerald-500/20 rounded-2xl p-6 relative overflow-hidden group hover:border-emerald-500/40 transition-colors duration-500">
-                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-[40px] rounded-full pointer-events-none" />
+                    <div className="bg-black/40 backdrop-blur-2xl border border-[var(--brand-secondary)]/20 rounded-2xl p-6 relative overflow-hidden group hover:border-[var(--brand-secondary)]/40 transition-colors duration-500">
+                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-secondary)]/5 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--brand-secondary)]/10 blur-[40px] rounded-full pointer-events-none" />
 
                         <div className="relative z-10">
                             <div className="flex items-start justify-between mb-3">
-                                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono uppercase tracking-widest">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary-light)] text-[10px] font-mono uppercase tracking-widest">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-secondary-light)] animate-pulse" />
                                     Member Benefit
                                 </div>
                                 {referralCount > 0 && (
-                                    <span className="text-xs font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                                    <span className="text-xs font-mono text-[var(--brand-secondary-light)] font-bold bg-[var(--brand-secondary)]/10 px-2 py-0.5 rounded-full border border-[var(--brand-secondary)]/20">
                                         {referralCount} Referred
                                     </span>
                                 )}
@@ -316,7 +316,7 @@ export default function DashboardClient() {
                             {userId && (
                                 <div className="flex items-center gap-2 mb-4 bg-white/[0.03] border border-white/10 rounded-xl px-3 py-2.5 group/link">
                                     <p className="flex-1 text-[10px] font-mono text-zinc-400 truncate">
-                                        brandactivationnetwork.com<span className="text-emerald-400">?ref={userId.slice(0, 8)}…</span>
+                                        brandactivationnetwork.com<span className="text-[var(--brand-secondary-light)]">?ref={userId.slice(0, 8)}…</span>
                                     </p>
                                     <button
                                         onClick={async () => {
@@ -326,9 +326,9 @@ export default function DashboardClient() {
                                             setTimeout(() => setCopied(false), 2500);
                                         }}
                                         title="Copy referral link"
-                                        className="text-zinc-600 hover:text-emerald-400 transition-colors flex-shrink-0"
+                                        className="text-zinc-600 hover:text-[var(--brand-secondary-light)] transition-colors flex-shrink-0"
                                     >
-                                        {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                        {copied ? <Check className="w-3.5 h-3.5 text-[var(--brand-secondary-light)]" /> : <Copy className="w-3.5 h-3.5" />}
                                     </button>
                                 </div>
                             )}
@@ -342,7 +342,7 @@ export default function DashboardClient() {
                                         setCopied(true);
                                         setTimeout(() => setCopied(false), 2500);
                                     }}
-                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-widest hover:bg-emerald-500 hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] font-semibold"
+                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 text-[var(--brand-secondary-light)] text-xs font-mono uppercase tracking-widest hover:bg-[var(--brand-secondary)] hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_var(--brand-glow-secondary)0.3)] font-semibold"
                                 >
                                     {copied ? <><Check className="w-3.5 h-3.5" /> Copied!</> : <><Copy className="w-3.5 h-3.5" /> Copy Link</>}
                                 </button>

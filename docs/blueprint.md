@@ -34,8 +34,9 @@
 
 ### S - Style
 
-- Typography: Geist/Geist Mono (or Inter).
-- Components must be fully responsive and include modern micro-interactions (hover states, subtle active scales).
+- Design Tokens: Strictly consume `var(--brand-*)` custom properties mapped via `globals.css` and `src/brands/`.
+- Typography: Dynamic font system via `@theme` (BAN uses Syne display + Outfit body + JetBrains Mono utility).
+- Components must be fully responsive, WCAG AA compliant, and include modern micro-interactions (hover states, subtle active scales) respecting `prefers-reduced-motion`.
 
 ### T - Trigger
 

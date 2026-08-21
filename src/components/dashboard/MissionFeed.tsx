@@ -20,7 +20,7 @@ export function MissionFeed({
                 const containerClass = `group relative bg-black/40 backdrop-blur-2xl rounded-xl overflow-hidden transition-all duration-500 block ${mission.locked
                     ? "border border-white/5 opacity-60 cursor-not-allowed"
                     : mission.completed
-                        ? "border border-green-500/20 hover:border-green-500/40 hover:bg-green-900/10 hover:shadow-[0_8px_30px_-10px_rgba(34,197,94,0.2)] hover:-translate-y-1 cursor-pointer"
+                        ? "border border-[var(--brand-secondary)]/20 hover:border-[var(--brand-secondary)]/40 hover:bg-green-900/10 hover:shadow-[0_8px_30px_-10px_var(--brand-glow-secondary)0.2)] hover:-translate-y-1 cursor-pointer"
                         : "border border-[var(--primary)]/40 hover:border-[var(--primary)]/70 hover:bg-[var(--primary)]/5 hover:shadow-[0_10px_40px_-15px_var(--primary)] hover:-translate-y-1 cursor-pointer"
                     }`;
 
@@ -40,7 +40,7 @@ export function MissionFeed({
                                 {/* Status Indicator */}
                                 <div className="flex-shrink-0 w-12 flex justify-center">
                                     {mission.completed ? (
-                                        <CheckCircle2 className="h-6 w-6 text-green-500" />
+                                        <CheckCircle2 className="h-6 w-6 text-[var(--brand-secondary)]" />
                                     ) : mission.locked ? (
                                         <Lock className="h-5 w-5 text-zinc-600" />
                                     ) : (
@@ -54,7 +54,7 @@ export function MissionFeed({
                                 <div>
                                     <div className="flex items-center gap-3 mb-1">
                                         <span className="text-[10px] font-mono text-zinc-500 tracking-widest">{mission.id}</span>
-                                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded border tracking-widest uppercase ${mission.completed ? 'bg-green-500/10 border-green-500/20 text-green-400 shadow-[0_0_10px_-2px_rgba(34,197,94,0.3)]' :
+                                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded border tracking-widest uppercase ${mission.completed ? 'bg-[var(--brand-secondary)]/10 border-[var(--brand-secondary)]/20 text-[var(--brand-secondary-light)] shadow-[0_0_10px_-2px_var(--brand-glow-secondary)0.3)]' :
                                             mission.locked ? 'bg-zinc-900 border-zinc-800 text-zinc-600' :
                                                 'bg-[var(--primary)]/10 border-[var(--primary)]/30 text-[var(--primary)] shadow-[0_0_15px_-3px_var(--primary)]'
                                             }`}>
