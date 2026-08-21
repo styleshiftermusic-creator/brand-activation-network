@@ -53,6 +53,17 @@ export function AuthScreen() {
             }
         }
 
+        // Check if user is already logged in on mount (e.g. on /login page)
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session && !window.location.hash.includes("type=recovery")) {
+                const params = new URLSearchParams(window.location.search);
+                const next = params.get("next") || "/dashboard";
+                if (window.location.pathname === "/login") {
+                    window.location.href = next;
+                }
+            }
+        });
+
         return () => clearInterval(interval);
     }, []);
 
@@ -61,6 +72,8 @@ export function AuthScreen() {
         setIsLoggingIn(true);
         setAuthError("");
         setAuthMessage("");
+
+        const cleanEmail = email.trim().toLowerCase();
 
         try {
             if (isUpdatingPassword) {
@@ -72,14 +85,14 @@ export function AuthScreen() {
                 if (error) throw error;
                 setAuthMessage("CLEARANCE LEVEL UPDATED. SYSTEM READY.");
                 setIsUpdatingPassword(false);
-                setTimeout(() => window.location.href = "/dashboard", 1500);
+                setTimeout(() => window.location.href = "/dashboard", 1200);
             } else if (isResetMode) {
-                const parsedEmail = z.string().email("Invalid email address").safeParse(email);
+                const parsedEmail = z.string().email("Invalid email address").safeParse(cleanEmail);
                 if (!parsedEmail.success) {
                     setAuthError(parsedEmail.error.issues[0].message);
                     return;
                 }
-                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
                     redirectTo: `${window.location.origin}/dashboard`,
                 });
                 if (error) throw error;
@@ -89,14 +102,21 @@ export function AuthScreen() {
                 const parsedAuth = z.object({
                     email: z.string().email("Invalid email address"),
                     password: z.string().min(1, "Password is required")
-                }).safeParse({ email, password });
+                }).safeParse({ email: cleanEmail, password });
 
                 if (!parsedAuth.success) {
                     setAuthError(parsedAuth.error.issues[0].message);
                     return;
                 }
-                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                const { error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password });
                 if (error) throw error;
+
+                setAuthMessage("CLEARANCE VERIFIED. INITIALIZING UPLINK...");
+                const searchParams = new URLSearchParams(window.location.search);
+                const next = searchParams.get("next") || "/dashboard";
+                setTimeout(() => {
+                    window.location.href = next;
+                }, 400);
             }
         } catch (error: unknown) {
             const err = error as Error;

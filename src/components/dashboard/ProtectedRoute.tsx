@@ -15,14 +15,25 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const router = useRouter();
 
     useEffect(() => {
+        let isMounted = true;
         const checkOnboarding = async (userId: string) => {
-            const { data } = await supabase.from('profiles').select('onboarding_completed').eq('id', userId).single();
-            setIsOnboarded(data?.onboarding_completed || false);
-            setIsLoading(false);
+            try {
+                const { data } = await supabase.from('profiles').select('onboarding_completed').eq('id', userId).single();
+                if (isMounted) {
+                    setIsOnboarded(data?.onboarding_completed ?? false);
+                    setIsLoading(false);
+                }
+            } catch {
+                if (isMounted) {
+                    setIsOnboarded(false);
+                    setIsLoading(false);
+                }
+            }
         };
 
         // Check active session on mount
         supabase.auth.getSession().then(({ data: { session } }) => {
+            if (!isMounted) return;
             setIsAuthenticated(!!session);
             if (session) checkOnboarding(session.user.id);
             else setIsLoading(false);
@@ -30,18 +41,22 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
         // Listen for auth state changes (login, logout, token refresh)
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            if (!isMounted) return;
             setIsAuthenticated(!!session);
             if (session) checkOnboarding(session.user.id);
             else setIsLoading(false);
         });
 
-        return () => subscription.unsubscribe();
-    }, []);
+        return () => {
+            isMounted = false;
+            subscription.unsubscribe();
+        };
+    }, [pathname]);
 
     // Show a sleek loading state while verifying the initial session
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center relative overflow-hidden font-mono selection:bg-[var(--primary)]/30">
+            <div className="min-h-screen bg-[var(--brand-bg)] flex flex-col items-center justify-center relative overflow-hidden font-mono selection:bg-[var(--primary)]/30">
                 {/* CRT Scanline Overlay */}
                 <div className="absolute inset-0 pointer-events-none bg-[url('/noise.svg')] opacity-20 mix-blend-overlay z-50"></div>
                 <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#000_100%)] z-40 opacity-80"></div>
