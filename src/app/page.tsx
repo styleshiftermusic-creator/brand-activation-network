@@ -292,30 +292,34 @@ export default function Home() {
       </ScrollReveal>
 
       {/* ─── FAQ ─── */}
-      <ScrollReveal delay={0.05}>
-        <FAQGrid 
-          badge="Clarity"
-          title="Frequently Asked Questions"
-          faqs={FAQS}
-        />
-      </ScrollReveal>
+      <div id="faq">
+        <ScrollReveal delay={0.05}>
+          <FAQGrid 
+            badge="Clarity"
+            title="Frequently Asked Questions"
+            faqs={FAQS}
+          />
+        </ScrollReveal>
+      </div>
 
       {/* ─── FINAL CTA ─── */}
-      <ScrollReveal delay={0.05}>
-        <CTABlock 
-          badge="Instant Dashboard Access · All 7 Modules Unlocked"
-          title="Ready to Activate?"
-          subtitle="Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access."
-          trustBadges={[
-            { icon: <ShieldCheck className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />, label: "Secure checkout via Stripe" },
-            { icon: <Zap className="w-3.5 h-3.5 text-[var(--brand-warning)]" />, label: "Instant dashboard access" },
-            { icon: <BarChart2 className="w-3.5 h-3.5 text-[var(--brand-primary)]" />, label: "Lifetime updates included" },
-            { icon: <TrendingUp className="w-3.5 h-3.5 text-[var(--brand-info)]" />, label: "30-day results guarantee" },
-          ]}
-        >
-          <FinalCTA stripeLink={stripeLink} />
-        </CTABlock>
-      </ScrollReveal>
+      <div id="apply">
+        <ScrollReveal delay={0.05}>
+          <CTABlock 
+            badge="Instant Dashboard Access · All 7 Modules Unlocked"
+            title="Ready to Activate?"
+            subtitle="Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access."
+            trustBadges={[
+              { icon: <ShieldCheck className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />, label: "Secure checkout via Stripe" },
+              { icon: <Zap className="w-3.5 h-3.5 text-[var(--brand-warning)]" />, label: "Instant dashboard access" },
+              { icon: <BarChart2 className="w-3.5 h-3.5 text-[var(--brand-primary)]" />, label: "Lifetime updates included" },
+              { icon: <TrendingUp className="w-3.5 h-3.5 text-[var(--brand-info)]" />, label: "30-day results guarantee" },
+            ]}
+          >
+            <FinalCTA stripeLink={stripeLink} />
+          </CTABlock>
+        </ScrollReveal>
+      </div>
 
     </PageShell>
   );

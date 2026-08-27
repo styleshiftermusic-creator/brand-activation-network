@@ -235,7 +235,7 @@ const courseData = {
     "category": "Growth > Audience Building",
     "audioSrc": "/audio/module-4.mp3",
     "visuals": [
-      "/course-visuals/mod4_slide1_title_1774307691038.png",
+      "/course-visuals/mod4_slide1_title_1772565083203.png",
       "/course-visuals/mod4_slide2_visibility_1774307691038.png",
       "/course-visuals/mod4_slide3_opa_1774307704615.png",
       "/course-visuals/mod4_slide4_plays_1774307718069.png",
