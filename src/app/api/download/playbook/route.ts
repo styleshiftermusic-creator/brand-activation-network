@@ -1,17 +1,9 @@
 import { NextResponse } from 'next/server';
-import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getBrandConfig } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    const supabase = await createSupabaseServerClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (authError || !user) {
-        return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     const brand = getBrandConfig();
 
     const html = `<!DOCTYPE html>
@@ -701,7 +693,7 @@ export async function GET() {
         headers: {
             'Content-Type': 'text/html; charset=utf-8',
             'Cache-Control': 'no-store',
-            'Content-Disposition': 'attachment; filename="BAN-Credit-Sweep-Blueprint.html"',
+            'Content-Disposition': 'inline; filename="BAN-Credit-Sweep-Blueprint.html"',
         },
     });
 }
