@@ -2,7 +2,17 @@ import { SiteNav } from "@/components/SiteNav";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 export const metadata = {
-  title: "Terms of Service | Brand Activation Network",
+  title: "Terms of Service",
+  description: "Terms of service for the Brand Activation Network.",
+  alternates: {
+    canonical: "/terms",
+  },
+  openGraph: {
+    title: "Terms of Service | Brand Activation Network",
+    description: "Terms of service for the Brand Activation Network.",
+    url: "https://brandactivationnetwork.com/terms",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function TermsPage() {

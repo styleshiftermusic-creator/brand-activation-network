@@ -31,10 +31,10 @@ export function Footer() {
               Engineering autonomous leverage for modern founders. Secure capital, automate sales, and scale through intelligence.
             </p>
             <div className="flex items-center gap-4 text-zinc-400">
-              <a href="#" className="hover:text-white transition-colors"><Twitter className="w-4 h-4" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Instagram className="w-4 h-4" /></a>
-              <a href="#" className="hover:text-white transition-colors"><Linkedin className="w-4 h-4" /></a>
-              <a href="mailto:support@brandactivationnetwork.com" className="hover:text-white transition-colors"><Mail className="w-4 h-4" /></a>
+              <a href="https://x.com/brandactivation" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="hover:text-white transition-colors"><Twitter className="w-4 h-4" /></a>
+              <a href="https://instagram.com/brandactivationnetwork" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-white transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href="https://linkedin.com/company/brandactivationnetwork" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white transition-colors"><Linkedin className="w-4 h-4" /></a>
+              <a href="mailto:support@brandactivationnetwork.com" aria-label="Email Support" className="hover:text-white transition-colors"><Mail className="w-4 h-4" /></a>
             </div>
           </div>
 

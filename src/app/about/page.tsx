@@ -3,8 +3,17 @@ import { FinalCTA } from "@/components/WaitlistCTA";
 import { Layers, ShieldCheck, TrendingUp, Users } from "lucide-react";
 
 export const metadata = {
-  title: "About | Brand Activation Network",
+  title: "About",
   description: "The story, mission, and architecture behind the Brand Activation Network.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About | Brand Activation Network",
+    description: "The story, mission, and architecture behind the Brand Activation Network.",
+    url: "https://brandactivationnetwork.com/about",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function AboutPage() {

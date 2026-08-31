@@ -3,8 +3,15 @@ import { SplineHero } from "@/components/SplineHero";
 import DashboardClient from "./DashboardClient";
 
 export const metadata = {
-    title: "Mission Control | Brand Activation Network",
+    title: "Mission Control",
     description: "Your active operations dashboard.",
+    alternates: {
+        canonical: "/dashboard",
+    },
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
 export default function MissionControl() {

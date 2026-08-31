@@ -4,8 +4,17 @@ import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Frequently Asked Questions | Brand Activation Network",
+  title: "Frequently Asked Questions",
   description: "Get answers to common questions about business funding, AI automation, and high-ticket sales systems inside the Brand Activation Network.",
+  alternates: {
+    canonical: "/faq",
+  },
+  openGraph: {
+    title: "Frequently Asked Questions | Brand Activation Network",
+    description: "Get answers to common questions about business funding, AI automation, and high-ticket sales systems inside the Brand Activation Network.",
+    url: "https://brandactivationnetwork.com/faq",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 const FAQS = [

@@ -16,10 +16,9 @@ export function ScrollReveal({
         const el = ref.current;
         if (!el) return;
 
-        // If IntersectionObserver isn't available, just show everything
         if (typeof IntersectionObserver === "undefined") {
-            const timer = setTimeout(() => setIsVisible(true), 0);
-            return () => clearTimeout(timer);
+            setIsVisible(true);
+            return;
         }
 
         const observer = new IntersectionObserver(
@@ -37,16 +36,26 @@ export function ScrollReveal({
     }, []);
 
     return (
-        <div
-            ref={ref}
-            className="w-full"
-            style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(30px)",
-                transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-            }}
-        >
-            {children}
-        </div>
+        <>
+            <noscript>
+                <style>{`
+                    .scroll-reveal-fallback {
+                        opacity: 1 !important;
+                        transform: none !important;
+                    }
+                `}</style>
+            </noscript>
+            <div
+                ref={ref}
+                className="w-full scroll-reveal-fallback"
+                style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? "translateY(0)" : "translateY(30px)",
+                    transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+                }}
+            >
+                {children}
+            </div>
+        </>
     );
 }
