@@ -161,8 +161,8 @@ export default function Home() {
         </div>
 
         {/* Headline — Primary */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.08] font-heading">
-          <span className="text-white">The System That </span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] font-sans">
+          <span className="text-white">System That </span>
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-[var(--brand-secondary)]">
             Funds
           </span>
@@ -170,8 +170,8 @@ export default function Home() {
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)]">
             Scales
           </span>
-          <br className="hidden sm:block" />
-          <span className="text-white"> Your Business</span>
+          <br />
+          <span className="text-white">Your Business</span>
         </h1>
 
         {/* Subheadline — Secondary value prop with specifics */}
