@@ -59,15 +59,22 @@ const els = {
 };
 
 // Initialization
-document.addEventListener('DOMContentLoaded', async () => {
-  els.resultsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #5A6B7E;">Loading Credit Unions...</p>';
+async function initApp() {
+  if (!els.resultsGrid) {
+    els.resultsGrid = document.getElementById('results-grid');
+  }
+  if (els.resultsGrid) {
+    els.resultsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; color: #5A6B7E;">Loading Credit Unions...</p>';
+  }
   try {
     const snap = await getDocs(collection(db, "credit_unions"));
     CREDIT_UNIONS = snap.docs.map(d => ({ id: parseInt(d.id), ...d.data() }));
     CREDIT_UNIONS.sort((a,b) => a.name.localeCompare(b.name));
   } catch(e) {
     console.error("Firebase error", e);
-    els.resultsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error loading data.</p>';
+    if (els.resultsGrid) {
+      els.resultsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error loading data.</p>';
+    }
     return;
   }
   
@@ -84,7 +91,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateStats();
   initEventListeners();
   applyFiltersAndRender();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 
 // Event Listeners

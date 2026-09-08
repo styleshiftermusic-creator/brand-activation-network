@@ -829,7 +829,7 @@ export default function MasterCoursePage() {
 
                                                 <div className="flex items-center gap-2 flex-shrink-0">
                                                     <a
-                                                        href="https://ban-credit-union-app.web.app"
+                                                        href="/credit-unions/index.html"
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="px-3.5 py-2 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 hover:bg-[var(--brand-secondary)] hover:text-black text-[var(--brand-secondary-light)] text-xs font-mono uppercase tracking-wider font-semibold transition-all flex items-center gap-1.5"

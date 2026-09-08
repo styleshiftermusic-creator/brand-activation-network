@@ -60,7 +60,7 @@ export default function CreditUnionsPage() {
                             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-[var(--brand-secondary-light)]' : ''}`} />
                         </button>
                         <a
-                            href="https://ban-credit-union-app.web.app"
+                            href="/credit-unions/index.html"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-4 py-2 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 hover:bg-[var(--brand-secondary)] hover:text-black text-[var(--brand-secondary-light)] text-xs font-mono uppercase tracking-wider font-semibold transition-all duration-300 shadow-[0_0_20px_-5px_var(--brand-glow-secondary)0.3)] flex items-center gap-2"
@@ -111,6 +111,7 @@ export default function CreditUnionsPage() {
                         src="/credit-unions/index.html"
                         title="BAN Credit Unions Database App"
                         onLoad={() => setIsLoading(false)}
+                        onError={() => setIsLoading(false)}
                         className="w-full flex-1 border-0 bg-transparent"
                         allow="clipboard-read; clipboard-write; fullscreen"
                     />

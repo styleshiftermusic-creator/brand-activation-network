@@ -11,7 +11,24 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        source: "/credit-unions/:path*",
+        headers: [
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "unsafe-none",
+          },
+          {
+            key: "Cross-Origin-Resource-Policy",
+            value: "cross-origin",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: `default-src 'self'; ${scriptSrc}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.gstatic.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://ban-credit-union-app.firebaseapp.com https://*.gstatic.com https://*.firebasestorage.app; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'self' https://brandactivationnetwork.com https://www.brandactivationnetwork.com https://*.vercel.app http://localhost:*;`,
+          },
+        ],
+      },
+      {
+        source: "/((?!credit-unions).*)",
         headers: [
           {
             key: "X-Content-Type-Options",
@@ -39,7 +56,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: `default-src 'self'; ${scriptSrc}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.gstatic.com; frame-src 'self' https://ban-credit-union-app.web.app https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://api.stripe.com https://prod.spline.design https://*.spline.design https://*.googleapis.com https://*.firebaseio.com https://ban-credit-union-app.firebaseapp.com https://*.gstatic.com https://*.firebasestorage.app; worker-src 'self' blob:; child-src 'self' blob:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'self'; report-to csp-endpoint; report-uri /api/csp-report`,
+            value: `default-src 'self'; ${scriptSrc}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: https://*.gstatic.com; frame-src 'self' https://brandactivationnetwork.com https://www.brandactivationnetwork.com https://ban-credit-union-app.web.app https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://api.stripe.com https://prod.spline.design https://*.spline.design https://*.googleapis.com https://*.firebaseio.com https://ban-credit-union-app.firebaseapp.com https://*.gstatic.com https://*.firebasestorage.app; worker-src 'self' blob:; child-src 'self' blob:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'self' https://brandactivationnetwork.com https://www.brandactivationnetwork.com https://*.vercel.app; report-to csp-endpoint; report-uri /api/csp-report`,
           },
           {
             key: "Strict-Transport-Security",
