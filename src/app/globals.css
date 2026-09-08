@@ -196,3 +196,12 @@ audio::-webkit-media-controls-time-remaining-display {
   from { transform: scaleY(0.4); opacity: 0.6; }
   to   { transform: scaleY(1);   opacity: 1;   }
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}

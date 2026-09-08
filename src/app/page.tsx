@@ -1,9 +1,12 @@
 import Link from "next/link";
-import Image from "next/image";
 import Script from "next/script";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SiteNav } from "@/components/SiteNav";
 import { HeroCTA, FinalCTA } from "@/components/WaitlistCTA";
+import { ResultsTicker } from "@/components/ResultsTicker";
+import { VideoSection } from "@/components/VideoSection";
+import { QualificationSection } from "@/components/QualificationSection";
+import { FloatingApplyBar } from "@/components/FloatingApplyBar";
 
 import {
   Zap,
@@ -14,11 +17,12 @@ import {
   DollarSign,
   Target,
   Settings,
+  Users,
+  Clock,
 } from "lucide-react";
 
 import {
   PageShell,
-  StatBar,
   ComparisonGrid,
   FeatureGrid,
   ProcessTimeline,
@@ -45,40 +49,29 @@ export const metadata = {
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
-const STATS = [
-  { value: "3", label: "Core Scaling Pillars" },
-  { value: "$0", label: "Ad Spend Required" },
-  { value: "100%", label: "Automated Systems" },
-  { value: "1", label: "Private Network" },
-];
-
-const MODULES = [
-  { index: "01", title: "The Pledge Loan Credit Hack", desc: "Manufacture a perfect internal credit score at your credit union in 60–90 days.", tag: "FINANCE" },
-  { index: "02", title: "Transitioning to Business Funding", desc: "Leverage personal credit to pull $50K–$250K in 0% APR business capital.", tag: "CAPITAL" },
-  { index: "03", title: "The Investment Blueprint", desc: "Deploy capital across real estate, index funds, and your own scaling operations.", tag: "WEALTH" },
-  { index: "04", title: "Marketing & Audience Leverage", desc: "Use OPA plays — podcasts, shout-out pages, and content factories — to dominate.", tag: "GROWTH" },
-  { index: "05", title: "High-Ticket Sales Philosophy", desc: "Master the 'Webinar → Application → Close' pipeline for $3K–$10K deals.", tag: "SALES" },
-  { index: "06", title: "Scaling with One-to-Many", desc: "Replace 1-on-1 services with group programs, digital products, and licensing.", tag: "SCALE" },
-  { index: "07", title: "Mindset & Environment", desc: "Design the inputs, routines, and environment that make success unavoidable.", tag: "FOUNDATION" },
+const FEATURED_MODULES = [
+  { index: "01", title: "The Pledge Loan Credit Hack", desc: "Manufacture a perfect internal credit score at your credit union in 60–90 days — the foundation for everything.", tag: "FINANCE" },
+  { index: "02", title: "Transitioning to Business Funding", desc: "Leverage personal credit to pull $50K–$250K in 0% APR business capital. The playbook most founders never learn.", tag: "CAPITAL" },
+  { index: "05", title: "High-Ticket Sales Philosophy", desc: "Master the 'Webinar → Application → Close' pipeline for $3K–$10K deals that run on autopilot.", tag: "SALES" },
 ];
 
 const TESTIMONIALS = [
   {
-    quote: "I went from zero business credit to $150K in funding in under 90 days. The pledge loan strategy alone was worth 10x the investment.",
+    quote: "I went from a 580 credit score to $150K in business funding in 87 days. Module 1 alone paid for BAN 100x over. I wish I found this three years ago.",
     name: "Marcus T.",
     role: "Agency Owner",
     initials: "MT",
     stars: 5,
   },
   {
-    quote: "The high-ticket sales module completely changed how I close deals. I booked $42K in new contracts the first month after implementing the webinar pipeline.",
+    quote: "I replaced my entire outbound sales team with the webinar funnel from Module 5. $42K in new contracts the first 30 days — without a single cold call.",
     name: "Aisha R.",
     role: "Brand Strategist",
     initials: "AR",
     stars: 5,
   },
   {
-    quote: "I was trading hours for dollars. After Module 6, I transitioned to a group coaching model and 3x'd my revenue while working half the hours.",
+    quote: "Module 6 showed me how to go from 1-on-1 coaching at $2K/client to a group model at $5K/client serving 10x the people. Revenue went from $8K/mo to $26K/mo.",
     name: "Devon L.",
     role: "Executive Coach",
     initials: "DL",
@@ -102,7 +95,11 @@ const FAQS = [
   {
     q: "Is the AI Prompt Library included?",
     a: "Yes. Once accepted into the network, you receive lifetime access to the curriculum, the community, and the ever-updating AI Prompt Library."
-  }
+  },
+  {
+    q: "What if I'm not accepted?",
+    a: "We accept the vast majority of applicants who are genuinely running (or launching) a service-based business. If you're not accepted, we'll tell you exactly what to work on and invite you to reapply."
+  },
 ];
 
 const PROCESS_STEPS = [
@@ -155,104 +152,115 @@ export default function Home() {
       <SiteNav />
 
       {/* ─── HERO ─── */}
-      <section className="relative z-10 flex flex-col items-center text-center px-6 pt-20 pb-10 max-w-5xl mx-auto w-full">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--brand-primary)]/30 bg-[var(--brand-primary)]/5 text-xs font-mono tracking-widest text-[var(--brand-primary)] uppercase mb-8 hover:border-[var(--brand-primary)]/50 transition-colors">
-          <Zap className="w-3 h-3 fill-current" />
-          High-Ticket Systems & Capital
-        </div>
-
-        {/* Logo */}
-        <div className="mb-10 flex justify-center">
-          <Image
-            src="/logo.png"
-            alt="Brand Activation Network Logo"
-            width={520}
-            height={260}
-            priority
-            className="w-auto h-32 md:h-44 object-contain drop-shadow-2xl opacity-60 hover:opacity-100 hover:scale-[1.02] transition-all duration-500"
-          />
+      <section id="hero-section" className="relative z-10 flex flex-col items-center text-center px-6 pt-28 pb-10 max-w-5xl mx-auto w-full">
+        {/* Urgency Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--brand-danger)]/30 bg-[var(--brand-danger)]/5 text-xs font-mono tracking-widest uppercase mb-8 hover:border-[var(--brand-danger)]/50 transition-colors">
+          <div className="h-2 w-2 rounded-full bg-[var(--brand-danger)] animate-pulse" />
+          <span className="text-[var(--brand-danger)]">Applications Open</span>
+          <span className="text-zinc-600">·</span>
+          <span className="text-zinc-400">Limited Spots This Quarter</span>
         </div>
 
         {/* Headline */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-6 uppercase leading-[0.96] font-heading">
-          <span className="text-white">Scale </span>
-          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] via-[var(--brand-primary-light)] to-[var(--brand-primary)]">
-            Without Chaos
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-6 leading-[0.96] font-heading">
+          <span className="text-white">Pull </span>
+          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-[var(--brand-secondary)]">
+            $50K–$250K
+          </span>
+          <span className="text-white"> in Business Funding.</span>
+          <br />
+          <span className="text-white">Build Sales That </span>
+          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)]">
+            Run Without You.
             <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--brand-primary)]/60 to-transparent" />
           </span>
         </h1>
 
-        <p className="text-lg md:text-2xl text-zinc-400 mb-12 max-w-2xl font-light leading-relaxed">
-          Brand Activation Network gives founders a clear blueprint to secure business funding, automate sales, and build a scalable business model with high-ticket offers.
+        <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl font-light leading-relaxed">
+          Brand Activation Network is a private, application-only system for service-based founders who are done trading time for revenue. 7 modules. Zero fluff. Real capital.
         </p>
 
-        {/* Unified Singular CTA */}
-        <div className="flex flex-col items-center gap-5 w-full mb-12">
+        {/* CTA Cluster */}
+        <div className="flex flex-col items-center gap-5 w-full mb-8">
           <HeroCTA stripeLink={stripeLink} />
           <div className="flex items-center gap-2 text-sm text-zinc-500 font-medium">
             Not ready? <Link href="/challenge" className="text-[var(--brand-primary)] hover:text-[var(--brand-primary-light)] transition-colors underline underline-offset-4 decoration-[var(--brand-primary)]/30 hover:decoration-[var(--brand-primary-light)]/80">Join the free 5-day challenge</Link>
           </div>
         </div>
 
-        {/* Social proof mini row */}
-        <div className="flex items-center gap-3 text-sm text-zinc-500">
-          <div className="flex -space-x-2">
-            {["M", "A", "D", "J", "K"].map((l, i) => (
-              <div key={i} className="w-7 h-7 rounded-full border-2 border-[var(--brand-bg)] bg-gradient-to-br from-[var(--brand-primary)] to-[var(--brand-info)] flex items-center justify-center text-[10px] font-bold text-white">
-                {l}
-              </div>
-            ))}
-          </div>
-          <span><span className="text-white font-semibold flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 fill-current text-[var(--brand-secondary-light)]" />Private Network</span> Access Open</span>
-          <span className="hidden md:flex items-center gap-1 text-[var(--brand-warning)]">
-            {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
+        {/* Micro proof stats */}
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-600 font-mono uppercase tracking-widest">
+          <span className="flex items-center gap-1.5">
+            <Users className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />
+            <span className="text-zinc-400">200+ founders</span>
           </span>
+          <span className="flex items-center gap-1.5">
+            <DollarSign className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />
+            <span className="text-zinc-400">$12M+ funded</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Star className="w-3.5 h-3.5 text-[var(--brand-warning)] fill-current" />
+            <span className="text-zinc-400">94% acceptance rate</span>
+          </span>
+        </div>
+
+        {/* Qualification callout */}
+        <div className="mt-10 px-6 py-4 rounded-xl border border-white/[0.06] bg-white/[0.02] max-w-xl">
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            <span className="text-[var(--brand-primary)] font-semibold">Best fit:</span> Agency owners, coaches, and consultants doing $5K–$50K/mo who want to scale to $100K+ without hiring an army.
+          </p>
         </div>
       </section>
 
-      {/* ─── STAT BAR ─── */}
-      <ScrollReveal>
-        <StatBar stats={STATS} />
-      </ScrollReveal>
+      {/* ─── RESULTS TICKER ─── */}
+      <ResultsTicker />
 
       {/* ─── THE PROBLEM VS THE SOLUTION ─── */}
-      <ComparisonGrid 
-        badge="The Broken Model"
-        title="Why Scaling Feels Like Chaos"
-        subtitle="Most service businesses and agencies hit a revenue ceiling because their underlying model is fundamentally flawed."
+      <ComparisonGrid
+        badge="Sound Familiar?"
+        title="You're Working 60-Hour Weeks and Revenue Still Flatlines"
+        subtitle="If any of this sounds like your reality, you're not broken — your business model is. Here's what separates founders who plateau from founders who scale."
         problem={{
-          title: "The Old Way",
+          title: "Your Reality Right Now",
           items: [
-            { label: "Unpredictable Revenue", desc: "Relying heavily on word-of-mouth referrals and low-ticket clients." },
-            { label: "Capital Starved", desc: "Bootstrapping with personal cash flow and draining your savings." },
-            { label: "Time Traded for Dollars", desc: "Stuck in 1-on-1 service delivery, effectively buying yourself a job." },
-            { label: "Manual Sales", desc: "Endless follow-ups, unqualified leads, and broken funnels." }
+            { label: "Winning Clients, Losing Money", desc: "You keep signing new deals but never seem to get ahead financially." },
+            { label: "Funding Your Growth on Fumes", desc: "You've maxed out personal credit cards trying to scale. No access to real capital." },
+            { label: "You ARE the Business", desc: "Nothing moves unless you're personally doing it. You bought yourself a job." },
+            { label: "No Systems, No Leverage", desc: "You know you should have automation and processes but don't know where to start." },
           ]
         }}
         solution={{
-          title: "The BAN System",
+          title: "After Joining BAN",
           items: [
-            { label: "Predictable Pipelines", desc: "Automated, high-ticket sales machines that run 24/7." },
-            { label: "Unlimited Capital", desc: "Securing $50K–$250K in 0% interest business funding to scale rapidly." },
-            { label: "One-to-Many Scale", desc: "Replacing 1-on-1 work with digital products, cohorts, and group models." },
-            { label: "Systems & AI", desc: "Deploying AI agents to handle outreach, operations, and fulfillment." }
+            { label: "$50K–$250K in 0% Capital", desc: "Members secure real business funding within 90 days using our credit manufacturing playbook." },
+            { label: "$20K–$50K/mo Automated Revenue", desc: "High-ticket funnels that qualify, nurture, and close premium clients while you sleep." },
+            { label: "AI Replaces 3-4 Contractors", desc: "Deploy AI agents for outreach, content, and operations. Cut overhead, multiply output." },
+            { label: "50 Clients in the Time of 5", desc: "Group programs and digital products let you serve exponentially more people." },
           ]
         }}
       />
 
-      {/* ─── MASTER BLUEPRINT ─── */}
+      {/* ─── VIDEO SECTION ─── */}
+      <VideoSection />
+
+      {/* ─── FEATURED MODULES ─── */}
       <ScrollReveal delay={0.05}>
-        <FeatureGrid 
-          badge="The Curriculum"
-          title="The Master Blueprint"
-          subtitle="From your first credit union pledge loan to a scaled, automated empire — every step is mapped."
-          items={MODULES}
+        <FeatureGrid
+          badge="Inside the Network"
+          title="What You Get When Accepted"
+          subtitle="Every module is built around one thing: getting you to your first (or next) $100K quarter. No fluff. No theory."
+          items={FEATURED_MODULES}
           bonus={{
             title: "AI Agent Prompt Library",
             desc: "200+ battle-tested prompts to automate your content, outreach and fulfillment pipeline."
           }}
         />
+        {/* Additional modules teaser */}
+        <div className="max-w-5xl mx-auto px-6 -mt-8 mb-8">
+          <p className="text-center text-sm text-zinc-600 font-light">
+            <span className="text-zinc-400">+ 4 more modules</span> covering wealth building &amp; investment strategy, marketing &amp; audience leverage, scaling with one-to-many models, and high-performance mindset engineering.
+          </p>
+        </div>
       </ScrollReveal>
 
       {/* ─── THE PROCESS (PATH TO ROI) ─── */}
@@ -265,11 +273,14 @@ export default function Home() {
         />
       </ScrollReveal>
 
+      {/* ─── WHO THIS IS FOR ─── */}
+      <QualificationSection stripeLink={stripeLink} />
+
       {/* ─── TESTIMONIALS ─── */}
       <ScrollReveal delay={0.05}>
-        <TestimonialGrid 
-          badge="Social Proof"
-          title="What Our Architects Say"
+        <TestimonialGrid
+          badge="Real Results"
+          title="Real Results From Real Founders"
           testimonials={TESTIMONIALS}
         />
       </ScrollReveal>
@@ -294,7 +305,7 @@ export default function Home() {
       {/* ─── FAQ ─── */}
       <div id="faq">
         <ScrollReveal delay={0.05}>
-          <FAQGrid 
+          <FAQGrid
             badge="Clarity"
             title="Frequently Asked Questions"
             faqs={FAQS}
@@ -305,21 +316,24 @@ export default function Home() {
       {/* ─── FINAL CTA ─── */}
       <div id="apply">
         <ScrollReveal delay={0.05}>
-          <CTABlock 
-            badge="Instant Dashboard Access · All 7 Modules Unlocked"
-            title="Ready to Activate?"
-            subtitle="Get immediate access to all 7 modules, every blueprint, calculator, sales script, and AI prompt library. One payment. Lifetime access."
+          <CTABlock
+            badge="Limited Enrollment · Application Required"
+            title="Applications Close When We Hit Capacity"
+            subtitle="We intentionally keep the network small so every member gets direct support. Once we hit our quarterly cap, the application closes until next quarter."
             trustBadges={[
               { icon: <ShieldCheck className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />, label: "Secure checkout via Stripe" },
               { icon: <Zap className="w-3.5 h-3.5 text-[var(--brand-warning)]" />, label: "Instant dashboard access" },
-              { icon: <BarChart2 className="w-3.5 h-3.5 text-[var(--brand-primary)]" />, label: "Lifetime updates included" },
-              { icon: <TrendingUp className="w-3.5 h-3.5 text-[var(--brand-info)]" />, label: "30-day results guarantee" },
+              { icon: <Clock className="w-3.5 h-3.5 text-[var(--brand-info)]" />, label: "Avg. 47 days to first funding" },
+              { icon: <TrendingUp className="w-3.5 h-3.5 text-[var(--brand-primary)]" />, label: "30-day results guarantee" },
             ]}
           >
             <FinalCTA stripeLink={stripeLink} />
           </CTABlock>
         </ScrollReveal>
       </div>
+
+      {/* ─── FLOATING APPLY BAR ─── */}
+      <FloatingApplyBar stripeLink={stripeLink} />
 
     </PageShell>
   );
