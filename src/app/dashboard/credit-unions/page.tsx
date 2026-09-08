@@ -1,19 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { Landmark, ExternalLink, RefreshCw, Sparkles, ShieldCheck, Info, BookOpen } from "lucide-react";
+import { Landmark, Sparkles, ShieldCheck, Info, BookOpen } from "lucide-react";
 import Link from "next/link";
+import { CreditUnionsDirectory } from "@/components/dashboard/CreditUnionsDirectory";
 
 export default function CreditUnionsPage() {
-    const [iframeKey, setIframeKey] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
-
-    const handleRefresh = () => {
-        setIsLoading(true);
-        setIframeKey(prev => prev + 1);
-    };
-
     return (
         <div className="min-h-screen bg-[var(--brand-bg)] flex text-zinc-300 font-sans selection:bg-[var(--brand-secondary)]/30 relative overflow-hidden">
             {/* Deep Ambient Glows */}
@@ -34,7 +26,7 @@ export default function CreditUnionsPage() {
                                 <ShieldCheck className="w-3.5 h-3.5 text-[var(--brand-secondary-light)]/80" /> Member Clearance Verified
                             </span>
                         </div>
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3 font-heading">
                             <Landmark className="w-8 h-8 text-[var(--brand-secondary-light)]" />
                             BAN Credit Unions
                         </h1>
@@ -52,22 +44,6 @@ export default function CreditUnionsPage() {
                             <BookOpen className="w-3.5 h-3.5 text-[var(--brand-secondary-light)]" />
                             <span>Module 1 Strategy</span>
                         </Link>
-                        <button
-                            onClick={handleRefresh}
-                            title="Reload Database"
-                            className="p-2 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 text-zinc-400 hover:text-white transition-all"
-                        >
-                            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-[var(--brand-secondary-light)]' : ''}`} />
-                        </button>
-                        <a
-                            href="/credit-unions/index.html"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 rounded-xl bg-[var(--brand-secondary)]/10 border border-[var(--brand-secondary)]/30 hover:bg-[var(--brand-secondary)] hover:text-black text-[var(--brand-secondary-light)] text-xs font-mono uppercase tracking-wider font-semibold transition-all duration-300 shadow-[0_0_20px_-5px_var(--brand-glow-secondary)0.3)] flex items-center gap-2"
-                        >
-                            <span>Open Dedicated Window</span>
-                            <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
                     </div>
                 </header>
 
@@ -79,43 +55,8 @@ export default function CreditUnionsPage() {
                     </div>
                 </div>
 
-                {/* Glassmorphic Embedded Container */}
-                <div className="w-full h-[calc(100vh-280px)] min-h-[650px] bg-black/40 backdrop-blur-2xl rounded-2xl border border-white/10 relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col">
-                    {/* Top Browser Bezel */}
-                    <div className="h-10 bg-black/60 border-b border-white/10 px-4 flex items-center justify-between flex-shrink-0">
-                        <div className="flex items-center gap-2">
-                            <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-danger)]/40" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-secondary)]/60 shadow-[0_0_8px_var(--brand-glow-secondary)0.8)]" />
-                            <span className="text-[11px] font-mono text-zinc-500 ml-2">brandactivationnetwork.com/dashboard/credit-unions</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-mono text-[var(--brand-secondary-light)] uppercase tracking-widest flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-secondary-light)] animate-pulse" />
-                                Encrypted Session
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Loading Skeleton */}
-                    {isLoading && (
-                        <div className="absolute inset-0 top-10 bg-[var(--brand-bg)] flex flex-col items-center justify-center gap-3 z-20 pointer-events-none">
-                            <div className="w-12 h-12 rounded-full border-2 border-[var(--brand-secondary)]/20 border-t-[var(--brand-secondary-light)] animate-spin" />
-                            <p className="text-xs font-mono uppercase tracking-widest text-zinc-400 animate-pulse">Loading BAN Credit Unions Engine...</p>
-                        </div>
-                    )}
-
-                    {/* Responsive Iframe */}
-                    <iframe
-                        key={iframeKey}
-                        src="/credit-unions/index.html"
-                        title="BAN Credit Unions Database App"
-                        onLoad={() => setIsLoading(false)}
-                        onError={() => setIsLoading(false)}
-                        className="w-full flex-1 border-0 bg-transparent"
-                        allow="clipboard-read; clipboard-write; fullscreen"
-                    />
-                </div>
+                {/* Native Credit Unions Engine */}
+                <CreditUnionsDirectory />
             </main>
         </div>
     );

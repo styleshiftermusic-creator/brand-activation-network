@@ -11,6 +11,7 @@ import Quiz from "@/components/dashboard/Quiz";
 import { supabase } from "@/lib/supabase";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { CertificateModal } from "@/components/dashboard/CertificateModal";
+import { CreditUnionsDirectory } from "@/components/dashboard/CreditUnionsDirectory";
 
 interface QuizQuestion {
     question: string;
@@ -840,27 +841,9 @@ export default function MasterCoursePage() {
                                                 </div>
                                             </div>
 
-                                            {/* Interactive Embedded App */}
-                                            <div className="w-full h-[700px] bg-black/40 backdrop-blur-2xl rounded-2xl border border-white/10 relative overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] flex flex-col">
-                                                <div className="h-9 bg-black/60 border-b border-white/10 px-4 flex items-center justify-between flex-shrink-0">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-danger)]/40" />
-                                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
-                                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-secondary)]/60" />
-                                                        <span className="text-[10px] font-mono text-zinc-500 ml-2">BAN Credit Unions Engine (v1.0)</span>
-                                                    </div>
-                                                    <span className="text-[10px] font-mono text-[var(--brand-secondary-light)] uppercase tracking-widest flex items-center gap-1">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-secondary-light)] animate-pulse" />
-                                                        Active
-                                                    </span>
-                                                </div>
-
-                                                <iframe
-                                                    src="/credit-unions/index.html"
-                                                    title="BAN Credit Unions Database"
-                                                    className="w-full flex-1 border-0 bg-transparent"
-                                                    allow="clipboard-read; clipboard-write; fullscreen"
-                                                />
+                                            {/* Native Interactive Engine */}
+                                            <div className="w-full pt-2">
+                                                <CreditUnionsDirectory compact />
                                             </div>
                                         </div>
                                     )}
