@@ -151,7 +151,7 @@ export default function Home() {
       <SiteNav />
 
       {/* ─── HERO ─── */}
-      <section id="hero-section" className="relative z-10 flex flex-col items-center text-center px-6 pt-32 pb-16 max-w-4xl mx-auto w-full">
+      <section id="hero-section" className="relative z-10 flex flex-col items-center text-center px-6 pt-32 pb-16 max-w-5xl mx-auto w-full">
         {/* Urgency Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--brand-danger)]/30 bg-[var(--brand-danger)]/5 text-xs font-mono tracking-widest uppercase mb-10 hover:border-[var(--brand-danger)]/50 transition-colors">
           <div className="h-2 w-2 rounded-full bg-[var(--brand-danger)] animate-pulse" />
@@ -160,27 +160,30 @@ export default function Home() {
           <span className="text-zinc-400">Limited Spots This Quarter</span>
         </div>
 
-        {/* Headline — Primary */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] font-sans">
-          <span className="text-white">System That </span>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-[var(--brand-secondary)]">
-            Funds
+        {/* Headline — Primary: Strict 2-Line Editorial Lockup */}
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] font-extrabold tracking-[-0.03em] mb-6 leading-[1.06] font-heading">
+          <span className="block whitespace-normal sm:whitespace-nowrap">
+            <span className="text-white">System That </span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-[var(--brand-secondary)]">
+              Funds
+            </span>
+            <span className="text-white"> &amp; </span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)]">
+              Scales
+            </span>
           </span>
-          <span className="text-white"> &amp; </span>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)]">
-            Scales
+          <span className="block text-white mt-1 sm:mt-2">
+            Your Business
           </span>
-          <br />
-          <span className="text-white">Your Business</span>
         </h1>
 
         {/* Subheadline — Secondary value prop with specifics */}
-        <p className="text-base md:text-lg text-zinc-400 mb-8 max-w-xl font-light leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-zinc-400 mb-8 max-w-2xl font-light leading-relaxed">
           Pull $50K–$250K in 0% business capital. Build high-ticket sales that close while you sleep. Replace yourself with AI.
         </p>
 
         {/* Proof Strip — Trust bridge before CTA */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-500 font-mono uppercase tracking-widest mb-10">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs text-zinc-500 font-mono uppercase tracking-widest mb-10">
           <span className="flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />
             <span className="text-zinc-400">200+ founders</span>

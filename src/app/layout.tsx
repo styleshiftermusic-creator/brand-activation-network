@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, Outfit, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Outfit, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { ReferralTracker } from "@/components/ReferralTracker";
 import { AuthRedirect } from "@/components/AuthRedirect";
@@ -9,9 +9,11 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { getBrandConfig } from "@/lib/brand";
 import "./globals.css";
 
-const syne = Syne({ 
+const plusJakartaSans = Plus_Jakarta_Sans({ 
   variable: "--font-heading", 
-  subsets: ["latin"] 
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const outfit = Outfit({ 
@@ -101,7 +103,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${outfit.variable} ${syne.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${outfit.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <MotionProvider>
           <Suspense fallback={null}>

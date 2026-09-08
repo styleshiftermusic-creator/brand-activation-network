@@ -31,9 +31,9 @@ export const banConfig: BrandConfig = {
   },
 
   fonts: {
-    heading: { family: "Syne",           variable: "--font-heading" },
-    body:    { family: "Outfit",         variable: "--font-sans" },
-    utility: { family: "JetBrains Mono", variable: "--font-mono" },
+    heading: { family: "Plus Jakarta Sans", variable: "--font-heading" },
+    body:    { family: "Outfit",            variable: "--font-sans" },
+    utility: { family: "JetBrains Mono",    variable: "--font-mono" },
   },
 
   motion: {

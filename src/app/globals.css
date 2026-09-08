@@ -2,9 +2,9 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: var(--brand-font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--brand-font-heading), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--brand-font-mono), ui-monospace, monospace;
+  --font-sans: var(--font-sans), var(--brand-font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading), var(--brand-font-heading), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), var(--brand-font-mono), ui-monospace, monospace;
 }
 
 [data-brand="ban"] {
@@ -22,9 +22,9 @@
   --brand-info: #38BDF8;
   --brand-glow-primary: rgba(168, 85, 247, 0.45);
   --brand-glow-secondary: rgba(20, 184, 166, 0.40);
-  --brand-font-heading: "Syne";
-  --brand-font-body: "Outfit";
-  --brand-font-mono: "JetBrains Mono";
+  --brand-font-heading: var(--font-heading, "Plus Jakarta Sans");
+  --brand-font-body: var(--font-sans, "Outfit");
+  --brand-font-mono: var(--font-mono, "JetBrains Mono");
   --brand-motion-duration: 300ms;
   --brand-motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
 }
