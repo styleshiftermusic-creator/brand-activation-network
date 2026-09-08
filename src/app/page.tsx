@@ -13,7 +13,6 @@ import {
   TrendingUp,
   ShieldCheck,
   Star,
-  BarChart2,
   DollarSign,
   Target,
   Settings,
@@ -152,44 +151,36 @@ export default function Home() {
       <SiteNav />
 
       {/* ─── HERO ─── */}
-      <section id="hero-section" className="relative z-10 flex flex-col items-center text-center px-6 pt-28 pb-10 max-w-5xl mx-auto w-full">
+      <section id="hero-section" className="relative z-10 flex flex-col items-center text-center px-6 pt-32 pb-16 max-w-4xl mx-auto w-full">
         {/* Urgency Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--brand-danger)]/30 bg-[var(--brand-danger)]/5 text-xs font-mono tracking-widest uppercase mb-8 hover:border-[var(--brand-danger)]/50 transition-colors">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--brand-danger)]/30 bg-[var(--brand-danger)]/5 text-xs font-mono tracking-widest uppercase mb-10 hover:border-[var(--brand-danger)]/50 transition-colors">
           <div className="h-2 w-2 rounded-full bg-[var(--brand-danger)] animate-pulse" />
           <span className="text-[var(--brand-danger)]">Applications Open</span>
           <span className="text-zinc-600">·</span>
           <span className="text-zinc-400">Limited Spots This Quarter</span>
         </div>
 
-        {/* Headline */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-6 leading-[0.96] font-heading">
-          <span className="text-white">Pull </span>
-          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-[var(--brand-secondary)]">
-            $50K–$250K
+        {/* Headline — Primary */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.08] font-heading">
+          <span className="text-white">The System That </span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-secondary-light)] to-[var(--brand-secondary)]">
+            Funds
           </span>
-          <span className="text-white"> in Business Funding.</span>
-          <br />
-          <span className="text-white">Build Sales That </span>
-          <span className="relative inline-block bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)]">
-            Run Without You.
-            <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--brand-primary)]/60 to-transparent" />
+          <span className="text-white"> &amp; </span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--brand-primary-light)] to-[var(--brand-primary)]">
+            Scales
           </span>
+          <br className="hidden sm:block" />
+          <span className="text-white"> Your Business</span>
         </h1>
 
-        <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl font-light leading-relaxed">
-          Brand Activation Network is a private, application-only system for service-based founders who are done trading time for revenue. 7 modules. Zero fluff. Real capital.
+        {/* Subheadline — Secondary value prop with specifics */}
+        <p className="text-base md:text-lg text-zinc-400 mb-8 max-w-xl font-light leading-relaxed">
+          Pull $50K–$250K in 0% business capital. Build high-ticket sales that close while you sleep. Replace yourself with AI.
         </p>
 
-        {/* CTA Cluster */}
-        <div className="flex flex-col items-center gap-5 w-full mb-8">
-          <HeroCTA stripeLink={stripeLink} />
-          <div className="flex items-center gap-2 text-sm text-zinc-500 font-medium">
-            Not ready? <Link href="/challenge" className="text-[var(--brand-primary)] hover:text-[var(--brand-primary-light)] transition-colors underline underline-offset-4 decoration-[var(--brand-primary)]/30 hover:decoration-[var(--brand-primary-light)]/80">Join the free 5-day challenge</Link>
-          </div>
-        </div>
-
-        {/* Micro proof stats */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-600 font-mono uppercase tracking-widest">
+        {/* Proof Strip — Trust bridge before CTA */}
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-500 font-mono uppercase tracking-widest mb-10">
           <span className="flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-[var(--brand-secondary)]" />
             <span className="text-zinc-400">200+ founders</span>
@@ -204,11 +195,12 @@ export default function Home() {
           </span>
         </div>
 
-        {/* Qualification callout */}
-        <div className="mt-10 px-6 py-4 rounded-xl border border-white/[0.06] bg-white/[0.02] max-w-xl">
-          <p className="text-sm text-zinc-500 leading-relaxed">
-            <span className="text-[var(--brand-primary)] font-semibold">Best fit:</span> Agency owners, coaches, and consultants doing $5K–$50K/mo who want to scale to $100K+ without hiring an army.
-          </p>
+        {/* CTA Cluster */}
+        <div className="flex flex-col items-center gap-5 w-full">
+          <HeroCTA stripeLink={stripeLink} />
+          <div className="flex items-center gap-2 text-sm text-zinc-500 font-medium">
+            Not ready? <Link href="/challenge" className="text-[var(--brand-primary)] hover:text-[var(--brand-primary-light)] transition-colors underline underline-offset-4 decoration-[var(--brand-primary)]/30 hover:decoration-[var(--brand-primary-light)]/80">Join the free 5-day challenge</Link>
+          </div>
         </div>
       </section>
 

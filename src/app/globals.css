@@ -81,6 +81,13 @@
   .glass-card {
     @apply bg-[var(--brand-surface)]/40 backdrop-blur-xl border border-[var(--brand-border)] shadow-2xl;
   }
+
+  .hero-grid {
+    background-image: radial-gradient(circle, var(--brand-border) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%);
+  }
 }
 
 /* ─── Study Guide Markdown Tables ─────────────────────────────────────── */

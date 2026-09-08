@@ -12,6 +12,7 @@ export function PageShell({ children }: PageShellProps) {
         <div className="absolute bottom-[10%] right-[-5%] w-[600px] h-[600px] bg-[var(--brand-glow-secondary)] rounded-full blur-[150px]" />
         <div className="absolute top-[40%] left-[-5%] w-[500px] h-[500px] bg-[var(--brand-glow-primary)] rounded-full blur-[150px]" />
       </div>
+      <div className="fixed top-0 left-0 w-full h-[100vh] pointer-events-none z-[1] hero-grid opacity-40" />
       {children}
     </div>
   );
