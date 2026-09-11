@@ -46,7 +46,7 @@ export const courseData = {
         "options": [
           "Share Savings Loan",
           "Pledge Loan",
-          "Savings Shared Kill",
+          "Savings Secured Loan",
           "Merchant Cash Advance"
         ],
         "correctAnswer": 3

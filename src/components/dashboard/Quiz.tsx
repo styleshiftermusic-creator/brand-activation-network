@@ -30,10 +30,28 @@ export default function Quiz({ moduleId, questions, onComplete }: QuizProps) {
     }
 
     // Helper to get correct index regardless of data format
-    const getCorrectIndex = (q: Question) => {
-        if (typeof q.correctAnswer === 'number') return q.correctAnswer;
-        if (typeof q.correctAnswer === 'string') return q.options.findIndex(opt => opt === q.correctAnswer);
-        if (q.answer) return q.options.findIndex(opt => opt === q.answer);
+    const getCorrectIndex = (q: Question): number => {
+        if (!q || !q.options || q.options.length === 0) return 0;
+        
+        // 1. Direct valid number index
+        if (typeof q.correctAnswer === 'number' && q.correctAnswer >= 0 && q.correctAnswer < q.options.length) {
+            return q.correctAnswer;
+        }
+
+        // 2. String comparison from correctAnswer or answer
+        const targetStr = typeof q.correctAnswer === 'string' ? q.correctAnswer : q.answer;
+        if (typeof targetStr === 'string' && targetStr.trim().length > 0) {
+            // Exact match
+            const exactIdx = q.options.findIndex(opt => opt === targetStr);
+            if (exactIdx !== -1) return exactIdx;
+
+            // Normalized match (ignore surrounding whitespace and quotes)
+            const clean = (s: string) => s.trim().toLowerCase().replace(/['"“”‘’]/g, '');
+            const normalizedTarget = clean(targetStr);
+            const looseIdx = q.options.findIndex(opt => clean(opt) === normalizedTarget);
+            if (looseIdx !== -1) return looseIdx;
+        }
+
         return 0; // Fallback
     };
 
